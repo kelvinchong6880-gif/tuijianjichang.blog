@@ -113,19 +113,19 @@ htmlFiles.forEach(file => {
     fourOhFourExists = true;
     if (content.includes('noindex')) fourOhFourNoindex = true;
     if (content.match(/<link rel="canonical" href="https:\/\/tuijianjichang\.org\/?"/)) fourOhFourHomepageCanonical = true;
-    if (sitemapUrls.has('https://tuijianjichang.org/404.html') || sitemapUrls.has('https://tuijianjichang.org/404/')) fourOhFourInSitemap = true;
+    if (sitemapUrls.has('https://tuijianjichang.blog/404.html') || sitemapUrls.has('https://tuijianjichang.blog/404/')) fourOhFourInSitemap = true;
     return;
   }
 
   stats.pagesChecked++;
   if (!content.includes('noindex')) {
-    indexableHtmlSet.add(`https://tuijianjichang.org${route}`);
+    indexableHtmlSet.add(`https://tuijianjichang.blog${route}`);
   } else {
     accidentalNoindex++;
   }
 
   const canonicalMatches = content.match(/<link rel="canonical" href="([^"]+)"/g);
-  let expectedCanonical = 'https://tuijianjichang.org' + route;
+  let expectedCanonical = 'https://tuijianjichang.blog' + route;
   if (!canonicalMatches) {
     stats.missingCanonical++;
   } else if (canonicalMatches.length > 1) {

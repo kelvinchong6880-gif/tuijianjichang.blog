@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://tuijianjichang.org',
+  site: 'https://tuijianjichang.blog',
   integrations: [sitemap({
     filter: (page) => !page.includes('/404')
   })]

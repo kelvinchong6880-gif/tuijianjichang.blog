@@ -28,9 +28,9 @@ if (urls.length === 0) {
 }
 
 const payload = {
-  host: "tuijianjichang.org",
+  host: "tuijianjichang.blog",
   key: apiKey,
-  keyLocation: `https://tuijianjichang.org/${apiKey}.txt`,
+  keyLocation: `https://tuijianjichang.blog/${apiKey}.txt`,
   urlList: urls
 };
 

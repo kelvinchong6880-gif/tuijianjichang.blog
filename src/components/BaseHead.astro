@@ -7,7 +7,7 @@ export interface Props {
 }
 
 const { title, description, canonicalPath, noCanonical = false } = Astro.props;
-const canonicalURL = canonicalPath ? `https://tuijianjichang.org${canonicalPath}` : 'https://tuijianjichang.org/';
+const canonicalURL = canonicalPath ? `https://tuijianjichang.blog${canonicalPath}` : 'https://tuijianjichang.blog/';
 ---
 
 <!-- Global Metadata -->
@@ -36,6 +36,6 @@ const canonicalURL = canonicalPath ? `https://tuijianjichang.org${canonicalPath}
   "@context": "https://schema.org",
   "@type": "WebSite",
   "name": "推荐机场数据库",
-  "url": "https://tuijianjichang.org/"
+  "url": "https://tuijianjichang.blog/"
 }
 </script>
