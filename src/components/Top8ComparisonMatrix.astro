@@ -1,0 +1,103 @@
+---
+import { providers } from '../data/providers';
+
+const top8 = providers.filter(p => p.editorialPick).sort((a, b) => a.editorialRank - b.editorialRank);
+
+function renderClaimStatus(claim: boolean | null) {
+  if (claim === true) return '<span class="status-yes">✅</span>';
+  if (claim === false) return '<span class="status-no">❌</span>';
+  return '<span class="status-null">❓</span>';
+}
+---
+
+<div class="matrix-container">
+  <table class="matrix-table">
+    <thead>
+      <tr>
+        <th>排名</th>
+        <th>品牌</th>
+        <th>起步价格</th>
+        <th>流量范围</th>
+        <th>线路</th>
+        <th>不限时</th>
+        <th>流媒体</th>
+        <th>AI</th>
+        <th>详情</th>
+      </tr>
+    </thead>
+    <tbody>
+      {top8.map(p => (
+        <tr>
+          <td><div class="rank-badge">#{p.editorialRank}</div></td>
+          <td class="brand-name"><strong>{p.name}</strong></td>
+          <td>¥{p.entryPrice}</td>
+          <td>{p.trafficMin}-{p.trafficMax}GB</td>
+          <td>{p.lineClaims.length > 0 ? p.lineClaims.join('/') : '未说明'}</td>
+          <td>{p.hasNoExpiry ? <span class="status-yes">✓</span> : <span class="status-null">—</span>}</td>
+          <td set:html={renderClaimStatus(p.streamingClaim)} />
+          <td set:html={renderClaimStatus(p.aiClaim)} />
+          <td>
+            <a href={`/airport/${p.slug}/`} class="detail-link">看数据</a>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .matrix-container {
+    overflow-x: auto;
+    margin: var(--spacing-6) 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+  .matrix-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+  }
+  .matrix-table th, .matrix-table td {
+    padding: var(--spacing-3);
+    text-align: center;
+    border-bottom: 1px solid var(--color-border);
+    font-size: 0.9rem;
+  }
+  .matrix-table th {
+    background-color: var(--color-surface);
+    font-weight: 600;
+  }
+  .matrix-table th:first-child, .matrix-table td:first-child {
+    position: sticky;
+    left: 0;
+    background-color: var(--color-background);
+    z-index: 2;
+    border-right: 1px solid var(--color-border);
+  }
+  .matrix-table th:first-child {
+    background-color: var(--color-surface);
+  }
+  .matrix-table tr:last-child td {
+    border-bottom: none;
+  }
+  .rank-badge {
+    background-color: var(--color-primary);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    display: inline-block;
+  }
+  .brand-name {
+    text-align: left;
+  }
+  .detail-link {
+    color: var(--color-primary);
+    text-decoration: underline;
+    font-weight: 500;
+  }
+  :global(.status-yes) { color: #16a34a; font-size: 1.1rem; }
+  :global(.status-no) { color: #dc2626; font-size: 1.1rem; }
+  :global(.status-null) { color: var(--color-text-muted); font-size: 1.1rem; }
+</style>

@@ -1,0 +1,89 @@
+---
+import BaseHead from '../../../components/BaseHead.astro';
+import SiteHeader from '../../../components/SiteHeader.astro';
+import SiteFooter from '../../../components/SiteFooter.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import ScenarioMatrix from '../../../components/ScenarioMatrix.astro';
+import DataProvenance from '../../../components/DataProvenance.astro';
+import AffiliateDisclosure from '../../../components/AffiliateDisclosure.astro';
+import { providers } from '../../../data/providers';
+import '../../../styles/global.css';
+
+const title = "流媒体解锁机场候选 - Netflix 等平台解锁声明数据库";
+const description = "流媒体机场筛选工具。汇总官方明确声明支持 Netflix、Disney+ 等主流海外视频平台原生解锁的机场候选。";
+
+const streamingTrue = providers.filter(p => p.streamingClaim === true);
+const streamingNull = providers.filter(p => p.streamingClaim === null);
+---
+
+<html lang="zh-CN">
+  <head>
+    <BaseHead title={title} description={description} canonicalPath="/scenario/streaming/" />
+  </head>
+  <body>
+    <SiteHeader />
+    <main class="container">
+      <Breadcrumbs paths={[
+        { label: '机场选购场景', url: '/scenario/' },
+        { label: '流媒体解锁机场', url: '/scenario/streaming/' }
+      ]} />
+      
+      <header class="section-header">
+        <h1>流媒体解锁机场候选</h1>
+        <p class="intro">
+          针对喜爱追剧、长期使用海外影音服务的用户，本页面汇总了官方资料中<strong>明确声明对流媒体（如 Netflix, Disney+, YouTube Premium 等）进行原生解锁或 DNS 解锁支持</strong>的机场。
+        </p>
+      </header>
+
+      <AffiliateDisclosure />
+
+      <section class="section">
+        <h2>官方明确声明流媒体解锁的机场</h2>
+        <p>以下 {streamingTrue.length} 家机场在其官网套餐详情或说明中，明确给出了支持流媒体访问或具备解锁流媒体节点的说明：</p>
+        <ScenarioMatrix providers={streamingTrue} showStreaming={true} showPrice={false} showTraffic={false} showLine={false} />
+      </section>
+
+      <section class="section">
+        <h2>官方资料未说明 (Not Explicitly Claimed)</h2>
+        <p>
+          以下 {streamingNull.length} 家机场在官网说明中<strong>没有明确提及</strong>流媒体解锁功能。注意，未说明<strong>不代表不支持</strong>，只是服务商未将此作为重点宣传参数。请勿仅凭其提供“香港节点”或“美国节点”就自动推断其能看 Netflix，如果这是刚需，建议先购入小额套餐进行实测。
+        </p>
+        <ScenarioMatrix providers={streamingNull} showStreaming={true} showPrice={false} showTraffic={false} showLine={false} />
+      </section>
+
+      <section class="section prose">
+        <h2>筛选说明与限制 (Important Limitations)</h2>
+        <ul>
+          <li><strong>非实时测试背书</strong>：请注意，流媒体平台（特别是 Netflix 和 Disney+）打击非原生 IP 代理的行为一直十分严厉，甚至经常有封禁网段的操作。此处的 <code>✅ 支持</code> 标签仅代表服务商的服务承诺，并非本站最新的实时测速保证。</li>
+          <li><strong>冷门区域解锁</strong>：大部分流媒体机场声明“全解锁”，通常涵盖的区域是港、台、日、新、美。如对某些特定冷门国家的本地流媒体（如欧洲部分区域台）有刚需，建议查看详情页并在购买前向服务商客服确认。</li>
+        </ul>
+      </section>
+
+      <section class="related-section">
+        <h2>相关决策指南</h2>
+        <div class="related-links">
+          <a href="/compare/how-to-choose-plans/">如何科学选择机场套餐？</a>
+        </div>
+      </section>
+
+      <DataProvenance />
+    </main>
+    <SiteFooter />
+  </body>
+</html>
+
+<style>
+  .section-header { margin: var(--spacing-8) 0; }
+  .section-header h1 { font-size: 2.2rem; margin-bottom: var(--spacing-4); }
+  .intro { font-size: 1.1rem; color: var(--color-text-muted); line-height: 1.6; }
+  .section { margin: var(--spacing-8) 0; }
+  .prose h2 { margin-top: var(--spacing-8); }
+  .prose h3 { margin-top: var(--spacing-6); }
+  .related-section {
+    margin: var(--spacing-12) 0;
+    padding-top: var(--spacing-8);
+    border-top: 1px solid var(--color-border);
+  }
+  .related-links { display: flex; flex-direction: column; gap: var(--spacing-3); }
+  .related-links a { color: var(--color-primary); text-decoration: none; font-size: 1.1rem; }
+</style>

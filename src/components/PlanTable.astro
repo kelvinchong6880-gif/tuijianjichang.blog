@@ -1,0 +1,88 @@
+---
+import type { Plan } from '../data/schema';
+
+export interface Props {
+  plans: Plan[];
+}
+
+const { plans } = Astro.props;
+
+function renderClaim(claim: boolean | null) {
+  if (claim === true) return '<span class="status-yes">✅ 支持</span>';
+  if (claim === false) return '<span class="status-no">❌ 不支持</span>';
+  return '<span class="status-null">❓ 官方未说明</span>';
+}
+---
+
+<div class="table-container">
+  <table class="plan-table">
+    <thead>
+      <tr>
+        <th>套餐名称</th>
+        <th>价格 (¥)</th>
+        <th>计费周期</th>
+        <th>流量</th>
+        <th>线路</th>
+        <th>流媒体声明</th>
+        <th>AI声明</th>
+      </tr>
+    </thead>
+    <tbody>
+      {plans.map(plan => (
+        <tr>
+          <td><strong>{plan.name}</strong></td>
+          <td>{plan.price}</td>
+          <td>{plan.billingType === 'One-Time' ? '一次性' : (plan.billingType === 'Monthly' ? '月付' : '其他')}</td>
+          <td>{plan.trafficDisplay}</td>
+          <td>{plan.lineType || '未说明'}</td>
+          <td set:html={renderClaim(plan.streaming)} />
+          <td set:html={renderClaim(plan.ai)} />
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .table-container {
+    overflow-x: auto;
+    margin: var(--spacing-6) 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+  .plan-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px; /* Ensure scrolling on small screens */
+  }
+  .plan-table th, .plan-table td {
+    padding: var(--spacing-3) var(--spacing-4);
+    text-align: left;
+    border-bottom: 1px solid var(--color-border);
+    font-size: 0.9rem;
+  }
+  .plan-table th {
+    background-color: var(--color-surface);
+    font-weight: 600;
+  }
+  .plan-table tr:last-child td {
+    border-bottom: none;
+  }
+  :global(.status-yes) { color: #16a34a; }
+  :global(.status-no) { color: #dc2626; }
+  :global(.status-null) { color: var(--color-text-muted); }
+  
+  /* Sticky first column for mobile */
+  @media (max-width: 768px) {
+    .plan-table th:first-child,
+    .plan-table td:first-child {
+      position: sticky;
+      left: 0;
+      background-color: var(--color-background);
+      border-right: 1px solid var(--color-border);
+    }
+    .plan-table th:first-child {
+      background-color: var(--color-surface);
+    }
+  }
+</style>

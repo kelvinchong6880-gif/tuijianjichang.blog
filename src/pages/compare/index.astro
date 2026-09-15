@@ -1,0 +1,136 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import '../../styles/global.css';
+
+const title = "机场选择与套餐决策指南";
+const description = "通过科学的对比与决策流程，了解 IPLC 与 IEPL 的区别，比较月付与不限时套餐，教你如何聪明地选择适合自己的机场套餐。";
+---
+
+<html lang="zh-CN">
+  <head>
+    <BaseHead title={title} description={description} canonicalPath="/compare/" />
+  </head>
+  <body>
+    <SiteHeader />
+    <main class="container">
+      <Breadcrumbs paths={[
+        { label: '决策指南', url: '/compare/' }
+      ]} />
+      
+      <header class="section-header">
+        <h1>机场选择与套餐决策指南</h1>
+        <p class="intro">
+          在市面上数百个机场与眼花缭乱的套餐参数中迷失了方向？<br/>
+          通过我们整理的核心概念对比和决策流程，帮助你避开常见营销陷阱，选择最适合你实际需求的机场套餐。
+        </p>
+      </header>
+      
+      <section class="scenario-grid">
+        <a href="/compare/how-to-choose-plans/" class="scenario-card">
+          <h2>机场套餐怎么选？ (快速决策流)</h2>
+          <p>不要一上来就看哪家最出名。跟随我们的 7 步科学决策流程，从流量、周期、线路、功能等多维度梳理你的真实需求。</p>
+          <span class="cta">阅读指南 &rarr;</span>
+        </a>
+        <a href="/compare/iplc-vs-iepl/" class="scenario-card">
+          <h2>IPLC 与 IEPL 有什么区别？</h2>
+          <p>机场线路鄙视链顶端的 IPLC 和 IEPL 到底是什么？它们真的就一定比 BGP 中转更快更稳定吗？揭开线路标签背后的秘密。</p>
+          <span class="cta">阅读指南 &rarr;</span>
+        </a>
+        <a href="/compare/monthly-vs-no-expiry/" class="scenario-card">
+          <h2>月付套餐 vs 不限时套餐</h2>
+          <p>应该按月续费还是买断永久流量？深度对比两种不同计费逻辑的优缺点、适用人群及避坑指南。</p>
+          <span class="cta">阅读指南 &rarr;</span>
+        </a>
+      </section>
+
+      <section class="related-section">
+        <h2>相关场景与分类筛选</h2>
+        <p>了解如何选择后，直接进入对应场景查看收录的具体机场：</p>
+        <div class="related-links">
+          <a href="/scenario/cheap/">便宜低门槛候选列表 &rarr;</a>
+          <a href="/scenario/iplc-iepl/">IPLC/IEPL机场名单 &rarr;</a>
+          <a href="/scenario/no-expiry/">支持不限时套餐的机场名单 &rarr;</a>
+          <a href="/scenario/backup/">怎样组合购买备用机场？ &rarr;</a>
+          <a href="/scenario/">查看全部场景中心 &rarr;</a>
+        </div>
+      </section>
+
+    </main>
+    <SiteFooter />
+  </body>
+</html>
+
+<style>
+  .section-header {
+    margin: var(--spacing-8) 0;
+    text-align: center;
+  }
+  .section-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-4);
+  }
+  .intro {
+    font-size: 1.2rem;
+    color: var(--color-text-muted);
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+  .scenario-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--spacing-6);
+    margin-bottom: var(--spacing-12);
+  }
+  .scenario-card {
+    display: block;
+    padding: var(--spacing-6);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .scenario-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+  .scenario-card h2 {
+    margin-top: 0;
+    margin-bottom: var(--spacing-2);
+    font-size: 1.35rem;
+  }
+  .scenario-card p {
+    color: var(--color-text-muted);
+    margin-bottom: var(--spacing-4);
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  .cta {
+    font-weight: 600;
+    color: var(--color-primary);
+  }
+  .related-section {
+    margin-bottom: var(--spacing-12);
+    padding-top: var(--spacing-8);
+    border-top: 1px solid var(--color-border);
+  }
+  .related-section p { margin-bottom: var(--spacing-4); }
+  .related-links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+  }
+  .related-links a {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-size: 1.1rem;
+  }
+  .related-links a:hover {
+    text-decoration: underline;
+  }
+</style>

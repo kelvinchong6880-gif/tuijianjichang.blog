@@ -1,0 +1,65 @@
+---
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import BaseHead from '../../components/BaseHead.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import '../../styles/global.css';
+
+const title = '数据采集说明与编辑方法论 | tuijianjichang.org';
+const description = '了解 tuijianjichang.org 机场数据库的数据来源、编辑声明与测速标准。';
+---
+
+<html lang="zh-CN">
+  <head>
+    <BaseHead title={title} description={description} canonicalPath="/methodology/" />
+  </head>
+  <body>
+    <SiteHeader />
+    <main class="container">
+      <Breadcrumbs paths={[{ label: '数据方法论', url: '/methodology/' }]} />
+      
+      <article class="methodology-content">
+        <h1>数据采集说明与编辑方法论</h1>
+        
+        <h2>1. 数据来源 (Data Provenance)</h2>
+        <p>本站呈现的全部参数（价格、流量、线路、流媒体与 AI 解锁情况、有效期限制等）均来自于各个机场官方站点的直接文字声明。我们将这些源数据统一定义为“Source of Truth”。</p>
+        
+        <h2>2. 官方未说明与不支持 (Evidence-Safe Claims)</h2>
+        <p>如果官方资料中未提及某一特性（例如流媒体解锁），我们在系统中将其严谨记录为“官方未说明”，而不会武断地标记为“不支持”。只有当官方明确声明无法提供某功能时，我们才会标记为“不支持”。</p>
+
+        <h2>3. 编辑分析定义</h2>
+        <p>部分页面提供的“编辑数据观察”或“Editor's Pick”标识，属于编辑基于数据结构的描述性分析。它不代表对未验证性能的绝对背书，而是根据诸如最低门槛价格、流量区间分布做出的适用场景判断。</p>
+
+        <h2>4. 暂无全网统一实测声明</h2>
+        <p>本站严格克制。目前未进行全天候自动化速度测试、节点晚高峰探针监控。因此，本站拒绝使用“全网最快”、“晚高峰不卡”、“绝对稳定”等无直接数据支撑的误导性行销话术。</p>
+        
+        <h2>5. Affiliate Disclosure (利益相关声明)</h2>
+        <p>本站提供的出站链接多数为 Affiliate（推广）链接。用户通过这些链接完成购买，本站将获得一定比例的推荐佣金。这是支持本站进行数据库长效维护的资金来源。但这绝不会改变本站对原始 Source Data 的严谨呈现态度，也不会因此修改厂商自身的原生定价与参数信息。</p>
+      </article>
+    </main>
+    <SiteFooter />
+  </body>
+</html>
+
+<style>
+  .methodology-content {
+    max-width: 800px;
+    margin: 0 auto var(--spacing-10) auto;
+  }
+  .methodology-content h1 {
+    font-size: 2rem;
+    margin-bottom: var(--spacing-6);
+  }
+  .methodology-content h2 {
+    font-size: 1.25rem;
+    margin-top: var(--spacing-8);
+    margin-bottom: var(--spacing-3);
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: var(--spacing-2);
+  }
+  .methodology-content p {
+    line-height: 1.7;
+    margin-bottom: var(--spacing-4);
+    color: var(--color-text);
+  }
+</style>

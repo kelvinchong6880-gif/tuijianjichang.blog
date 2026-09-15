@@ -1,0 +1,34 @@
+---
+export interface Props {
+  type: 'source' | 'editorial' | 'unverified';
+  label: string;
+}
+
+const { type, label } = Astro.props;
+---
+
+<span class={`evidence-badge badge-${type}`}>
+  {label}
+</span>
+
+<style>
+  .evidence-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .badge-source {
+    background-color: var(--color-evidence-source);
+    color: var(--color-evidence-source-text);
+  }
+  .badge-editorial {
+    background-color: var(--color-evidence-editorial);
+    color: var(--color-evidence-editorial-text);
+  }
+  .badge-unverified {
+    background-color: var(--color-evidence-unverified);
+    color: var(--color-evidence-unverified-text);
+  }
+</style>

@@ -1,0 +1,70 @@
+---
+export interface Props {
+  paths: { label: string; url: string }[];
+}
+
+const { paths } = Astro.props;
+---
+
+<nav aria-label="Breadcrumb" class="breadcrumbs">
+  <ol>
+    <li>
+      <a href="/">首页</a>
+    </li>
+    {paths.map((p) => (
+      <li>
+        <span class="separator">&gt;</span>
+        <a href={p.url}>{p.label}</a>
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "首页",
+      "item": "https://tuijianjichang.org/"
+    },
+    ...paths.map((p, index) => ({
+      "@type": "ListItem",
+      "position": index + 2,
+      "name": p.label,
+      "item": `https://tuijianjichang.org${p.url}`
+    }))
+  ]
+})}></script>
+
+<style>
+  .breadcrumbs {
+    margin-bottom: var(--spacing-4);
+  }
+  .breadcrumbs ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-2);
+  }
+  .breadcrumbs li {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+  }
+  .breadcrumbs a {
+    color: var(--color-primary);
+  }
+  .breadcrumbs a:hover {
+    text-decoration: underline;
+  }
+  .separator {
+    margin: 0 var(--spacing-2);
+    color: var(--color-text-muted);
+  }
+</style>

@@ -1,0 +1,212 @@
+---
+import { providers } from '../../data/providers';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import BaseHead from '../../components/BaseHead.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Top8ComparisonMatrix from '../../components/Top8ComparisonMatrix.astro';
+import AffiliateDisclosure from '../../components/AffiliateDisclosure.astro';
+import '../../styles/global.css';
+
+const title = '机场推荐：2026年编辑精选 Top 8 与选购指南';
+const description = '2026 稳定机场推荐：根据价格、流量、线路、流媒体解锁等参数严格筛选的 Top 8 推荐列表。不含虚假测速，纯净资料导向。';
+
+const top8 = providers.filter(p => p.editorialPick).sort((a, b) => a.editorialRank - b.editorialRank);
+
+function generateStrength(p: any) {
+  if (p.entryPrice < 15) return `起步价格门槛低 (¥${p.entryPrice})，适合对价格敏感的基础用户。`;
+  if (p.lineClaims.includes('IPLC') || p.lineClaims.includes('IEPL')) return `官方明确标注提供专线网络 (${p.lineClaims.join('/')})。`;
+  if (p.streamingClaim === true) return `官方明确声明支持流媒体与 Netflix 解锁。`;
+  return `在 ¥${p.entryPrice} 价格区间内提供相对充裕的流量。`;
+}
+
+function generateLimitation(p: any) {
+  if (!p.hasNoExpiry) return `官方暂未提供不限时（一次性）套餐。`;
+  if (p.streamingClaim === null) return `官方针对流媒体解锁能力的声明缺失。`;
+  return `最低价格套餐的流量配额可能不适合重度用户。`;
+}
+---
+
+<html lang="zh-CN">
+  <head>
+    <BaseHead title={title} description={description} canonicalPath="/recommend/" />
+  </head>
+  <body>
+    <SiteHeader />
+    <main class="container">
+      <Breadcrumbs paths={[{ label: '机场推荐', url: '/recommend/' }]} />
+      
+      <header class="page-header">
+        <h1>2026年机场推荐：编辑精选 Top 8</h1>
+        <p class="ranking-disclaimer">
+          <strong>排名性质说明：</strong> 本页推荐顺序属于本站编辑选择，主要参考套餐结构、价格、流量、线路与功能的官方资料及数据完整度。当前榜单不以统一测速结果作为排名依据。<br/>
+          页面中的线路、流媒体与 AI 等信息均按资料来源状态标注；未有本站测试数据的项目不会作为实测结果展示。
+        </p>
+      </header>
+
+      <AffiliateDisclosure />
+
+      <section class="matrix-section">
+        <h2>Top 8 快速参数对比</h2>
+        <Top8ComparisonMatrix />
+      </section>
+
+      <section class="ranking-rail">
+        <h2>编辑精选详情</h2>
+        <div class="rail-container">
+          {top8.map(p => (
+            <div class="rail-card">
+              <div class="rail-header">
+                <span class="rank-number">#{p.editorialRank}</span>
+                <h3 class="brand-name">{p.name}</h3>
+              </div>
+              
+              <div class="rail-body">
+                <div class="editorial-analysis">
+                  <h4>Why We Picked It (推荐理由)</h4>
+                  <p>基于数据库比对，该服务商在当前收录的 22 家中提供了具备竞争力的套餐配置组合。</p>
+                  
+                  <h4>Source-Supported Strength (数据支撑优势)</h4>
+                  <p>{generateStrength(p)}</p>
+                  
+                  <h4>Limitation (相对局限性)</h4>
+                  <p>{generateLimitation(p)}</p>
+
+                  <h4>Best Fit (适用画像)</h4>
+                  <p>预算在月付 ¥{p.entryPrice} 以上，且对于 {p.trafficMin}GB 基础流量有明确需求的用户。</p>
+                  
+                  <h4>Who Should Avoid (避雷建议)</h4>
+                  <p>如果您的首要核心需求与该服务商的局限性冲突（例如需要不限时服务，但该服务商未提供），请查看本站其他收录商家。</p>
+                </div>
+                
+                <div class="quick-snapshot">
+                  <h4>套餐快照</h4>
+                  <ul>
+                    <li><strong>起步:</strong> ¥{p.entryPrice}</li>
+                    <li><strong>线路:</strong> {p.lineClaims.length ? p.lineClaims.join(', ') : '未说明'}</li>
+                    <li><strong>流媒体:</strong> {p.streamingClaim === true ? '支持' : p.streamingClaim === false ? '不支持' : '未说明'}</li>
+                  </ul>
+                  
+                  <div class="cta-group">
+                    <a href={`/airport/${p.slug}/`} class="btn btn-secondary">查看完整数据</a>
+                    {p.affiliateUrl && (
+                      <a href={p.affiliateUrl} target="_blank" rel="nofollow sponsored noopener" class="btn btn-primary">访问官网</a>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    </main>
+    <SiteFooter />
+  </body>
+</html>
+
+<style>
+  .page-header {
+    margin-bottom: var(--spacing-8);
+  }
+  .page-header h1 {
+    font-size: 2.25rem;
+    margin-bottom: var(--spacing-4);
+  }
+  .ranking-disclaimer {
+    background-color: var(--color-surface);
+    border-left: 4px solid var(--color-primary);
+    padding: var(--spacing-4);
+    border-radius: var(--radius-md);
+    color: var(--color-text);
+    line-height: 1.6;
+    font-size: 0.95rem;
+  }
+  .matrix-section {
+    margin-bottom: var(--spacing-10);
+  }
+  .rail-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-8);
+    margin-top: var(--spacing-6);
+  }
+  .rail-card {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-background);
+    overflow: hidden;
+  }
+  .rail-header {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-4) var(--spacing-6);
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .rank-number {
+    background-color: var(--color-primary);
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 800;
+    padding: var(--spacing-1) var(--spacing-3);
+    border-radius: var(--radius-sm);
+    margin-right: var(--spacing-4);
+  }
+  .brand-name {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+  .rail-body {
+    display: flex;
+    flex-wrap: wrap;
+    padding: var(--spacing-6);
+    gap: var(--spacing-8);
+  }
+  .editorial-analysis {
+    flex: 2;
+    min-width: 300px;
+  }
+  .editorial-analysis h4 {
+    margin-top: var(--spacing-4);
+    margin-bottom: var(--spacing-1);
+    color: var(--color-text);
+    font-size: 1rem;
+  }
+  .editorial-analysis h4:first-child {
+    margin-top: 0;
+  }
+  .editorial-analysis p {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+  .quick-snapshot {
+    flex: 1;
+    min-width: 250px;
+    background-color: var(--color-surface);
+    padding: var(--spacing-5);
+    border-radius: var(--radius-md);
+  }
+  .quick-snapshot h4 {
+    margin-top: 0;
+    margin-bottom: var(--spacing-3);
+  }
+  .quick-snapshot ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--spacing-6) 0;
+  }
+  .quick-snapshot li {
+    margin-bottom: var(--spacing-2);
+    font-size: 0.9rem;
+  }
+  .cta-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+  }
+  .btn-secondary {
+    background-color: var(--color-border);
+    color: var(--color-text);
+  }
+</style>

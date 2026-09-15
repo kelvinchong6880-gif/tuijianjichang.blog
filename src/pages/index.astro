@@ -1,0 +1,67 @@
+---
+import '../styles/global.css';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import DataSummary from '../components/DataSummary.astro';
+import ProviderFilter from '../components/ProviderFilter.astro';
+import ProviderGrid from '../components/ProviderGrid.astro';
+import { providers } from '../data/providers';
+import BaseHead from '../components/BaseHead.astro';
+
+const planCount = providers.reduce((acc, p) => acc + p.plans.length, 0);
+const pickCount = providers.filter(p => p.editorialPick).length;
+const title = '2026机场推荐数据库：22家机场套餐价格与线路参数对比';
+const description = 'tuijianjichang.org 机场数据库，纯净收录 22 家机场最新套餐。';
+---
+<html lang="zh-CN">
+  <head>
+    <BaseHead title={title} description={description} canonicalPath="/" />
+  </head>
+  <body>
+    <SiteHeader />
+    <main class="container">
+      <section class="intro">
+        <h1>机场推荐参数过滤与对比数据库</h1>
+        <p>基于当前收录的 22 家机场官方套餐资料，按价格、流量、线路与使用需求快速筛选。</p>
+      </section>
+      
+      <DataSummary 
+        providerCount={providers.length}
+        planCount={planCount}
+        pickCount={pickCount}
+        lastVerified="2026-09-15"
+      />
+      
+      <ProviderFilter />
+      
+      <ProviderGrid providers={providers} />
+    </main>
+    <SiteFooter />
+  </body>
+</html>
+
+<style>
+  .intro {
+    text-align: center;
+    padding: var(--spacing-8) 0;
+  }
+  .intro h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: var(--spacing-4);
+  }
+  .intro p {
+    color: var(--color-text-muted);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  @media (max-width: 600px) {
+    .intro {
+      padding: var(--spacing-6) 0;
+    }
+    .intro h1 {
+      font-size: 1.75rem;
+    }
+  }
+</style>

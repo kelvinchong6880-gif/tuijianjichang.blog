@@ -1,0 +1,112 @@
+---
+import BaseHead from '../../../components/BaseHead.astro';
+import SiteHeader from '../../../components/SiteHeader.astro';
+import SiteFooter from '../../../components/SiteFooter.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import ScenarioMatrix from '../../../components/ScenarioMatrix.astro';
+import DataProvenance from '../../../components/DataProvenance.astro';
+import AffiliateDisclosure from '../../../components/AffiliateDisclosure.astro';
+import { providers } from '../../../data/providers';
+import '../../../styles/global.css';
+
+const title = "备用机场怎么选 - 备用方案选择指南";
+const description = "备用机场选择指南。教你如何通过结合低门槛月付、不同线路声明和不限时套餐，建立安全可靠的防失联备用机场方案。";
+
+// Candidates for reference (Editorial filter reference)
+const cheapBackup = providers.filter(p => p.entryPrice <= 15).sort((a, b) => a.entryPrice - b.entryPrice).slice(0, 3);
+const noExpiryBackup = providers.filter(p => p.hasNoExpiry).slice(0, 3);
+---
+
+<html lang="zh-CN">
+  <head>
+    <BaseHead title={title} description={description} canonicalPath="/scenario/backup/" />
+  </head>
+  <body>
+    <SiteHeader />
+    <main class="container">
+      <Breadcrumbs paths={[
+        { label: '机场选购场景', url: '/scenario/' },
+        { label: '备用机场选择指南', url: '/scenario/backup/' }
+      ]} />
+      
+      <header class="section-header">
+        <h1>备用机场怎么选 / 备用方案指南</h1>
+        <p class="intro">
+          在网络环境多变的今天，“狡兔三窟”是保障业务不中断的核心策略。<strong>备用机场不是一个固定的机场排名（没有绝对的“最佳备用”），而是一种组合策略。</strong>本指南将带你从多个维度建立可靠的防失联方案。
+        </p>
+      </header>
+
+      <AffiliateDisclosure />
+
+      <section class="section prose">
+        <h2>如何建立靠谱的备用方案？ (Decision Factors)</h2>
+        
+        <p>购买备用机场的根本目的是在<strong>主力机场宕机、被墙或维护</strong>时，能够迅速切换并保持网络畅通。为了达到互补效果，建议遵循以下维度：</p>
+
+        <h3>1. 寻找与主力方案价格结构互补的类型</h3>
+        <p>
+          如果你主力使用的是高价的 IPLC/IEPL 专线，备用则可以选择主打便宜量大、门槛极低的 BGP 中转机场；反之，如果你主力用的是便宜直连或普通中转，那么备用可以选择一个稳定且单价较高的小流量专线套餐（如按量付费）。
+        </p>
+
+        <h3>2. 避免相同的套餐计费周期 (Billing & Expiry)</h3>
+        <p>
+          不要两个机场都买月付。备用的最佳伴侣是<a href="/scenario/no-expiry/">不限时套餐（按量付费）</a>。买一个流量不过期的包放在代理软件里，不用就不扣费，急需时直接切换，长期来看成本极低。
+        </p>
+
+        <h3>3. 选择不同的线路声明技术 (Line Claims)</h3>
+        <p>
+          同一时期针对某类线路（如所有 IEPL 跨境专线）的阻断并不少见。所以备用机场的节点技术应尽量和主力机场错开。比如主力用 IPLC，备用用隧道中转；主力用公网隧道，备用选直连或不同上游的专线。
+        </p>
+
+        <h3>4. 避免对单一节点的重度依赖</h3>
+        <p>
+          千万不要因为图省事，把所有的日常浏览、下载、重要视频会议完全绑定在同一家服务商的某一个套餐上，这极大地增加了单点故障的风险。
+        </p>
+      </section>
+
+      <section class="section">
+        <h2>编辑筛选参考：低月付门槛备用候选</h2>
+        <p>适合不想一次性投入太多，每月花几块钱养一个备用防失联节点的用户：</p>
+        <ScenarioMatrix providers={cheapBackup} showPrice={true} showTraffic={true} showLine={false} showNoExpiry={false} showAI={false} showStreaming={false} />
+        <p class="text-right"><a href="/scenario/cheap/">查看全部低价机场 &rarr;</a></p>
+      </section>
+
+      <section class="section">
+        <h2>编辑筛选参考：不限时套餐备用候选</h2>
+        <p>适合希望买一次用半年甚至一两年，流量不按月清零的零星使用场景：</p>
+        <ScenarioMatrix providers={noExpiryBackup} showPrice={false} showTraffic={false} showLine={true} showNoExpiry={true} showAI={false} showStreaming={false} />
+        <p class="text-right"><a href="/scenario/no-expiry/">查看全部不限时机场 &rarr;</a></p>
+      </section>
+
+      <section class="related-section">
+        <h2>相关决策指南</h2>
+        <div class="related-links">
+          <a href="/compare/monthly-vs-no-expiry/">深入比较：月付套餐与不限时套餐怎么选？</a>
+          <a href="/compare/how-to-choose-plans/">如何科学选择机场套餐？</a>
+        </div>
+      </section>
+
+      <DataProvenance />
+    </main>
+    <SiteFooter />
+  </body>
+</html>
+
+<style>
+  .section-header { margin: var(--spacing-8) 0; }
+  .section-header h1 { font-size: 2.2rem; margin-bottom: var(--spacing-4); }
+  .intro { font-size: 1.1rem; color: var(--color-text-muted); line-height: 1.6; }
+  .section { margin: var(--spacing-8) 0; }
+  .prose h2 { margin-top: var(--spacing-8); }
+  .prose h3 { margin-top: var(--spacing-6); }
+  .prose p { margin-bottom: var(--spacing-4); line-height: 1.6; }
+  .text-right { text-align: right; margin-top: var(--spacing-2); }
+  .text-right a { color: var(--color-primary); font-weight: 600; text-decoration: none; }
+  .related-section {
+    margin: var(--spacing-12) 0;
+    padding-top: var(--spacing-8);
+    border-top: 1px solid var(--color-border);
+  }
+  .related-links { display: flex; flex-direction: column; gap: var(--spacing-3); }
+  .related-links a { color: var(--color-primary); text-decoration: none; font-size: 1.1rem; }
+</style>

@@ -1,0 +1,103 @@
+---
+import BaseHead from '../../../components/BaseHead.astro';
+import SiteHeader from '../../../components/SiteHeader.astro';
+import SiteFooter from '../../../components/SiteFooter.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import ScenarioMatrix from '../../../components/ScenarioMatrix.astro';
+import DataProvenance from '../../../components/DataProvenance.astro';
+import AffiliateDisclosure from '../../../components/AffiliateDisclosure.astro';
+import { providers } from '../../../data/providers';
+import '../../../styles/global.css';
+
+const title = "大流量机场推荐 - 提供高流量额度的候选机场";
+const description = "大流量机场检索。提供 500GB 乃至 1TB 以上超大流量包套餐的机场集合，适合大流量网络需求者。注意：高流量不等于高性能。";
+
+const gt500 = providers.filter(p => p.plans.some(pl => pl.traffic >= 500 || pl.traffic === -1));
+const gt1000 = providers.filter(p => p.plans.some(pl => pl.traffic >= 1000 || pl.traffic === -1));
+---
+
+<html lang="zh-CN">
+  <head>
+    <BaseHead title={title} description={description} canonicalPath="/scenario/high-traffic/" />
+  </head>
+  <body>
+    <SiteHeader />
+    <main class="container">
+      <Breadcrumbs paths={[
+        { label: '机场选购场景', url: '/scenario/' },
+        { label: '大流量机场', url: '/scenario/high-traffic/' }
+      ]} />
+      
+      <header class="section-header">
+        <h1>大流量机场套餐候选</h1>
+        <p class="intro">
+          本页面专门收录了在数据库中包含 <strong>500GB</strong> 甚至 <strong>1000GB (1TB) </strong>及以上超大流量套餐的机场候选。<br/>
+          请注意：本分类纯粹基于<strong>流量额度指标 (Traffic Capacity)</strong>，与线路速度、延迟、稳定性的性能表现无关。
+        </p>
+      </header>
+
+      <AffiliateDisclosure />
+
+      <section class="section prose">
+        <div class="warning-alert">
+          <strong>⚠️ 关键认知纠偏：大流量 ≠ 速度快 ≠ 适合下载</strong>
+          <p>
+            流量额度较高仅仅意味着用户拥有更大的数据使用限额（能下更多文件），但这<strong>绝对不代表</strong>：网速更快、更稳定、更适合下载、或者是影视体验最佳。<br/>
+            部分廉价 BGP 机场可能会提供极大的流量包（如 20元 2TB），但在晚高峰时段由于严重拥堵，其实际下载体验可能极其糟糕。相反，优质的 IPLC/IEPL 专线提供 100GB 流量，单价高昂，但能保证全天候的超高速传输。<br/>
+            <strong>切勿单纯为了“流量看起来很大”而忽视了线路质量的选择。</strong>
+          </p>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>提供 1000GB (1TB) 及以上流量的机场</h2>
+        <p>在其套餐系列中，包含了 1000GB / 1TB 甚至更大单月/单次可用流量的机场候选（共 {gt1000.length} 家）：</p>
+        <ScenarioMatrix providers={gt1000} showPrice={true} showTraffic={true} showLine={true} showNoExpiry={false} showAI={false} showStreaming={false} />
+      </section>
+
+      <section class="section">
+        <h2>提供 500GB - 1000GB 流量的机场</h2>
+        <p>
+          在其套餐系列中，最高流量达到了 500GB 门槛，且也是市面普遍认为的“大流量”候选（共 {gt500.length} 家，包含以上 1TB+ 机场）：
+        </p>
+        <ScenarioMatrix providers={gt500} showPrice={true} showTraffic={true} showLine={true} showNoExpiry={false} showAI={false} showStreaming={false} />
+      </section>
+
+      <section class="related-section">
+        <h2>相关决策指南</h2>
+        <div class="related-links">
+          <a href="/compare/how-to-choose-plans/">如何科学选择机场套餐？</a>
+          <a href="/scenario/cheap/">便宜机场低月付门槛组合 &rarr;</a>
+        </div>
+      </section>
+
+      <DataProvenance />
+    </main>
+    <SiteFooter />
+  </body>
+</html>
+
+<style>
+  .section-header { margin: var(--spacing-8) 0; }
+  .section-header h1 { font-size: 2.2rem; margin-bottom: var(--spacing-4); }
+  .intro { font-size: 1.1rem; color: var(--color-text-muted); line-height: 1.6; }
+  .section { margin: var(--spacing-8) 0; }
+  .prose h2 { margin-top: var(--spacing-8); }
+  .prose h3 { margin-top: var(--spacing-6); }
+  .warning-alert {
+    background-color: rgba(220, 38, 38, 0.1);
+    border-left: 4px solid #dc2626;
+    padding: var(--spacing-4);
+    margin: var(--spacing-4) 0;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  }
+  .warning-alert strong { display: block; margin-bottom: var(--spacing-2); color: #b91c1c; }
+  .warning-alert p { margin: 0; }
+  .related-section {
+    margin: var(--spacing-12) 0;
+    padding-top: var(--spacing-8);
+    border-top: 1px solid var(--color-border);
+  }
+  .related-links { display: flex; flex-direction: column; gap: var(--spacing-3); }
+  .related-links a { color: var(--color-primary); text-decoration: none; font-size: 1.1rem; }
+</style>

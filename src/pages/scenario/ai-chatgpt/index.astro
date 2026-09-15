@@ -1,0 +1,90 @@
+---
+import BaseHead from '../../../components/BaseHead.astro';
+import SiteHeader from '../../../components/SiteHeader.astro';
+import SiteFooter from '../../../components/SiteFooter.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import ScenarioMatrix from '../../../components/ScenarioMatrix.astro';
+import DataProvenance from '../../../components/DataProvenance.astro';
+import AffiliateDisclosure from '../../../components/AffiliateDisclosure.astro';
+import { providers } from '../../../data/providers';
+import '../../../styles/global.css';
+
+const title = "支持 ChatGPT 的 AI 机场 - 官方解锁声明数据库";
+const description = "AI 机场检索工具。汇总官方明确声明支持 ChatGPT、Claude、Midjourney 等人工智能服务节点解锁的机场候选。";
+
+const aiTrue = providers.filter(p => p.aiClaim === true);
+const aiNull = providers.filter(p => p.aiClaim === null);
+---
+
+<html lang="zh-CN">
+  <head>
+    <BaseHead title={title} description={description} canonicalPath="/scenario/ai-chatgpt/" />
+  </head>
+  <body>
+    <SiteHeader />
+    <main class="container">
+      <Breadcrumbs paths={[
+        { label: '机场选购场景', url: '/scenario/' },
+        { label: '支持 ChatGPT 的 AI 机场', url: '/scenario/ai-chatgpt/' }
+      ]} />
+      
+      <header class="section-header">
+        <h1>支持 ChatGPT 的 AI 机场解锁候选</h1>
+        <p class="intro">
+          在现代工作流中，无缝访问 ChatGPT、Claude 等大模型 AI 已经成为核心需求。<br/>
+          本页面汇总了官方资料中<strong>明确声明对 AI 服务进行线路解锁与防封锁优化</strong>的机场候选。
+        </p>
+      </header>
+
+      <AffiliateDisclosure />
+
+      <section class="section">
+        <h2>官方明确声明支持 AI 解锁的机场</h2>
+        <p>以下 {aiTrue.length} 家机场在其官网套餐详情或说明中，明确给出了支持 ChatGPT 或人工智能大模型访问的字样：</p>
+        <ScenarioMatrix providers={aiTrue} showAI={true} showPrice={false} showTraffic={false} showLine={false} />
+      </section>
+
+      <section class="section">
+        <h2>官方资料未说明 (Not Explicitly Claimed)</h2>
+        <p>
+          以下 {aiNull.length} 家机场在官网说明中<strong>没有提及</strong>任何 AI 相关的解锁支持。但这<strong>并不代表</strong>它们不支持，仅仅是官方未将此作为营销卖点（Null State）。如需确认，建议先购买小额套餐测试：
+        </p>
+        <ScenarioMatrix providers={aiNull} showAI={true} showPrice={false} showTraffic={false} showLine={false} />
+      </section>
+
+      <section class="section prose">
+        <h2>筛选说明与限制 (Important Limitations)</h2>
+        <ul>
+          <li><strong>非实时测试</strong>：请注意，AI 平台（特别是 OpenAI 旗下）的 IP 封锁策略极其频繁和严格，任何机场都可能出现短暂的解锁失败。此处的 <code>✅ 支持</code> 标签仅代表服务商的服务承诺，不保证 100% 永久有效。</li>
+          <li><strong>API vs 网页版</strong>：大部分机场声明支持 ChatGPT 通常是指支持 网页版（Web UI）登录使用。如果您是开发者需要高频调用 API，通常更建议选择具有固定出口 IP 甚至原生 IP 的独享定制套餐。</li>
+        </ul>
+      </section>
+
+      <section class="related-section">
+        <h2>相关决策指南</h2>
+        <div class="related-links">
+          <a href="/compare/how-to-choose-plans/">如何科学选择机场套餐？</a>
+        </div>
+      </section>
+
+      <DataProvenance />
+    </main>
+    <SiteFooter />
+  </body>
+</html>
+
+<style>
+  .section-header { margin: var(--spacing-8) 0; }
+  .section-header h1 { font-size: 2.2rem; margin-bottom: var(--spacing-4); }
+  .intro { font-size: 1.1rem; color: var(--color-text-muted); line-height: 1.6; }
+  .section { margin: var(--spacing-8) 0; }
+  .prose h2 { margin-top: var(--spacing-8); }
+  .prose h3 { margin-top: var(--spacing-6); }
+  .related-section {
+    margin: var(--spacing-12) 0;
+    padding-top: var(--spacing-8);
+    border-top: 1px solid var(--color-border);
+  }
+  .related-links { display: flex; flex-direction: column; gap: var(--spacing-3); }
+  .related-links a { color: var(--color-primary); text-decoration: none; font-size: 1.1rem; }
+</style>

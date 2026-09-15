@@ -1,0 +1,144 @@
+---
+import type { Provider } from '../data/schema';
+
+export interface Props {
+  provider: Provider;
+}
+const { provider } = Astro.props;
+---
+<div class="provider-card" data-price={provider.entryPrice} data-lines={provider.lineClaims.join(',')} data-no-expiry={provider.hasNoExpiry ? 'yes' : 'no'} data-streaming={provider.streamingClaim ? 'yes' : 'no'} data-ai={provider.aiClaim ? 'yes' : 'no'}>
+  <div class="card-header">
+    <div class="name-col">
+      <h3 class="name">{provider.name}</h3>
+      {provider.editorialPick && <span class="badge pick">Editor's Pick #{provider.editorialRank}</span>}
+      {!provider.editorialPick && <span class="badge listing">Database Listing</span>}
+    </div>
+  </div>
+  
+  <div class="specs">
+    <div class="spec-item">
+      <span class="label">起步价</span>
+      <span class="value">¥{provider.entryPrice}</span>
+    </div>
+    <div class="spec-item">
+      <span class="label">流量范围</span>
+      <span class="value">{provider.trafficDisplay}</span>
+    </div>
+    <div class="spec-item">
+      <span class="label">线路</span>
+      <span class="value">{provider.lineClaims.length > 0 ? provider.lineClaims.join(' / ') : '未知'}</span>
+    </div>
+  </div>
+  
+  <div class="tags">
+    {provider.hasNoExpiry && <span class="tag">不限时包</span>}
+    {provider.streamingClaim && <span class="tag">流媒体</span>}
+    {provider.aiClaim && <span class="tag">AI解锁</span>}
+  </div>
+
+  <div class="actions">
+    <a href={`/airport/${provider.slug}/`} class="btn btn-secondary">查看数据</a>
+    {provider.affiliateUrl && (
+      <a href={provider.affiliateUrl} target="_blank" rel="nofollow sponsored noopener" class="btn btn-primary">访问官网</a>
+    )}
+  </div>
+</div>
+
+<style>
+  .provider-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .provider-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-text-main);
+    margin-bottom: 4px;
+  }
+  .badge {
+    font-size: 0.75rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  .badge.pick {
+    background: var(--color-primary);
+    color: white;
+  }
+  .badge.listing {
+    background: var(--color-evidence-unverified);
+    color: var(--color-evidence-unverified-text);
+  }
+  .specs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-2);
+  }
+  .spec-item {
+    display: flex;
+    flex-direction: column;
+  }
+  .spec-item .label {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+  .spec-item .value {
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+  .tags {
+    display: flex;
+    gap: var(--spacing-2);
+    flex-wrap: wrap;
+  }
+  .tag {
+    font-size: 0.75rem;
+    background: var(--color-evidence-source);
+    color: var(--color-evidence-source-text);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .actions {
+    display: flex;
+    gap: var(--spacing-3);
+    margin-top: auto;
+  }
+  .btn {
+    flex: 1;
+    text-align: center;
+    padding: var(--spacing-2) 0;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background 0.2s;
+  }
+  .btn-primary {
+    background: var(--color-primary);
+    color: white;
+  }
+  .btn-primary:hover {
+    background: var(--color-primary-hover);
+  }
+  .btn-secondary {
+    background: var(--color-border);
+    color: var(--color-text-main);
+  }
+  .btn-secondary:hover {
+    background: #d1d5db;
+  }
+</style>

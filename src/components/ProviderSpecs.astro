@@ -1,0 +1,70 @@
+---
+import type { Provider } from '../data/schema';
+
+export interface Props {
+  provider: Provider;
+}
+
+const { provider } = Astro.props;
+
+function renderClaim(claim: boolean | null) {
+  if (claim === true) return '<span class="status-yes">✅ 官方声明支持</span>';
+  if (claim === false) return '<span class="status-no">❌ 官方声明不支持</span>';
+  return '<span class="status-null">❓ 官方未说明</span>';
+}
+---
+
+<div class="provider-specs">
+  <div class="spec-item">
+    <div class="spec-label">起步价格</div>
+    <div class="spec-value">¥{provider.entryPrice}</div>
+  </div>
+  <div class="spec-item">
+    <div class="spec-label">线路类型</div>
+    <div class="spec-value">{provider.lineClaims.length > 0 ? provider.lineClaims.join(', ') : '未说明'}</div>
+  </div>
+  <div class="spec-item">
+    <div class="spec-label">不限时套餐</div>
+    <div class="spec-value">
+      {provider.hasNoExpiry 
+        ? <span style="color:#16a34a; font-size: 0.95rem;">✓ 提供不限时套餐</span> 
+        : <span style="color:var(--color-text-muted); font-size: 0.95rem;">— 当前资料未发现不限时套餐</span>}
+    </div>
+  </div>
+  <div class="spec-item">
+    <div class="spec-label">流媒体支持</div>
+    <div class="spec-value" set:html={renderClaim(provider.streamingClaim)} />
+  </div>
+  <div class="spec-item">
+    <div class="spec-label">AI / ChatGPT</div>
+    <div class="spec-value" set:html={renderClaim(provider.aiClaim)} />
+  </div>
+</div>
+
+<style>
+  .provider-specs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--spacing-4);
+    margin: var(--spacing-6) 0;
+  }
+  .spec-item {
+    background-color: var(--color-surface);
+    padding: var(--spacing-4);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    text-align: center;
+  }
+  .spec-label {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin-bottom: var(--spacing-2);
+  }
+  .spec-value {
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+  :global(.status-yes) { color: #16a34a; font-size: 0.95rem; }
+  :global(.status-no) { color: #dc2626; font-size: 0.95rem; }
+  :global(.status-null) { color: var(--color-text-muted); font-size: 0.95rem; }
+</style>

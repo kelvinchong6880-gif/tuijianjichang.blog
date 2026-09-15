@@ -1,0 +1,27 @@
+---
+import ProviderCard from './ProviderCard.astro';
+import type { Provider } from '../data/schema';
+
+export interface Props {
+  providers: Provider[];
+}
+const { providers } = Astro.props;
+
+const top8 = providers.filter(p => p.editorialPick).sort((a,b) => (a.editorialRank || 0) - (b.editorialRank || 0));
+const others = providers.filter(p => !p.editorialPick);
+const sortedProviders = [...top8, ...others];
+---
+<div class="provider-grid">
+  {sortedProviders.map(provider => (
+    <ProviderCard provider={provider} />
+  ))}
+</div>
+
+<style>
+  .provider-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--spacing-4);
+    margin-bottom: var(--spacing-8);
+  }
+</style>

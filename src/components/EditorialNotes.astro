@@ -1,0 +1,60 @@
+---
+import type { Provider } from '../data/schema';
+
+export interface Props {
+  provider: Provider;
+}
+
+const { provider } = Astro.props;
+
+// Editorial Analysis must be descriptive, not subjective.
+const priceNote = provider.entryPrice < 15 
+  ? `最低月付价格为 ¥${provider.entryPrice}，属于较低门槛方案，适合预算严格控制在每月 ¥15 以下的用户。`
+  : provider.entryPrice > 30
+  ? `最低入门价格为 ¥${provider.entryPrice}。如果您的预算严格控制在每月 ¥20 以下，可以比较数据库中的其他低门槛方案。`
+  : `最低门槛价格为 ¥${provider.entryPrice}。`;
+
+const trafficNote = `当前提供 ${provider.plans.length} 个套餐，流量范围为 ${provider.trafficMin}GB 至 ${provider.trafficMax}GB。`;
+
+const expiryNote = provider.hasNoExpiry
+  ? "官方资料显示提供不限时套餐（一次性计费），适合低频偶尔使用的按量计费需求。"
+  : "官方资料未提供不限时套餐。如果你的主要需求是一次购买、长期按量使用，可以优先查看提供不限时套餐的其他选择。";
+
+const lineNote = provider.lineClaims.length > 0
+  ? `官方资料标注提供的线路类型为：${provider.lineClaims.join(' / ')}。`
+  : `官方资料未明确提供线路类型（如 IPLC / IEPL）说明。`;
+---
+
+<div class="editorial-notes">
+  <h3>编辑数据观察</h3>
+  <ul class="descriptive-list">
+    <li><strong>价格与受众：</strong> {priceNote}</li>
+    <li><strong>套餐结构：</strong> {trafficNote}</li>
+    <li><strong>线路声明：</strong> {lineNote}</li>
+    <li><strong>按量需求：</strong> {expiryNote}</li>
+  </ul>
+</div>
+
+<style>
+  .editorial-notes {
+    margin: var(--spacing-6) 0;
+    padding: var(--spacing-5);
+    background-color: var(--color-surface);
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--color-primary);
+  }
+  .editorial-notes h3 {
+    margin-top: 0;
+    margin-bottom: var(--spacing-4);
+  }
+  .descriptive-list {
+    list-style-type: disc;
+    padding-left: var(--spacing-5);
+    margin: 0;
+    color: var(--color-text);
+  }
+  .descriptive-list li {
+    margin-bottom: var(--spacing-2);
+    line-height: 1.5;
+  }
+</style>

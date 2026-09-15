@@ -1,0 +1,115 @@
+---
+import type { Provider } from '../data/schema';
+
+export interface Props {
+  providers: Provider[];
+  showPrice?: boolean;
+  showTraffic?: boolean;
+  showLine?: boolean;
+  showNoExpiry?: boolean;
+  showAI?: boolean;
+  showStreaming?: boolean;
+}
+
+const { 
+  providers, 
+  showPrice = true, 
+  showTraffic = true, 
+  showLine = true, 
+  showNoExpiry = false,
+  showAI = false,
+  showStreaming = false
+} = Astro.props;
+
+function renderClaim(claim: boolean | null) {
+  if (claim === true) return '<span class="status-yes">✅ 支持</span>';
+  if (claim === false) return '<span class="status-no">❌ 不支持</span>';
+  return '<span class="status-null">❓ 官方未说明</span>';
+}
+---
+
+<div class="table-container">
+  <table class="scenario-matrix">
+    <thead>
+      <tr>
+        <th>机场名称</th>
+        {showPrice && <th>起步价</th>}
+        {showTraffic && <th>流量区间</th>}
+        {showLine && <th>线路类型</th>}
+        {showNoExpiry && <th>不限时套餐</th>}
+        {showAI && <th>AI解锁声明</th>}
+        {showStreaming && <th>流媒体声明</th>}
+        <th>详情</th>
+      </tr>
+    </thead>
+    <tbody>
+      {providers.map(provider => (
+        <tr>
+          <td><strong>{provider.name}</strong></td>
+          {showPrice && <td>¥{provider.entryPrice}/{provider.monthlyEntryPrice === provider.entryPrice ? '月' : '起'}</td>}
+          {showTraffic && <td>{provider.trafficDisplay}</td>}
+          {showLine && <td>{provider.lineClaims.join(', ') || '未说明'}</td>}
+          {showNoExpiry && <td>{provider.hasNoExpiry ? '<span class="status-yes">✅ 提供</span>' : '<span class="status-null">-</span>'}</td>}
+          {showAI && <td set:html={renderClaim(provider.aiClaim)} />}
+          {showStreaming && <td set:html={renderClaim(provider.streamingClaim)} />}
+          <td><a href={`/airport/${provider.slug}/`} class="btn btn-small">查看数据</a></td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .table-container {
+    overflow-x: auto;
+    margin: var(--spacing-6) 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+  .scenario-matrix {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+  }
+  .scenario-matrix th, .scenario-matrix td {
+    padding: var(--spacing-3) var(--spacing-4);
+    text-align: left;
+    border-bottom: 1px solid var(--color-border);
+    font-size: 0.9rem;
+  }
+  .scenario-matrix th {
+    background-color: var(--color-surface);
+    font-weight: 600;
+  }
+  .scenario-matrix tr:last-child td {
+    border-bottom: none;
+  }
+  .btn-small {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+    text-decoration: none;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
+  }
+  .btn-small:hover {
+    background: var(--color-background);
+  }
+  :global(.status-yes) { color: #16a34a; }
+  :global(.status-no) { color: #dc2626; }
+  :global(.status-null) { color: var(--color-text-muted); }
+
+  @media (max-width: 768px) {
+    .scenario-matrix th:first-child,
+    .scenario-matrix td:first-child {
+      position: sticky;
+      left: 0;
+      background-color: var(--color-background);
+      border-right: 1px solid var(--color-border);
+    }
+    .scenario-matrix th:first-child {
+      background-color: var(--color-surface);
+    }
+  }
+</style>

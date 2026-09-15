@@ -1,0 +1,159 @@
+---
+import BaseHead from '../../../components/BaseHead.astro';
+import SiteHeader from '../../../components/SiteHeader.astro';
+import SiteFooter from '../../../components/SiteFooter.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import '../../../styles/global.css';
+
+const title = "机场月付与不限时套餐怎么选？";
+const description = "机场应该按月续费还是买断不限时流量？深度对比两种不同计费逻辑的优缺点、适用人群，帮您做出明智选择。";
+---
+
+<html lang="zh-CN">
+  <head>
+    <BaseHead title={title} description={description} canonicalPath="/compare/monthly-vs-no-expiry/" />
+  </head>
+  <body>
+    <SiteHeader />
+    <main class="container">
+      <Breadcrumbs paths={[
+        { label: '决策指南', url: '/compare/' },
+        { label: '月付套餐 vs 不限时套餐', url: '/compare/monthly-vs-no-expiry/' }
+      ]} />
+      
+      <header class="section-header">
+        <h1>机场月付套餐 vs 不限时套餐怎么选？</h1>
+        <p class="intro">
+          在机场套餐中，最核心的两种计费逻辑就是“定期订阅（月付/季付/年付）”和“按量买断（不限时套餐）”。它们适用于完全不同的使用场景。
+        </p>
+      </header>
+
+      <section class="section prose">
+        <h2>概念澄清：什么是不限时套餐？ (What is No-Expiry?)</h2>
+        <p>
+          不限时套餐（No-Fixed-Expiry）通常被称为“按量付费”或“流量包”。你一次性支付一笔费用，购买一定额度（例如 100GB）的流量。<br/>
+          <strong>最核心的特点是：这 100GB 流量没有（或长达数年）到期时间。</strong> 你可以在一天内用完，也可以用上整整一年。
+        </p>
+        
+        <div class="warning-alert">
+          <strong>⚠️ 关键防坑提示：No Expiry ≠ Unlimited Traffic</strong>
+          <p>
+            新手经常把“不限时”误解为“无限流量”。这完全是两码事！<br/>
+            不限时是指<strong>时间上不过期</strong>，但<strong>流量总额是固定的</strong>，一旦用完，套餐即刻结束。如果你追求随心所欲看视频，千万不要买不限时套餐！
+          </p>
+        </div>
+
+        <h2>详细对比 (Comparison)</h2>
+        
+        <div class="comparison-table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>对比维度</th>
+                <th>月付/周期订阅 (Monthly)</th>
+                <th>不限时套餐 (No-Expiry)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>计费逻辑 (Billing Logic)</strong></td>
+                <td>按固定周期（月/季/年）收费</td>
+                <td>一次性买断一笔固定流量</td>
+              </tr>
+              <tr>
+                <td><strong>流量重置 (Traffic Reset)</strong></td>
+                <td>每个计费周期（通常是每月）自动清零并重置</td>
+                <td><strong>不重置</strong>，直到用完为止</td>
+              </tr>
+              <tr>
+                <td><strong>过期时间 (Expiration)</strong></td>
+                <td>周期结束即过期（即使流量没用完）</td>
+                <td>无固定过期时间（部分机场限制一年或更久）</td>
+              </tr>
+              <tr>
+                <td><strong>每 GB 成本 (Upfront Cost)</strong></td>
+                <td>通常非常便宜（大流量用户首选）</td>
+                <td>单价较高，但总体支出可能较低</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>适用人群与决策建议 (Decision Factors)</h2>
+        
+        <h3>你应该选择【月付订阅】如果：</h3>
+        <ul>
+          <li>你几乎每天都需要使用外网。</li>
+          <li>你经常观看 YouTube、Netflix 等海外视频平台。</li>
+          <li>你有长期稳定的工作或学习需求（如跨境电商、海外社媒运营）。</li>
+        </ul>
+
+        <h3>你应该选择【不限时套餐】如果：</h3>
+        <ul>
+          <li>你只是极低频的使用者，偶尔需要查点技术文档，一个月用不到 5GB。</li>
+          <li>你需要建立一个<a href="/scenario/backup/">防失联备用机场</a>方案。主机场挂了才用，平时完全不消耗。</li>
+          <li>你极度反感“不管用没用，每个月都要交钱”的订阅制绑定感。</li>
+        </ul>
+
+      </section>
+
+      <section class="related-section">
+        <h2>相关场景与分类筛选</h2>
+        <div class="related-links">
+          <a href="/scenario/no-expiry/">前往筛选：支持不限时套餐的机场集合 &rarr;</a>
+          <a href="/scenario/cheap/">前往筛选：低月付门槛机场集合 &rarr;</a>
+          <a href="/scenario/backup/">决策指南：如何组合购买备用机场？ &rarr;</a>
+        </div>
+      </section>
+
+    </main>
+    <SiteFooter />
+  </body>
+</html>
+
+<style>
+  .section-header { margin: var(--spacing-8) 0; }
+  .section-header h1 { font-size: 2.2rem; margin-bottom: var(--spacing-4); }
+  .intro { font-size: 1.1rem; color: var(--color-text-muted); line-height: 1.6; }
+  .section { margin: var(--spacing-8) 0; }
+  .prose h2 { margin-top: var(--spacing-8); font-size: 1.5rem; border-bottom: 1px solid var(--color-border); padding-bottom: var(--spacing-2); }
+  .prose h3 { margin-top: var(--spacing-6); font-size: 1.25rem; }
+  .prose p { margin-top: var(--spacing-4); line-height: 1.7; font-size: 1.05rem; }
+  
+  .warning-alert {
+    background-color: rgba(220, 38, 38, 0.05);
+    border-left: 4px solid #dc2626;
+    padding: var(--spacing-4);
+    margin: var(--spacing-8) 0;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  }
+  .warning-alert strong { display: block; margin-bottom: var(--spacing-2); color: #b91c1c; font-size: 1.1rem; }
+  .warning-alert p { margin: 0; }
+
+  .comparison-table-wrapper {
+    overflow-x: auto;
+    margin: var(--spacing-8) 0;
+  }
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+  }
+  .comparison-table th, .comparison-table td {
+    padding: var(--spacing-3) var(--spacing-4);
+    border: 1px solid var(--color-border);
+    text-align: left;
+  }
+  .comparison-table th {
+    background-color: var(--color-surface);
+    font-weight: 600;
+  }
+  
+  .related-section {
+    margin: var(--spacing-12) 0;
+    padding-top: var(--spacing-8);
+    border-top: 1px solid var(--color-border);
+  }
+  .related-links { display: flex; flex-direction: column; gap: var(--spacing-3); }
+  .related-links a { color: var(--color-primary); text-decoration: none; font-size: 1.1rem; }
+</style>

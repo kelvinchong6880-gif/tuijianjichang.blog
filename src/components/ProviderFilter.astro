@@ -1,0 +1,145 @@
+---
+---
+<div class="provider-filter">
+  <div class="filter-header">
+    <h3>筛选数据库</h3>
+    <button id="resetFilters" class="reset-btn">重置</button>
+  </div>
+  
+  <div class="filter-groups">
+    <div class="filter-group">
+      <h4>价格门槛</h4>
+      <select id="filterPrice">
+        <option value="all">全部</option>
+        <option value="15">≤ ¥15</option>
+        <option value="20">≤ ¥20</option>
+        <option value="25">≤ ¥25</option>
+        <option value="25+">¥25+</option>
+      </select>
+    </div>
+    
+    <div class="filter-group">
+      <h4>专线类型</h4>
+      <select id="filterLine">
+        <option value="all">全部</option>
+        <option value="IPLC">IPLC</option>
+        <option value="IEPL">IEPL</option>
+        <option value="BGP">BGP</option>
+      </select>
+    </div>
+    
+    <div class="filter-group checks">
+      <label><input type="checkbox" id="filterNoExpiry" /> 包含不限时</label>
+      <label><input type="checkbox" id="filterStreaming" /> 解锁流媒体</label>
+      <label><input type="checkbox" id="filterAI" /> 解锁 AI</label>
+    </div>
+  </div>
+</div>
+
+<script>
+  const priceSelect = document.getElementById('filterPrice') as HTMLSelectElement;
+  const lineSelect = document.getElementById('filterLine') as HTMLSelectElement;
+  const noExpiryCheck = document.getElementById('filterNoExpiry') as HTMLInputElement;
+  const streamingCheck = document.getElementById('filterStreaming') as HTMLInputElement;
+  const aiCheck = document.getElementById('filterAI') as HTMLInputElement;
+  const resetBtn = document.getElementById('resetFilters') as HTMLButtonElement;
+  
+  const applyFilters = () => {
+    const priceVal = priceSelect.value;
+    const lineVal = lineSelect.value;
+    const noExpiry = noExpiryCheck.checked;
+    const streaming = streamingCheck.checked;
+    const ai = aiCheck.checked;
+    
+    const cards = document.querySelectorAll('.provider-card');
+    cards.forEach((card) => {
+      const el = card as HTMLElement;
+      const cPrice = parseFloat(el.getAttribute('data-price') || '0');
+      const cLines = el.getAttribute('data-lines') || '';
+      const cNoExp = el.getAttribute('data-no-expiry') === 'yes';
+      const cStream = el.getAttribute('data-streaming') === 'yes';
+      const cAi = el.getAttribute('data-ai') === 'yes';
+      
+      let show = true;
+      if (priceVal !== 'all') {
+        if (priceVal === '25+' && cPrice <= 25) show = false;
+        if (priceVal !== '25+' && cPrice > parseFloat(priceVal)) show = false;
+      }
+      if (lineVal !== 'all' && !cLines.includes(lineVal)) show = false;
+      if (noExpiry && !cNoExp) show = false;
+      if (streaming && !cStream) show = false;
+      if (ai && !cAi) show = false;
+      
+      el.style.display = show ? 'flex' : 'none';
+    });
+  };
+
+  [priceSelect, lineSelect, noExpiryCheck, streamingCheck, aiCheck].forEach(el => {
+    el?.addEventListener('change', applyFilters);
+  });
+  
+  resetBtn?.addEventListener('click', () => {
+    priceSelect.value = 'all';
+    lineSelect.value = 'all';
+    noExpiryCheck.checked = false;
+    streamingCheck.checked = false;
+    aiCheck.checked = false;
+    applyFilters();
+  });
+</script>
+
+<style>
+  .provider-filter {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-4);
+    margin-bottom: var(--spacing-6);
+  }
+  .filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-4);
+  }
+  .filter-header h3 {
+    font-size: 1.1rem;
+  }
+  .reset-btn {
+    background: none;
+    border: none;
+    color: var(--color-primary);
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  .filter-groups {
+    display: flex;
+    gap: var(--spacing-6);
+    flex-wrap: wrap;
+  }
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+  }
+  .filter-group h4 {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+  select {
+    padding: var(--spacing-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+  }
+  .checks {
+    justify-content: flex-end;
+  }
+  .checks label {
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    cursor: pointer;
+  }
+</style>

@@ -1,0 +1,53 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import '../styles/global.css';
+
+const title = "404 未找到页面 - 推荐机场数据库";
+const description = "您访问的页面不存在或已被移除。";
+---
+
+<html lang="zh-CN">
+  <head>
+    <BaseHead title={title} description={description} noCanonical={true} />
+    <meta name="robots" content="noindex, follow" />
+  </head>
+  <body>
+    <SiteHeader />
+    <main class="container">
+      <header class="section-header" style="text-align: center; padding: var(--spacing-12) 0;">
+        <h1 style="font-size: 4rem; color: var(--color-primary); margin-bottom: var(--spacing-4);">404</h1>
+        <h2>哎呀，页面找不到了</h2>
+        <p class="intro" style="margin-bottom: var(--spacing-8);">
+          您访问的链接可能已经失效，或者页面已经被移除。
+        </p>
+        <div class="nav-links" style="display: flex; gap: var(--spacing-4); justify-content: center; flex-wrap: wrap;">
+          <a href="/" class="btn">返回首页</a>
+          <a href="/airports/" class="btn">机场数据库</a>
+          <a href="/scenario/" class="btn">选购场景</a>
+          <a href="/compare/" class="btn">决策指南</a>
+        </div>
+      </header>
+    </main>
+    <SiteFooter />
+  </body>
+</html>
+
+<style>
+  .btn {
+    display: inline-block;
+    padding: var(--spacing-3) var(--spacing-6);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: var(--color-text);
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+  .btn:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+</style>

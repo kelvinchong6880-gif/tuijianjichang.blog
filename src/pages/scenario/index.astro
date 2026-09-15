@@ -1,0 +1,148 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import '../../styles/global.css';
+
+const title = "机场选购场景指南 - 根据不同需求筛选合适的机场";
+const description = "机场选购场景中心：提供便宜机场、IPLC/IEPL专线、不限时套餐、大流量、AI与流媒体解锁、备用机场等多种场景的筛选和推荐。";
+---
+
+<html lang="zh-CN">
+  <head>
+    <BaseHead title={title} description={description} canonicalPath="/scenario/" />
+  </head>
+  <body>
+    <SiteHeader />
+    <main class="container">
+      <Breadcrumbs paths={[
+        { label: '机场选购场景', url: '/scenario/' }
+      ]} />
+      
+      <header class="section-header">
+        <h1>机场选购场景中心</h1>
+        <p class="intro">通过我们针对不同使用场景整理的数据库筛选条件，快速找到最符合您具体需求的机场候选者。</p>
+      </header>
+      
+      <section class="scenario-grid">
+        <a href="/scenario/cheap/" class="scenario-card">
+          <h2>便宜机场推荐</h2>
+          <p>月付门槛低至 ¥15 的候选机场集合。适合预算有限或优先考虑价格的用户。</p>
+          <span class="cta">进入筛选 &rarr;</span>
+        </a>
+        <a href="/scenario/iplc-iepl/" class="scenario-card">
+          <h2>IPLC / IEPL 专线机场</h2>
+          <p>官方资料中标注支持 IPLC 或 IEPL 专线传输的机场集合。</p>
+          <span class="cta">进入筛选 &rarr;</span>
+        </a>
+        <a href="/scenario/no-expiry/" class="scenario-card">
+          <h2>不限时机场套餐</h2>
+          <p>提供流量永久有效或无到期时间限制的套餐候选集合，适合轻度或极不规律的使用者。</p>
+          <span class="cta">进入筛选 &rarr;</span>
+        </a>
+        <a href="/scenario/high-traffic/" class="scenario-card">
+          <h2>大流量机场</h2>
+          <p>提供 500GB 及以上甚至数 TB 级大流量额度套餐的机场集合。</p>
+          <span class="cta">进入筛选 &rarr;</span>
+        </a>
+        <a href="/scenario/ai-chatgpt/" class="scenario-card">
+          <h2>支持 ChatGPT 的机场</h2>
+          <p>官方明确声明对 ChatGPT、Claude 等 AI 工具进行解锁支持的机场集合。</p>
+          <span class="cta">进入筛选 &rarr;</span>
+        </a>
+        <a href="/scenario/streaming/" class="scenario-card">
+          <h2>流媒体解锁机场</h2>
+          <p>官方明确声明支持 Netflix、Disney+ 等流媒体平台解锁的机场集合。</p>
+          <span class="cta">进入筛选 &rarr;</span>
+        </a>
+        <a href="/scenario/backup/" class="scenario-card">
+          <h2>备用机场怎么选</h2>
+          <p>备用机场选购指南：如何通过不同价格结构与套餐类型组合，建立可靠的备用防失联方案。</p>
+          <span class="cta">查看指南 &rarr;</span>
+        </a>
+      </section>
+
+      <section class="related-section">
+        <h2>相关决策指南</h2>
+        <div class="related-links">
+          <a href="/compare/iplc-vs-iepl/">IPLC 和 IEPL 有什么区别？</a>
+          <a href="/compare/monthly-vs-no-expiry/">月付套餐与不限时套餐怎么选？</a>
+          <a href="/compare/how-to-choose-plans/">如何科学选择机场套餐？</a>
+          <a href="/compare/">查看更多决策指南 &rarr;</a>
+        </div>
+      </section>
+
+    </main>
+    <SiteFooter />
+  </body>
+</html>
+
+<style>
+  .section-header {
+    margin: var(--spacing-8) 0;
+    text-align: center;
+  }
+  .section-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-4);
+  }
+  .intro {
+    font-size: 1.2rem;
+    color: var(--color-text-muted);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .scenario-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--spacing-6);
+    margin-bottom: var(--spacing-12);
+  }
+  .scenario-card {
+    display: block;
+    padding: var(--spacing-6);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .scenario-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+  .scenario-card h2 {
+    margin-top: 0;
+    margin-bottom: var(--spacing-2);
+    font-size: 1.25rem;
+  }
+  .scenario-card p {
+    color: var(--color-text-muted);
+    margin-bottom: var(--spacing-4);
+    font-size: 0.95rem;
+  }
+  .cta {
+    font-weight: 600;
+    color: var(--color-primary);
+  }
+  .related-section {
+    margin-bottom: var(--spacing-12);
+    padding-top: var(--spacing-8);
+    border-top: 1px solid var(--color-border);
+  }
+  .related-links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+  }
+  .related-links a {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-size: 1.1rem;
+  }
+  .related-links a:hover {
+    text-decoration: underline;
+  }
+</style>

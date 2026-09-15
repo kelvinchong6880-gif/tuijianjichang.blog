@@ -1,0 +1,55 @@
+---
+---
+<header class="site-header">
+  <div class="container header-inner">
+    <div class="logo">
+      <a href="/">推荐机场数据库</a>
+    </div>
+    <nav class="main-nav">
+      <a href="/">首页</a>
+      <a href="/recommend/">推荐榜单</a>
+      <a href="/scenario/">选购场景</a>
+      <a href="/compare/">决策指南</a>
+      <a href="/airports/">全库检索</a>
+      <a href="/methodology/">收录标准</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+  }
+  .logo a {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--color-primary);
+  }
+  .main-nav {
+    display: flex;
+    gap: var(--spacing-4);
+  }
+  .main-nav a {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  .main-nav a:hover {
+    color: var(--color-text-main);
+  }
+  @media (max-width: 768px) {
+    .main-nav {
+      display: none; /* simple mobile nav hide for now */
+    }
+  }
+</style>

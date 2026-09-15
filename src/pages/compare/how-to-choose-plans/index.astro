@@ -1,0 +1,100 @@
+---
+import BaseHead from '../../../components/BaseHead.astro';
+import SiteHeader from '../../../components/SiteHeader.astro';
+import SiteFooter from '../../../components/SiteFooter.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import '../../../styles/global.css';
+
+const title = "如何科学选择机场套餐？ 7步避坑决策流";
+const description = "机场套餐怎么选？不要盲目追求大流量或知名度。通过这7个科学的决策步骤，从流量、周期、线路到AI需求，帮你找出最适合的方案。";
+---
+
+<html lang="zh-CN">
+  <head>
+    <BaseHead title={title} description={description} canonicalPath="/compare/how-to-choose-plans/" />
+  </head>
+  <body>
+    <SiteHeader />
+    <main class="container">
+      <Breadcrumbs paths={[
+        { label: '决策指南', url: '/compare/' },
+        { label: '机场套餐怎么选', url: '/compare/how-to-choose-plans/' }
+      ]} />
+      
+      <header class="section-header">
+        <h1>如何科学选择机场套餐？</h1>
+        <p class="intro">
+          在市面上海量的服务商中选出一个“最佳”套餐是不可能的，因为只有“最适合你”的套餐。请跟随以下 7 步科学决策流程，避开营销陷阱。
+        </p>
+      </header>
+
+      <section class="section prose">
+        <h2>Step 1: 先看真实流量需求 (Traffic)</h2>
+        <p>
+          第一步永远是评估你的真实使用量。你是每天只是查查资料（每月低于 50GB），还是重度依赖 TikTok 和 YouTube 4K（每月可能需要 500GB 甚至 <a href="/scenario/high-traffic/">1TB 以上的大流量</a>）？<br/>
+          <strong>陷阱警告</strong>：不要为了“看起来便宜”去买 2TB 的廉价套餐，如果线路极其拥堵，这 2TB 你根本用不掉。
+        </p>
+
+        <h2>Step 2: 确定计费周期 (Billing & Expiry)</h2>
+        <p>
+          如果你是高频重度用户，按月或按季度的订阅制最适合你。<br/>
+          如果你只是偶尔使用，甚至可能连续几个月都不打开，那么请直接放弃月付，去选择<a href="/scenario/no-expiry/">不限时套餐（流量永久有效）</a>，否则月付对你就是极大的浪费。
+        </p>
+
+        <h2>Step 3: 关注线路声明 (Line Claims)</h2>
+        <p>
+          确定了流量和周期后，看线路技术。对延迟极其敏感的游戏玩家、或者是经常在晚高峰需要高强度远程桌面的办公人群，建议直接筛选 <a href="/scenario/iplc-iepl/">IPLC 或 IEPL 专线</a>。如果是普通的视频浏览，优质的 BGP 隧道中转可能已经足够。
+        </p>
+
+        <h2>Step 4: 检查流媒体与 AI 解锁刚需</h2>
+        <p>
+          如果你购买的目的是为了看 Netflix、Disney+ 或者是重度使用 ChatGPT 等 AI 生产力工具。<br/>
+          必须确认官方是否在其资料中明确声明了<a href="/scenario/streaming/">流媒体解锁</a>或<a href="/scenario/ai-chatgpt/">AI解锁</a>，并了解这通常不代表 100% 永久有效，而是代表官方愿意为此提供专门的路由优化。
+        </p>
+
+        <h2>Step 5: 比较起步价格 (Price)</h2>
+        <p>
+          到了第五步，才需要开始横向比较价格。在满足前四个条件的服务商中，根据你的预算进行筛选。如果预算有限，可以参考我们的<a href="/scenario/cheap/">低月付门槛候选列表</a>。
+        </p>
+
+        <h2>Step 6: 检查建站时间与运营状态 (Source Status)</h2>
+        <p>
+          尽量避开刚刚成立几个月、宣称“全网最低价、全专线”但连正式官网说明都没有的小机场，这类服务商跑路风险极高。我们收录的数据均来自于经过严格审核的长期运营服务商。
+        </p>
+
+        <h2>Step 7: 永远先买小额月付尝试</h2>
+        <p>
+          这是最重要的一点：<strong>不要一上来就买年付！</strong><br/>
+          无论别人怎么推荐，你所在的地区宽带运营商（电信/联通/移动）与服务商入口的相性只有你自己试了才知道。先花十几块钱买个入门月付，甚至买个一次性的小流量包测试晚高峰表现，满意后再考虑季度或年度订阅。
+        </p>
+      </section>
+
+      <section class="related-section">
+        <h2>相关决策与场景</h2>
+        <div class="related-links">
+          <a href="/scenario/">前往场景中心进行筛选 &rarr;</a>
+          <a href="/scenario/backup/">怎样组合购买备用机场？ &rarr;</a>
+        </div>
+      </section>
+
+    </main>
+    <SiteFooter />
+  </body>
+</html>
+
+<style>
+  .section-header { margin: var(--spacing-8) 0; }
+  .section-header h1 { font-size: 2.2rem; margin-bottom: var(--spacing-4); }
+  .intro { font-size: 1.1rem; color: var(--color-text-muted); line-height: 1.6; }
+  .section { margin: var(--spacing-8) 0; }
+  .prose h2 { margin-top: var(--spacing-8); font-size: 1.5rem; border-bottom: 1px solid var(--color-border); padding-bottom: var(--spacing-2); }
+  .prose p { margin-top: var(--spacing-4); line-height: 1.7; font-size: 1.05rem; }
+  .prose strong { color: var(--color-text); }
+  .related-section {
+    margin: var(--spacing-12) 0;
+    padding-top: var(--spacing-8);
+    border-top: 1px solid var(--color-border);
+  }
+  .related-links { display: flex; flex-direction: column; gap: var(--spacing-3); }
+  .related-links a { color: var(--color-primary); text-decoration: none; font-size: 1.1rem; }
+</style>
