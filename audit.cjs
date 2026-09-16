@@ -198,7 +198,7 @@ function checkClean(dir) {
     if (stat.isDirectory()) {
       checkClean(fullPath);
     } else {
-      if (file.endsWith('.txt') && file !== 'robots.txt' && !file.match(/.*key.*\.txt/)) rawSourceFilesExposed++;
+      if (file.endsWith('.txt') && file !== 'robots.txt' && !file.match(/^[a-fA-F0-9]{32}\.txt$/)) rawSourceFilesExposed++;
       if (file.endsWith('.cjs') || file.endsWith('.md')) internalAuditFilesExposed++;
       if (file === '.env') environmentFilesExposed++;
       // Optional: fast check for windows paths in text files in dist
