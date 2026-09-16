@@ -11,6 +11,7 @@ import AffiliateDisclosure from '../../components/AffiliateDisclosure.astro';
 import DataProvenance from '../../components/DataProvenance.astro';
 import RelatedProviders from '../../components/RelatedProviders.astro';
 import EvidenceBadge from '../../components/EvidenceBadge.astro';
+import { customContent } from '../../data/customContent';
 import '../../styles/global.css';
 
 export async function getStaticPaths() {
@@ -21,8 +22,10 @@ export async function getStaticPaths() {
 }
 
 const { provider } = Astro.props;
-const title = `${provider.name}怎么样？2026套餐价格、流量与线路资料`;
-const description = `${provider.name}机场资料库。官方最低价格 ¥${provider.entryPrice}，提供 ${provider.plans.length} 个套餐，包含线路类型、不限时、流媒体及AI解锁官方声明。`;
+const custom = customContent[provider.slug];
+const title = custom ? custom.title : `${provider.name}怎么样？2026套餐价格、流量与线路资料`;
+const description = custom ? custom.desc : `${provider.name}机场资料库。官方最低价格 ¥${provider.entryPrice}，提供 ${provider.plans.length} 个套餐，包含线路类型、不限时、流媒体及AI解锁官方声明。`;
+const h1Text = custom ? custom.h1 : provider.name;
 ---
 
 <html lang="zh-CN">
@@ -39,7 +42,7 @@ const description = `${provider.name}机场资料库。官方最低价格 ¥${pr
       
       <header class="provider-header">
         <div class="provider-identity">
-          <h1>{provider.name}</h1>
+          <h1>{h1Text}</h1>
           <div class="badges">
             {provider.editorialPick && <span class="badge pick">Editor's Pick #{provider.editorialRank}</span>}
             <EvidenceBadge type="source" label="官方数据源" />
@@ -61,7 +64,11 @@ const description = `${provider.name}机场资料库。官方最低价格 ¥${pr
         <PlanTable plans={provider.plans} />
       </section>
 
-      <EditorialNotes provider={provider} />
+      {custom ? (
+        <div class="custom-content-wrapper" set:html={custom.html} />
+      ) : (
+        <EditorialNotes provider={provider} />
+      )}
       
       {provider.affiliateUrl && (
         <div class="bottom-cta">
@@ -117,5 +124,27 @@ const description = `${provider.name}机场资料库。官方最低价格 ¥${pr
   .btn-large {
     padding: var(--spacing-3) var(--spacing-6);
     font-size: 1.1rem;
+  }
+  :global(.custom-editorial) {
+    margin: var(--spacing-8) 0;
+  }
+  :global(.custom-editorial h3) {
+    margin-top: var(--spacing-6);
+    margin-bottom: var(--spacing-3);
+    font-size: 1.25rem;
+    color: var(--color-text);
+  }
+  :global(.custom-editorial h3:first-child) {
+    margin-top: 0;
+  }
+  :global(.custom-editorial p) {
+    color: var(--color-text-muted);
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: var(--spacing-4);
+  }
+  :global(.custom-editorial a) {
+    color: var(--color-primary);
+    text-decoration: underline;
   }
 </style>
