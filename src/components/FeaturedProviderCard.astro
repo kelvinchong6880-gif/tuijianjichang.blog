@@ -1,0 +1,497 @@
+---
+import ProviderLogo from './ProviderLogo.astro';
+import PromoCode from './PromoCode.astro';
+import Button from './Button.astro';
+import type { Provider } from '../data/schema';
+import { customContent } from '../data/customContent';
+
+export interface Props {
+  provider: Provider;
+}
+const { provider } = Astro.props;
+
+const validPlans = provider.plans.filter(p => p.traffic !== null);
+let trafficText = provider.trafficDisplay;
+if (validPlans.length > 0) {
+  const formatT = (v: number) => v >= 1000 ? `${(v/1000).toFixed(1).replace(/\.0$/, '')}TB` : `${v}GB`;
+  let minT = Math.min(...validPlans.map(p => p.traffic!));
+  let maxT = Math.max(...validPlans.map(p => p.traffic!));
+  if (minT === maxT) {
+    trafficText = formatT(minT);
+  } else {
+    trafficText = `${formatT(minT)}–${formatT(maxT)}`;
+  }
+}
+const planCount = provider.plans.length;
+---
+<div class={`provider-card featured-card`} data-price={provider.entryPrice} data-lines={provider.lineClaims.join(',')} data-no-expiry={provider.hasNoExpiry ? 'yes' : 'no'} data-streaming={provider.streamingClaim ? 'yes' : 'no'} data-ai={provider.aiClaim ? 'yes' : 'no'} data-name={provider.name.toLowerCase()}>
+  <div class="featured-bg-pattern"></div>
+  <div class="featured-accent-line"></div>
+  
+  <div class="featured-ribbon">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="crown-icon"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    <span>#01 编辑推荐</span>
+  </div>
+
+  <div class="card-inner">
+    <div class="featured-main-grid">
+      
+      <!-- Left: Brand Zone (28%) -->
+      <div class="brand-zone">
+        <ProviderLogo name={provider.name} logo={provider.logo} size="lg" />
+        <div class="brand-info">
+          <div class="brand-name-row">
+            <h3 class="name">
+              <a href={`/airport/${provider.slug}/`} class="card-link">{provider.name}</a>
+            </h3>
+            <div class="badge-group">
+              <span class="verified-badge">官方资料</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="verified-icon"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+          </div>
+          <p class="brand-desc">
+            {provider.lineClaims.length > 0 ? provider.lineClaims.join(' / ') + ' 专线资料' : '专业线路资料'}，提供精选套餐及稳定服务。
+          </p>
+          <div class="brand-features">
+            {provider.hasNoExpiry && (
+              <span class="feature-tag">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tag-icon"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                不限时套餐
+              </span>
+            )}
+            {provider.streamingClaim && (
+              <span class="feature-tag">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tag-icon"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                支持流媒体
+              </span>
+            )}
+            {provider.aiClaim && (
+              <span class="feature-tag">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tag-icon"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 12 2.1 7.1"/><path d="M12 12l9.9 4.9"/></svg>
+                支持 AI
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+      
+      <!-- Middle: Metrics Zone (44%) -->
+      <div class="data-zone">
+        <div class="data-panel-inner">
+          <div class="metric-block">
+            <span class="metric-value price tabular-nums">¥{provider.entryPrice}</span>
+            <span class="metric-label">起步价</span>
+          </div>
+          <div class="metric-block">
+            <span class="metric-value tabular-nums nowrap-value">{trafficText}</span>
+            <span class="metric-label">流量范围</span>
+          </div>
+          <div class="metric-block">
+            <span class="metric-value tabular-nums">{planCount}</span>
+            <span class="metric-label">套餐数量</span>
+          </div>
+          <div class="metric-block">
+            <span class="metric-value text-sm nowrap-value">{provider.lineClaims.join(' · ') || '未收录'}</span>
+            <span class="metric-label">线路类型</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Right: Action Zone (24%) -->
+      <div class="action-zone">
+        <div class="promo-wrapper">
+          {provider.promoCode ? (
+            <div class="promo-combo-pill">
+              <span class="promo-label">优惠码 <strong>{provider.promoCode}</strong></span>
+              <button class="promo-combo-btn promo-copy" data-code={provider.promoCode} aria-label={`复制优惠码 ${provider.promoCode}`}>复制</button>
+            </div>
+          ) : (
+            <div class="no-promo">暂无优惠码</div>
+          )}
+        </div>
+        <div class="cta-group">
+          <Button variant="secondary" href={`/airport/${provider.slug}/`}>查看详情</Button>
+          {provider.affiliateUrl && (
+            <Button variant="primary" href={provider.affiliateUrl} target="_blank" rel="nofollow sponsored noopener">访问官网 ↗</Button>
+          )}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+  .featured-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    margin-bottom: var(--spacing-8);
+    position: relative;
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    overflow: hidden;
+  }
+  .featured-bg-pattern {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    opacity: 0.6;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .featured-card:hover {
+    box-shadow: 0 0 15px rgba(76, 195, 255, 0.2);
+    border-color: var(--color-border-hover);
+    transform: translateY(-2px);
+  }
+  .featured-ribbon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--color-primary);
+    padding: 6px 16px;
+    border-bottom-right-radius: 16px;
+    border-top-left-radius: 16px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #0E1E3A;
+    z-index: 3;
+    box-shadow: 2px 2px 10px rgba(240, 179, 92, 0.2);
+  }
+  .crown-icon {
+    width: 14px;
+    height: 14px;
+    fill: #fbbf24;
+  }
+  
+  .card-inner {
+    padding: var(--spacing-8) var(--spacing-6) var(--spacing-6) var(--spacing-6);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 2;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-6);
+    padding: var(--spacing-6) var(--spacing-8);
+  }
+  
+  .featured-main-grid {
+    display: grid;
+    grid-template-columns: 3.6fr 4fr 2.4fr;
+    gap: var(--spacing-6);
+    align-items: center;
+    margin-top: var(--spacing-2);
+    width: 100%;
+  }
+  
+  .brand-zone {
+    flex: 0 0 35%;
+    display: flex;
+    gap: var(--spacing-4);
+    align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+  :global(.featured-card .provider-logo.logo-lg) {
+    width: 88px !important;
+    height: 88px !important;
+    border-radius: 20px !important;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    border: 1px solid rgba(0,0,0,0.04);
+    flex-shrink: 0;
+  }
+  :global(.featured-card .provider-logo.logo-lg img) {
+    padding: 2px !important;
+  }
+  .brand-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .brand-name-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+    flex-wrap: wrap;
+  }
+  .name {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--color-text-main);
+    margin: 0;
+    line-height: 1.1;
+  }
+  .card-link {
+    color: var(--color-text-main);
+  }
+  .card-link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  .badge-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .verified-badge {
+    font-size: 11px;
+    color: var(--color-primary);
+    background: var(--color-primary-soft);
+    padding: 3px 8px;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+  }
+  .verified-icon {
+    width: 16px;
+    height: 16px;
+  }
+  .brand-desc {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    margin: 0;
+    max-width: 220px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .brand-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 2px;
+  }
+  .feature-tag {
+    font-size: 11px;
+    color: var(--color-secondary);
+    background: rgba(76, 195, 255, 0.1);
+    border: 1px solid rgba(76, 195, 255, 0.2);
+    padding: 4px 12px;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 600;
+  }
+  .tag-icon {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+  }
+
+  .data-zone {
+    width: 100%;
+  }
+  .data-panel-inner {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    background: #081226;
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.08);
+  }
+  .metric-block {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    position: relative;
+  }
+  .metric-block:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: -1px;
+    top: 20%;
+    height: 60%;
+    width: 1px;
+    background: var(--color-border);
+  }
+  .metric-value {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--color-text-main);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .metric-value.price {
+    color: var(--color-primary);
+  }
+  .nowrap-value {
+    white-space: nowrap;
+    overflow: visible;
+  }
+  .metric-value.price {
+    color: var(--color-primary);
+  }
+  .metric-value.text-sm {
+    font-size: 1.15rem;
+    letter-spacing: 0;
+  }
+  .metric-label {
+    font-size: 13px;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    margin-top: 4px;
+  }
+
+  .action-zone {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--spacing-4);
+    position: relative;
+    z-index: 2;
+    padding-left: var(--spacing-2);
+  }
+  .promo-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  .promo-combo-pill {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #081226;
+    border-radius: 9999px;
+    padding: 6px 6px 6px 16px;
+    width: 100%;
+    border: 1px solid var(--color-border);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+  }
+  .promo-combo-pill .promo-label {
+    font-size: 13px;
+    color: var(--color-text-main);
+  }
+  .promo-combo-pill strong {
+    font-family: var(--font-mono);
+    margin-left: 4px;
+    font-weight: 800;
+  }
+  .promo-combo-btn {
+    background: var(--color-primary);
+    color: #0E1E3A;
+    border: none;
+    border-radius: 9999px;
+    padding: 6px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+  .promo-combo-btn:hover {
+    background: var(--color-primary-dark);
+  }
+  .no-promo {
+    font-size: 13px;
+    color: var(--color-text-muted);
+    padding: 6px 12px;
+    background: #081226;
+    border-radius: 9999px;
+    border: 1px solid var(--color-border);
+    text-align: center;
+    width: 100%;
+  }
+  .cta-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-3);
+  }
+  :global(.featured-card .btn) {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  @media (max-width: 1280px) {
+    .featured-main-grid {
+      grid-template-columns: 2.6fr 4.6fr 2.8fr;
+      gap: var(--spacing-4);
+    }
+  }
+
+  @media (max-width: 1100px) {
+    .featured-main-grid {
+      grid-template-columns: 1fr;
+      gap: var(--spacing-8);
+    }
+    .brand-zone {
+      max-width: 600px;
+    }
+    .brand-desc {
+      max-width: 100%;
+      -webkit-line-clamp: 3;
+    }
+    .cta-group {
+      grid-template-columns: 1fr 1fr;
+    }
+    .promo-wrapper {
+      justify-content: flex-start;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .data-panel-inner {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-5);
+    }
+    .metric-block:nth-child(2)::after {
+      display: none;
+    }
+    .metric-block:not(:last-child)::after {
+      right: 0;
+    }
+    .cta-group {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .card-inner {
+      padding: var(--spacing-10) var(--spacing-5) var(--spacing-5);
+    }
+    .brand-zone {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll('.promo-copy').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const code = btn.getAttribute('data-code');
+      if (!code) return;
+      try {
+        await navigator.clipboard.writeText(code);
+        const original = btn.textContent;
+        btn.textContent = '已复制';
+        setTimeout(() => {
+          if (btn.textContent === '已复制') {
+            btn.textContent = original;
+          }
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to copy', err);
+      }
+    });
+  });
+</script>

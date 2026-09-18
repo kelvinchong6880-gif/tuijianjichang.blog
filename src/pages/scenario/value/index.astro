@@ -1,0 +1,311 @@
+---
+import BaseHead from '../../../components/BaseHead.astro';
+import SiteHeader from '../../../components/SiteHeader.astro';
+import SiteFooter from '../../../components/SiteFooter.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import AffiliateDisclosure from '../../../components/AffiliateDisclosure.astro';
+import DataProvenance from '../../../components/DataProvenance.astro';
+import { providers } from '../../../data/providers';
+import '../../../styles/global.css';
+
+const providerCount = providers.length;
+const planCount = providers.reduce((acc, p) => acc + p.plans.length, 0);
+const title = `2026性价比机场推荐：${planCount}个套餐价格、流量与¥/GB对比`;
+const description = `基于${providerCount}家机场、${planCount}个套餐的标价、流量与计费周期资料，对比套餐标价单价（¥/GB），并区分不同计费周期，帮助用户从价格、流量、线路与功能资料中筛选候选方案。`;
+
+// 1. DATA PREPARATION & VALIDATION
+const allPlans: any[] = [];
+let validPlansCount = 0;
+let excludedPlansCount = 0;
+const excludedPlansList: { provider: string; plan: string; reason: string }[] = [];
+
+providers.forEach(p => {
+  p.plans.forEach(plan => {
+    // Exclusion Rule
+    if (typeof plan.traffic !== 'number' || !Number.isFinite(plan.traffic) || plan.traffic <= 0 || !Number.isFinite(plan.price) || plan.priceConflict || plan.paymentCycleConflict || plan.currency !== "CNY" || !Number.isFinite(plan.price / plan.traffic)) {
+      excludedPlansCount++;
+      let reason = '不符合计算条件';
+      if (plan.paymentCycleConflict) reason = '付款周期与实际扣款规则存在歧义待核实';
+        else if (plan.priceConflict) reason = '价格存在冲突待核实，取消参与排序计算';
+      else if (typeof plan.traffic !== 'number') reason = '流量数据缺失或存在冲突待核实';
+      excludedPlansList.push({ provider: p.name, plan: plan.name, reason: plan.sourceNotes || reason });
+      return;
+    }
+    
+    validPlansCount++;
+    const pricePerGB = plan.price / plan.traffic;
+    
+    allPlans.push({
+      providerId: p.slug,
+      providerName: p.name,
+      planName: plan.name,
+      price: plan.price,
+      traffic: plan.traffic,
+      billingType: plan.billingType,
+      lineType: plan.lineType || '资料未说明',
+      validity: plan.validity,
+      pricePerGB: pricePerGB
+    });
+  });
+});
+
+// Group by Billing Cycle
+const billingGroups = {
+  'Monthly': allPlans.filter(p => p.billingType === 'Monthly').sort((a, b) => a.pricePerGB - b.pricePerGB),
+  'Quarterly': allPlans.filter(p => p.billingType === 'Quarterly').sort((a, b) => a.pricePerGB - b.pricePerGB),
+  'Yearly': allPlans.filter(p => p.billingType === 'Yearly').sort((a, b) => a.pricePerGB - b.pricePerGB),
+  'One-Time': allPlans.filter(p => p.billingType === 'One-Time').sort((a, b) => a.pricePerGB - b.pricePerGB),
+  'Other': allPlans.filter(p => !['Monthly', 'Quarterly', 'Yearly', 'One-Time'].includes(p.billingType)).sort((a, b) => a.pricePerGB - b.pricePerGB)
+};
+
+// SOGO Data for Editorial Feature
+const sogo = providers.find(p => p.slug === 'sogo-yun');
+const sogoTraffic = (sogo?.plans || []).map(p => p.traffic).filter((traffic): traffic is number => typeof traffic === 'number' && Number.isFinite(traffic) && traffic > 0);
+const sogoTrafficRange = sogoTraffic.length ? `${Math.min(...sogoTraffic)}GB–${Math.max(...sogoTraffic)}GB` : '资料未说明';
+const claimLabel = (claim: boolean | null | undefined) => claim === true ? '资料标记支持' : claim === false ? '资料标记不支持' : '资料未说明';
+const billingLabels = { Monthly: '月付', Quarterly: '季付', Yearly: '年付', 'One-Time': '一次性付费', Other: '其他周期' };
+
+// Traffic Groups
+const trafficBands = [
+  { label: '100GB ≤ 标注流量 < 500GB', min: 100, max: 500 },
+  { label: '500GB ≤ 标注流量 < 1000GB', min: 500, max: 1000 },
+  { label: '标注流量 ≥ 1000GB', min: 1000, max: Infinity }
+];
+---
+
+<html lang="zh-CN">
+  <head>
+    <BaseHead title={title} description={description} canonicalPath="/scenario/value/" />
+  </head>
+  <body>
+    <SiteHeader />
+    <main class="container">
+      <Breadcrumbs paths={[
+        { label: '机场选购场景', url: '/scenario/' },
+        { label: '性价比机场推荐', url: '/scenario/value/' }
+      ]} />
+      
+      <header class="section-header">
+        <h1>2026性价比机场：套餐价格、流量与¥/GB数据对比</h1>
+        <p class="intro">
+          本页面汇总了数据库中 <strong>{providers.length} 家机场、{providers.reduce((acc, p) => acc + p.plans.length, 0)} 个套餐</strong> 的标价、流量与计费周期资料，通过统一计算 <strong>套餐标价单价（¥/GB）</strong>，为您提供纯数据驱动的筛选视角。<br/>
+          （有效计算套餐：{validPlansCount}，被排除的套餐：{excludedPlansCount}。仅纳入人民币标价非负、标注流量为正且计算结果为有限数值的套餐；流量未说明等不符合条件的资料不参与计算。）
+        </p>
+      </header>
+
+      <section class="seo-prose">
+        <h2>性价比机场应该怎么比较？</h2>
+        <p>在寻找“性价比机场”时，便宜 ≠ 性价比。如果你更关注最低入门价格，可以查看<a href="/scenario/cheap/">便宜机场</a>页面。性价比（Value）更侧重于衡量您支付的单位成本能获取多少配置与流量。此外，<strong>¥/GB 只是一个维度</strong>，计费周期必须一起看。半年付或年付通常单价更低，但这需要您承担更长时间的预付风险。</p>
+        <div class="note-box">
+          <p><strong>⚠️ ¥/GB 指标说明：</strong><br/>本页中的 “¥/GB” 表示 <code>当前套餐标价 ÷ 当前套餐标注流量</code>。它只是一个 PRICE / TRAFFIC INDICATOR，并不代表综合性价比评分、速度评分、稳定性评分或真实月均成本。</p>
+        </div>
+      </section>
+
+      <section class="seo-prose">
+        <h2>本站编辑关注：SOGO云</h2>
+        <div class="editorial-feature">
+          <h3>编辑关注的专线套餐：{sogo?.name || 'SOGO云'}</h3>
+          <p>本站编辑关注 SOGO云的线路与套餐资料。当前资料显示其起步价格为 ¥{sogo?.entryPrice ?? '资料未说明'}，提供 {sogo?.plans.length ?? 0} 个套餐（标注流量范围：{sogoTrafficRange}，各套餐计费周期分别查看）。线路名称不代表经过本站测速或稳定性验证。</p>
+          <ul>
+            <li><strong>线路资料：</strong> {sogo?.lineClaims?.join(' / ') || '资料未说明'}</li>
+            <li><strong>不限时套餐：</strong> {sogo ? (sogo.hasNoExpiry ? '资料标记提供' : '资料标记未提供') : '资料未说明'}</li>
+            <li><strong>流媒体：</strong> {claimLabel(sogo?.streamingClaim)}；<strong>AI：</strong> {claimLabel(sogo?.aiClaim)}</li>
+            <li><strong>优惠码：</strong> <code>{sogo?.promoCode || '资料未说明'}</code></li>
+          </ul>
+          <p style="margin-top: 1rem;">
+            <a href="/airport/sogo-yun/" class="btn-primary" style="display:inline-block; padding:0.5rem 1rem; background:var(--color-primary); color:var(--color-base); border-radius:4px; text-decoration:none;">查看SOGO云套餐与价格</a>
+          </p>
+          <p class="small-disclaimer" style="font-size:0.8rem; color:var(--color-text-secondary); margin-top:1rem;">注：此为编辑精选呈现，独立于下方的纯算法 ¥/GB 榜单，不涉及算法排名干预。</p>
+        </div>
+      </section>
+
+      
+      <section class="seo-prose">
+        <h2>计算说明与排除项（待核实冲突）</h2>
+        <p>本页面的 ¥/GB 仅代表“标价除以标注流量”的比值（如年费 ¥98 / 每30天 60GB，其单价仅代表单次购买比值，不可视为全年的实际每 GB 成本总和）。</p>
+        <p>共有 {excludedPlansCount} 个套餐因数据缺失、标价与正文冲突或流量不明确被系统排除了 ¥/GB 计算，具体如下：</p>
+        <ul>
+          {excludedPlansList.map(ep => (
+            <li><strong>{ep.provider} - {ep.plan}</strong>: {ep.reason}</li>
+          ))}
+        </ul>
+      </section>
+
+      <section class="seo-prose">
+        <h2>套餐标价单价（¥/GB）数据对比</h2>
+        <p>为确保比较公平，以下数据已严格按 <strong>Billing Cycle (计费周期)</strong> 分组。不同周期之间不得直接横向比较划算程度。</p>
+        
+        {Object.entries(billingGroups).map(([cycle, plans]) => {
+          if (plans.length === 0) return null;
+          return (
+            <div class="billing-group">
+              <h3>{billingLabels[cycle as keyof typeof billingLabels]}（{cycle}）计费组</h3>
+              <div class="table-container">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>机场</th>
+                      <th>套餐名称</th>
+                      <th>标价</th>
+                      <th>流量</th>
+                      <th>¥/GB</th>
+                      <th>线路</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {plans.map(p => (
+                      <tr>
+                        <td><a href={`/airport/${p.providerId}/`}>{p.providerName}</a></td>
+                        <td>{p.planName}</td>
+                        <td>¥{p.price}</td>
+                        <td>{p.traffic}GB</td>
+                        <td><strong>¥{p.pricePerGB.toFixed(3)}</strong></td>
+                        <td>{p.lineType}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )
+        })}
+      </section>
+
+      <section class="seo-prose">
+        <h2>按流量需求查看套餐</h2>
+        <p>以下按套餐标注流量统计候选数量，并分别列出计费周期。标注流量不等于每月可用流量；资料未明确流量重置周期时，不将季付或年付流量换算为月额度。一次性付费套餐也不能直接作为月流量方案。</p>
+        <div class="table-container">
+          <table class="data-table">
+            <caption>按标注流量与计费周期统计的候选套餐数量</caption>
+            <thead><tr><th scope="col">标注流量区间</th>{Object.keys(billingGroups).map(cycle => <th scope="col">{billingLabels[cycle as keyof typeof billingLabels]}</th>)}</tr></thead>
+            <tbody>{trafficBands.map(band => <tr><th scope="row">{band.label}</th>{Object.values(billingGroups).map(plans => <td>{plans.filter(p => p.traffic >= band.min && p.traffic < band.max).length} 个</td>)}</tr>)}</tbody>
+          </table>
+        </div>
+        <p>区间采用 GB 数值边界，1000GB 为本页的统计分界，未将其标记为 1TB。请结合上方周期分组表及品牌页核对对应套餐和流量重置规则。</p>
+      </section>
+
+      <section class="seo-prose">
+        <h2>线路与功能资料怎么一起看？</h2>
+        <p>先核对线路字段，再根据自己的使用需求查看流媒体、AI及有效期资料。可参考 <a href="/compare/iplc-vs-iepl/">IPLC 与 IEPL 的区别</a>，并在 <a href="/scenario/no-expiry/">不限时机场</a>页面了解相关套餐。线路与功能名称均为资料标记，不代表本站验证了实际速度、解锁情况或稳定性；未说明的字段也不能视为支持。比较前还应核对流量重置周期与到期规则。</p>
+      </section>
+      
+      <section class="seo-prose">
+        <h2>如何自己判断机场性价比？</h2>
+        <p>高性价比机场的最终决定权在您手中。建议您在挑选时综合考量：在满足您流量与线路质量底线要求的前提下，选择在可接受周期（如月付或季付，降低跑路风险）内标价相对合理的机场。<a href="/compare/how-to-choose-plans/">机场套餐怎么选</a>并没有绝对标准，适合自己的才是最好的。</p>
+      </section>
+
+      <section class="seo-prose faq-section">
+        <h2>性价比机场常见问题</h2>
+        <div class="faq-list">
+          <div class="faq-item">
+            <h3>机场每GB多少钱怎么算？</h3>
+            <p>本页使用公式：<code>套餐标价 / 套餐标称流量 (GB)</code> 计算得出。仅适用于明确标注了数字流量额度的套餐，若遇到“无限流量”或“未标明”则无法计算。</p>
+          </div>
+          <div class="faq-item">
+            <h3>¥/GB越低就代表机场越好吗？</h3>
+            <p>不代表。这个指标仅描述套餐标价与标注流量的比例，不能推断速度、稳定性或服务质量。请结合线路与功能资料、计费周期以及自己的使用需求判断。</p>
+          </div>
+          <div class="faq-item">
+            <h3>为什么不同计费周期不能直接比较？</h3>
+            <p>月付、季付与年付的预付金额和覆盖期限不同，标注流量的重置周期也需要另行核对。本页不把年付价格除以标注流量的结果视为真实全年每GB成本，也不将不同周期合并排行；即使在同一计费组内，也应先确认流量口径一致。</p>
+          </div>
+          <div class="faq-item">
+            <h3>便宜机场和性价比机场有什么区别？</h3>
+            <p>便宜机场通常追求最低入门绝对价格（如几元钱的月付），而性价比机场则更看重您花费的每一元钱能买到多少相应的配置和流量。如果追求极低入门价，请参考<a href="/scenario/cheap/">便宜机场推荐</a>。</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="back-to-home" style="margin-top: 3rem; text-align: center;">
+        <p>探索更多优质资源？请前往我们的 <a href="/recommend/">2026机场推荐</a> 或回到首页完整数据库。</p>
+      </div>
+
+      <DataProvenance />
+      
+      <section class="cta-section" style="margin-bottom: 2rem; background: var(--color-surface); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--color-border); text-align: center;">
+        <h2 style="font-size: var(--text-lg); margin-bottom: 0.5rem; margin-top: 0;">不知道怎么选？</h2>
+        <p style="color: var(--color-text-muted); margin-bottom: 1rem;">看看经过编辑筛选的综合表现最佳机场。</p>
+        <a href="/recommend/" class="btn btn-primary">查看编辑精选：机场推荐榜单</a>
+      </section>
+
+      <AffiliateDisclosure />
+    </main>
+    <SiteFooter />
+  </body>
+</html>
+
+<style>
+  .intro {
+    font-size: var(--text-lg);
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-6);
+  }
+  .note-box {
+    background-color: var(--color-surface);
+    border-left: 4px solid var(--color-primary);
+    padding: var(--spacing-4);
+    margin: var(--spacing-4) 0;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  }
+  .editorial-feature {
+    background: linear-gradient(135deg, rgba(99,102,241,0.05) 0%, rgba(59,130,246,0.05) 100%);
+    border: 1px solid rgba(99,102,241,0.2);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-6);
+    margin: var(--spacing-6) 0;
+  }
+  .editorial-feature h3 {
+    margin-top: 0;
+    color: var(--color-primary);
+  }
+  .editorial-feature ul {
+    list-style-type: disc;
+    margin-left: var(--spacing-6);
+    margin-bottom: var(--spacing-4);
+  }
+  .editorial-feature li {
+    margin-bottom: var(--spacing-2);
+  }
+  .table-container {
+    overflow-x: auto;
+    margin-bottom: var(--spacing-8);
+  }
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+  }
+  .data-table th, .data-table td {
+    border: 1px solid var(--color-border);
+    padding: var(--spacing-3);
+    text-align: left;
+  }
+  .data-table th {
+    background-color: var(--color-surface);
+    font-weight: var(--font-weight-bold);
+  }
+  .billing-group h3 {
+    margin-top: var(--spacing-8);
+    margin-bottom: var(--spacing-4);
+    color: var(--color-text-main);
+    border-bottom: 2px solid var(--color-border);
+    padding-bottom: var(--spacing-2);
+  }
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-6);
+    margin-top: var(--spacing-6);
+  }
+  .faq-item h3 {
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-2);
+    color: var(--color-text-main);
+  }
+  .faq-item p {
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+  }
+</style>

@@ -3,17 +3,14 @@ import BaseHead from '../../../components/BaseHead.astro';
 import SiteHeader from '../../../components/SiteHeader.astro';
 import SiteFooter from '../../../components/SiteFooter.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
-import ScenarioMatrix from '../../../components/ScenarioMatrix.astro';
-import DataProvenance from '../../../components/DataProvenance.astro';
 import AffiliateDisclosure from '../../../components/AffiliateDisclosure.astro';
 import { providers } from '../../../data/providers';
 import '../../../styles/global.css';
 
-const title = "流媒体解锁机场候选 - Netflix 等平台解锁声明数据库";
-const description = "流媒体机场筛选工具。汇总官方明确声明支持 Netflix、Disney+ 等主流海外视频平台原生解锁的机场候选。";
+const title = "提供流媒体解锁声明的机场候选";
+const description = "流媒体解锁机场候选。收录官方声明支持解锁 Netflix、Disney+ 等海外流媒体的机场，购买前建议实测目标地区和平台。";
 
-const streamingTrue = providers.filter(p => p.streamingClaim === true);
-const streamingNull = providers.filter(p => p.streamingClaim === null);
+const streamProviders = providers.filter(p => p.streamingClaim);
 ---
 
 <html lang="zh-CN">
@@ -25,65 +22,71 @@ const streamingNull = providers.filter(p => p.streamingClaim === null);
     <main class="container">
       <Breadcrumbs paths={[
         { label: '机场选购场景', url: '/scenario/' },
-        { label: '流媒体解锁机场', url: '/scenario/streaming/' }
+        { label: '流媒体解锁', url: '/scenario/streaming/' }
       ]} />
       
       <header class="section-header">
-        <h1>流媒体解锁机场候选</h1>
+        <h1>声明提供流媒体解锁的机场候选</h1>
         <p class="intro">
-          针对喜爱追剧、长期使用海外影音服务的用户，本页面汇总了官方资料中<strong>明确声明对流媒体（如 Netflix, Disney+, YouTube Premium 等）进行原生解锁或 DNS 解锁支持</strong>的机场。
+          本页面汇总了在其官方资料或常见问题中声明“提供流媒体解锁服务”的机场。若要获得稳定的观影体验，单凭商家的笼统声明是远远不够的。
         </p>
       </header>
 
-      <AffiliateDisclosure />
-
-      <section class="section">
-        <h2>官方明确声明流媒体解锁的机场</h2>
-        <p>以下 {streamingTrue.length} 家机场在其官网套餐详情或说明中，明确给出了支持流媒体访问或具备解锁流媒体节点的说明：</p>
-        <ScenarioMatrix providers={streamingTrue} showStreaming={true} showPrice={false} showTraffic={false} showLine={false} />
-      </section>
-
-      <section class="section">
-        <h2>官方资料未说明 (Not Explicitly Claimed)</h2>
-        <p>
-          以下 {streamingNull.length} 家机场在官网说明中<strong>没有明确提及</strong>流媒体解锁功能。注意，未说明<strong>不代表不支持</strong>，只是服务商未将此作为重点宣传参数。请勿仅凭其提供“香港节点”或“美国节点”就自动推断其能看 Netflix，如果这是刚需，建议先购入小额套餐进行实测。
-        </p>
-        <ScenarioMatrix providers={streamingNull} showStreaming={true} showPrice={false} showTraffic={false} showLine={false} />
-      </section>
-
-      <section class="section prose">
-        <h2>筛选说明与限制 (Important Limitations)</h2>
-        <ul>
-          <li><strong>非实时测试背书</strong>：请注意，流媒体平台（特别是 Netflix 和 Disney+）打击非原生 IP 代理的行为一直十分严厉，甚至经常有封禁网段的操作。此处的 <code>✅ 支持</code> 标签仅代表服务商的服务承诺，并非本站最新的实时测速保证。</li>
-          <li><strong>冷门区域解锁</strong>：大部分流媒体机场声明“全解锁”，通常涵盖的区域是港、台、日、新、美。如对某些特定冷门国家的本地流媒体（如欧洲部分区域台）有刚需，建议查看详情页并在购买前向服务商客服确认。</li>
-        </ul>
-      </section>
-
-      <section class="related-section">
-        <h2>相关决策指南</h2>
-        <div class="related-links">
-          <a href="/compare/how-to-choose-plans/">如何科学选择机场套餐？</a>
+      <section class="seo-prose">
+        <div class="warning-alert">
+          <strong>⚠️ 购买前须知：没有通用的解锁神话</strong>
+          <p>
+            1. <strong>不凭空捏造名词</strong>：如果商家资料未具体说明，本站绝不凭空为其添加“全地区解锁”、“原生IP”或“DNS解锁”等技术标签。<br/>
+            2. <strong>细分地区与平台</strong>：笼统声明支持流媒体，绝不等于支持“所有地区的 Netflix”和“所有的 Disney+”。部分节点可能仅解锁特定区域的内容库。<br/>
+            3. <strong>自己动手验证</strong>：不要仅凭节点上带个国家的国旗图标，就认为它能看该国流媒体。购买前应实际验证目标平台与目标地区是否可播放。
+          </p>
         </div>
       </section>
 
-      <DataProvenance />
+      <section class="section">
+        <h2>包含流媒体解锁声明的品牌 (共 {streamProviders.length} 家)</h2>
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>品牌名称</th>
+                <th>官方解锁声明</th>
+                <th>未经验证项</th>
+                <th>详情入口</th>
+              </tr>
+            </thead>
+            <tbody>
+              {streamProviders.map(p => (
+                <tr>
+                  <td><strong>{p.name}</strong></td>
+                  <td><span style="color: #16a34a;">包含流媒体声明</span></td>
+                  <td><span style="color: var(--color-text-muted);">具体地区与实际平台需实测</span></td>
+                  <td><a href={`/airport/${p.slug}/`} class="btn btn-small">查看资料</a></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+      
+      <div style="margin-top: var(--spacing-8);">
+        <a href="/compare/how-to-choose-plans/" class="btn btn-outline">👉 查看购买前检查清单</a>
+      </div>
+      <AffiliateDisclosure />
     </main>
     <SiteFooter />
   </body>
 </html>
 
 <style>
-  .section-header { margin: var(--spacing-8) 0; }
-  .section-header h1 { font-size: 2.2rem; margin-bottom: var(--spacing-4); }
-  .intro { font-size: 1.1rem; color: var(--color-text-muted); line-height: 1.6; }
-  .section { margin: var(--spacing-8) 0; }
-  .prose h2 { margin-top: var(--spacing-8); }
-  .prose h3 { margin-top: var(--spacing-6); }
-  .related-section {
-    margin: var(--spacing-12) 0;
-    padding-top: var(--spacing-8);
-    border-top: 1px solid var(--color-border);
-  }
-  .related-links { display: flex; flex-direction: column; gap: var(--spacing-3); }
-  .related-links a { color: var(--color-primary); text-decoration: none; font-size: 1.1rem; }
+  .intro { font-size: var(--text-lg); color: var(--color-text-secondary); margin-bottom: var(--spacing-6); line-height: 1.7; }
+  .table-container { margin: var(--spacing-4) 0 var(--spacing-8) 0; overflow-x: auto; }
+  .data-table { border-collapse: collapse; width: 100%; min-width: 600px; }
+  .data-table th, .data-table td { border: 1px solid var(--color-border); padding: var(--spacing-3); text-align: left; }
+  .data-table th { background-color: var(--color-surface); font-weight: var(--font-weight-bold); }
+  .warning-alert { background-color: rgba(234, 179, 8, 0.1); border-left: 4px solid #eab308; padding: var(--spacing-4); margin: var(--spacing-6) 0; }
+  .warning-alert strong { color: #b45309; }
+  .warning-alert p { margin: var(--spacing-2) 0 0 0; color: var(--color-text-main); line-height: 1.6; }
+  .btn-small { padding: 4px 8px; font-size: 0.8rem; }
+  .btn-outline { background: transparent; border: 1px solid var(--color-primary); color: var(--color-primary); }
 </style>

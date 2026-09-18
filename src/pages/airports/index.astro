@@ -29,9 +29,14 @@ const description = `收录22家机场与${planCount}个套餐资料，可查看
         <p>提供基于官方客观资料的筛选，全站不包含虚构测速或跑分。</p>
       </header>
 
-      <DataSummary />
+      <DataSummary 
+        providerCount={providers.length} 
+        planCount={planCount} 
+        pickCount={providers.filter(p => p.editorialPick).length} 
+        lastVerified="2026年9月"
+      />
       <ProviderFilter />
-      <ProviderGrid providers={providers} showDatabaseEntryLabel={true} />
+      <ProviderGrid providers={providers} featuredSlug="sogo-yun" />
       <DataProvenance />
     </main>
     <SiteFooter />

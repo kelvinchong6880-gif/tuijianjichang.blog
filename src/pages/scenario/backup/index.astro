@@ -3,18 +3,59 @@ import BaseHead from '../../../components/BaseHead.astro';
 import SiteHeader from '../../../components/SiteHeader.astro';
 import SiteFooter from '../../../components/SiteFooter.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
-import ScenarioMatrix from '../../../components/ScenarioMatrix.astro';
-import DataProvenance from '../../../components/DataProvenance.astro';
 import AffiliateDisclosure from '../../../components/AffiliateDisclosure.astro';
 import { providers } from '../../../data/providers';
 import '../../../styles/global.css';
 
-const title = "备用机场怎么选 - 备用方案选择指南";
-const description = "备用机场选择指南。教你如何通过结合低门槛月付、不同线路声明和不限时套餐，建立安全可靠的防失联备用机场方案。";
+const title = "备用机场推荐 - 低首付与不限时候选";
+const description = "备用机场该怎么选？基于真实套餐数据，推荐首付成本极低的月付套餐或不限时按量计费套餐，作为主机场故障时的应急备胎。";
 
-// Candidates for reference (Editorial filter reference)
-const cheapBackup = providers.filter(p => p.entryPrice <= 15).sort((a, b) => a.entryPrice - b.entryPrice).slice(0, 3);
-const noExpiryBackup = providers.filter(p => p.hasNoExpiry).slice(0, 3);
+interface BackupPlan {
+  providerName: string;
+  providerSlug: string;
+  planName: string;
+  price: number;
+  trafficDisplay: string;
+  validity: string;
+  type: 'Low-Monthly' | 'No-Expiry';
+}
+
+const backupPlans: BackupPlan[] = [];
+
+providers.forEach(p => {
+  p.plans.forEach(plan => {
+    if (plan.priceConflict || plan.paymentCycleConflict) return;
+
+    if (plan.billingType === 'Monthly' && plan.price <= 15) {
+      backupPlans.push({
+        providerName: p.name,
+        providerSlug: p.slug,
+        planName: plan.name,
+        price: plan.price,
+        trafficDisplay: plan.trafficDisplay,
+        validity: plan.validity,
+        type: 'Low-Monthly'
+      });
+    }
+
+    const valStr = plan.validity ? plan.validity.toLowerCase() : '';
+    const isNoExpiry = valStr.includes('不限时') || valStr.includes('无到期') || valStr.includes('永久') || valStr.includes('permanent') || valStr.includes('用完即止');
+    if (isNoExpiry && !plan.priceConflict && !plan.paymentCycleConflict) {
+      backupPlans.push({
+        providerName: p.name,
+        providerSlug: p.slug,
+        planName: plan.name,
+        price: plan.price,
+        trafficDisplay: plan.trafficDisplay,
+        validity: plan.validity,
+        type: 'No-Expiry'
+      });
+    }
+  });
+});
+
+const lowMonthly = backupPlans.filter(p => p.type === 'Low-Monthly').sort((a, b) => a.price - b.price);
+const noExpiry = backupPlans.filter(p => p.type === 'No-Expiry').sort((a, b) => a.price - b.price);
 ---
 
 <html lang="zh-CN">
@@ -26,87 +67,100 @@ const noExpiryBackup = providers.filter(p => p.hasNoExpiry).slice(0, 3);
     <main class="container">
       <Breadcrumbs paths={[
         { label: '机场选购场景', url: '/scenario/' },
-        { label: '备用机场选择指南', url: '/scenario/backup/' }
+        { label: '备用机场', url: '/scenario/backup/' }
       ]} />
       
       <header class="section-header">
-        <h1>备用机场怎么选 / 备用方案指南</h1>
+        <h1>备用机场套餐候选：低首付与不限时方案</h1>
         <p class="intro">
-          在网络环境多变的今天，“狡兔三窟”是保障业务不中断的核心策略。<strong>备用机场不是一个固定的机场排名（没有绝对的“最佳备用”），而是一种组合策略。</strong>本指南将带你从多个维度建立可靠的防失联方案。
+          任何机场都存在节点被封锁或服务器故障的风险。拥有一个“备用机场”能在关键时刻保证网络畅通。由于备用网络使用频率极低，我们建议从 <strong>首付极低的月付套餐</strong> 或 <strong>无固定到期时间的不限时套餐</strong> 中进行选择。
         </p>
       </header>
 
-      <AffiliateDisclosure />
-
-      <section class="section prose">
-        <h2>如何建立靠谱的备用方案？ (Decision Factors)</h2>
-        
-        <p>购买备用机场的根本目的是在<strong>主力机场宕机、被墙或维护</strong>时，能够迅速切换并保持网络畅通。为了达到互补效果，建议遵循以下维度：</p>
-
-        <h3>1. 寻找与主力方案价格结构互补的类型</h3>
-        <p>
-          如果你主力使用的是高价的 IPLC/IEPL 专线，备用则可以选择主打便宜量大、门槛极低的 BGP 中转机场；反之，如果你主力用的是便宜直连或普通中转，那么备用可以选择一个稳定且单价较高的小流量专线套餐（如按量付费）。
-        </p>
-
-        <h3>2. 避免相同的套餐计费周期 (Billing & Expiry)</h3>
-        <p>
-          不要两个机场都买月付。备用的最佳伴侣是<a href="/scenario/no-expiry/">不限时套餐（按量付费）</a>。买一个流量不过期的包放在代理软件里，不用就不扣费，急需时直接切换，长期来看成本极低。
-        </p>
-
-        <h3>3. 选择不同的线路声明技术 (Line Claims)</h3>
-        <p>
-          同一时期针对某类线路（如所有 IEPL 跨境专线）的阻断并不少见。所以备用机场的节点技术应尽量和主力机场错开。比如主力用 IPLC，备用用隧道中转；主力用公网隧道，备用选直连或不同上游的专线。
-        </p>
-
-        <h3>4. 避免对单一节点的重度依赖</h3>
-        <p>
-          千万不要因为图省事，把所有的日常浏览、下载、重要视频会议完全绑定在同一家服务商的某一个套餐上，这极大地增加了单点故障的风险。
-        </p>
+      <section class="seo-prose">
+        <h2>备用机场购买前检查清单</h2>
+        <ul>
+          <li><strong>上游依赖检查：</strong>尽量选择与您的主机场 <strong>上游不同</strong> 的服务商。如果两者依赖同一个上游，极有可能在封锁期同时发生故障。如果未获取到上游信息，请视为“未知上游”。</li>
+          <li><strong>连接可用性：</strong>备用机场的意义在于应急。购买后请务必先测试能否实际连接。</li>
+          <li><strong>余额与有效期：</strong>对于不限时套餐，请定期检查其账户是否依然处于激活状态，避免服务商单方面清理长期未活跃账号。</li>
+        </ul>
       </section>
 
       <section class="section">
-        <h2>编辑筛选参考：低月付门槛备用候选</h2>
-        <p>适合不想一次性投入太多，每月花几块钱养一个备用防失联节点的用户：</p>
-        <ScenarioMatrix providers={cheapBackup} showPrice={true} showTraffic={true} showLine={false} showNoExpiry={false} showAI={false} showStreaming={false} />
-        <p class="text-right"><a href="/scenario/cheap/">查看全部低价机场 &rarr;</a></p>
-      </section>
-
-      <section class="section">
-        <h2>编辑筛选参考：不限时套餐备用候选</h2>
-        <p>适合希望买一次用半年甚至一两年，流量不按月清零的零星使用场景：</p>
-        <ScenarioMatrix providers={noExpiryBackup} showPrice={false} showTraffic={false} showLine={true} showNoExpiry={true} showAI={false} showStreaming={false} />
-        <p class="text-right"><a href="/scenario/no-expiry/">查看全部不限时机场 &rarr;</a></p>
-      </section>
-
-      <section class="related-section">
-        <h2>相关决策指南</h2>
-        <div class="related-links">
-          <a href="/compare/monthly-vs-no-expiry/">深入比较：月付套餐与不限时套餐怎么选？</a>
-          <a href="/compare/how-to-choose-plans/">如何科学选择机场套餐？</a>
+        <h2>一、低首付月付候选 (¥15及以内)</h2>
+        <p>月付套餐首付成本极低，适合短期应急使用。共 {lowMonthly.length} 个候选：</p>
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>品牌与套餐</th>
+                <th>月付价格</th>
+                <th>标称流量 (每月刷新)</th>
+                <th>详情入口</th>
+              </tr>
+            </thead>
+            <tbody>
+              {lowMonthly.length > 0 ? lowMonthly.map(plan => (
+                <tr>
+                  <td><strong>{plan.providerName}</strong> - {plan.planName}</td>
+                  <td>¥{plan.price}</td>
+                  <td>{plan.trafficDisplay}</td>
+                  <td><a href={`/airport/${plan.providerSlug}/`} class="btn btn-small">查看资料</a></td>
+                </tr>
+              )) : <tr><td colspan="4" style="text-align:center;">暂无符合条件的套餐</td></tr>}
+            </tbody>
+          </table>
         </div>
       </section>
 
-      <DataProvenance />
+      <section class="section">
+        <h2>二、不限时按量计费候选</h2>
+        <p>一次性买断一定流量，无明确到期时间，非常适合作为长期的安静备胎。共 {noExpiry.length} 个候选：</p>
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>品牌与套餐</th>
+                <th>一次性价格</th>
+                <th>总流量</th>
+                <th>有效期规则</th>
+                <th>详情入口</th>
+              </tr>
+            </thead>
+            <tbody>
+              {noExpiry.length > 0 ? noExpiry.map(plan => (
+                <tr>
+                  <td><strong>{plan.providerName}</strong> - {plan.planName}</td>
+                  <td>¥{plan.price}</td>
+                  <td>{plan.trafficDisplay}</td>
+                  <td>{plan.validity}</td>
+                  <td><a href={`/airport/${plan.providerSlug}/`} class="btn btn-small">查看资料</a></td>
+                </tr>
+              )) : <tr><td colspan="5" style="text-align:center;">暂无符合条件的套餐</td></tr>}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <div style="margin-top: var(--spacing-8); display: flex; gap: var(--spacing-4);">
+        <a href="/scenario/cheap/" class="btn btn-outline">👉 去看便宜月付候选</a>
+        <a href="/compare/monthly-vs-no-expiry/" class="btn btn-outline">👉 月付与不限时对比指南</a>
+      </div>
+      <AffiliateDisclosure />
     </main>
     <SiteFooter />
   </body>
 </html>
 
 <style>
-  .section-header { margin: var(--spacing-8) 0; }
-  .section-header h1 { font-size: 2.2rem; margin-bottom: var(--spacing-4); }
-  .intro { font-size: 1.1rem; color: var(--color-text-muted); line-height: 1.6; }
-  .section { margin: var(--spacing-8) 0; }
-  .prose h2 { margin-top: var(--spacing-8); }
-  .prose h3 { margin-top: var(--spacing-6); }
-  .prose p { margin-bottom: var(--spacing-4); line-height: 1.6; }
-  .text-right { text-align: right; margin-top: var(--spacing-2); }
-  .text-right a { color: var(--color-primary); font-weight: 600; text-decoration: none; }
-  .related-section {
-    margin: var(--spacing-12) 0;
-    padding-top: var(--spacing-8);
-    border-top: 1px solid var(--color-border);
-  }
-  .related-links { display: flex; flex-direction: column; gap: var(--spacing-3); }
-  .related-links a { color: var(--color-primary); text-decoration: none; font-size: 1.1rem; }
+  .intro { font-size: var(--text-lg); color: var(--color-text-secondary); margin-bottom: var(--spacing-6); line-height: 1.7; }
+  .table-container { margin: var(--spacing-4) 0 var(--spacing-8) 0; overflow-x: auto; }
+  .data-table { border-collapse: collapse; width: 100%; min-width: 600px; }
+  .data-table th, .data-table td { border: 1px solid var(--color-border); padding: var(--spacing-3); text-align: left; }
+  .data-table th { background-color: var(--color-surface); font-weight: var(--font-weight-bold); }
+  .btn-small { padding: 4px 8px; font-size: 0.8rem; }
+  .btn-outline { background: transparent; border: 1px solid var(--color-primary); color: var(--color-primary); }
+  .btn-outline:hover { background: var(--color-primary); color: white; }
+  .seo-prose ul { margin-left: var(--spacing-6); }
+  .seo-prose li { margin-bottom: var(--spacing-2); line-height: 1.6; }
 </style>

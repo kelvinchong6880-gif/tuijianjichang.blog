@@ -9,8 +9,12 @@ import PlanTable from '../../components/PlanTable.astro';
 import EditorialNotes from '../../components/EditorialNotes.astro';
 import AffiliateDisclosure from '../../components/AffiliateDisclosure.astro';
 import DataProvenance from '../../components/DataProvenance.astro';
+import SourceRecords from '../../components/SourceRecords.astro';
 import RelatedProviders from '../../components/RelatedProviders.astro';
 import EvidenceBadge from '../../components/EvidenceBadge.astro';
+import ProviderLogo from '../../components/ProviderLogo.astro';
+import PromoCode from '../../components/PromoCode.astro';
+import Button from '../../components/Button.astro';
 import { customContent } from '../../data/customContent';
 import '../../styles/global.css';
 
@@ -42,44 +46,61 @@ const h1Text = custom ? custom.h1 : provider.name;
       
       <header class="provider-header">
         <div class="provider-identity">
-          <h1>{h1Text}</h1>
-          <div class="badges">
-            {provider.editorialPick && <span class="badge pick">Editor's Pick #{provider.editorialRank}</span>}
-            <EvidenceBadge type="source" label="官方数据源" />
+          <ProviderLogo name={provider.name} logo={provider.logo} size="lg" />
+          <div class="identity-text">
+            <h1>{h1Text}</h1>
+            <div class="badges">
+              {provider.editorialPick && <span class="badge pick">编辑推荐 #{provider.editorialRank}</span>}
+              <EvidenceBadge type="source" label="官方数据源" />
+            </div>
           </div>
         </div>
         
-        {provider.affiliateUrl && (
-          <a href={provider.affiliateUrl} target="_blank" rel="nofollow sponsored noopener" class="btn btn-primary">
-            访问官网
-          </a>
-        )}
+        <div class="header-actions">
+          {provider.promoCode && (
+            <div class="promo-container">
+              <PromoCode code={provider.promoCode} />
+            </div>
+          )}
+          {provider.affiliateUrl && (
+            <Button variant="primary" href={provider.affiliateUrl} target="_blank" rel="nofollow sponsored noopener">
+              访问官网
+            </Button>
+          )}
+        </div>
       </header>
 
-      <AffiliateDisclosure />
       <ProviderSpecs provider={provider} />
       
-      <section class="section">
+      {custom && custom.html_top && (
+        <div class="reading-container custom-content-top" set:html={custom.html_top} />
+      )}
+
+      <section class="section section-plans">
         <h2>套餐结构与价格</h2>
         <PlanTable plans={provider.plans} />
       </section>
 
-      {custom ? (
-        <div class="custom-content-wrapper" set:html={custom.html} />
-      ) : (
-        <EditorialNotes provider={provider} />
-      )}
-      
-      {provider.affiliateUrl && (
-        <div class="bottom-cta">
-          <a href={provider.affiliateUrl} target="_blank" rel="nofollow sponsored noopener" class="btn btn-primary btn-large">
-            前往 {provider.name} 官网查看详情
-          </a>
-        </div>
-      )}
+      <div class="reading-container">
+        {custom ? (
+          <div class="custom-content-wrapper" set:html={custom.html} />
+        ) : (
+          <EditorialNotes provider={provider} />
+        )}
+        
+        {provider.affiliateUrl && (
+          <div class="bottom-cta">
+            <Button variant="primary" href={provider.affiliateUrl} target="_blank" rel="nofollow sponsored noopener" class="btn-large">
+              前往 {provider.name} 官网查看详情
+            </Button>
+          </div>
+        )}
+      </div>
 
       <DataProvenance />
+      <SourceRecords sources={provider.sources} />
       <RelatedProviders currentProvider={provider} />
+      <AffiliateDisclosure />
     </main>
     <SiteFooter />
   </body>
@@ -90,61 +111,105 @@ const h1Text = custom ? custom.h1 : provider.name;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: var(--spacing-6);
+    margin-bottom: var(--spacing-8);
     flex-wrap: wrap;
-    gap: var(--spacing-4);
+    gap: var(--spacing-6);
+    background: var(--color-surface);
+    padding: var(--spacing-6);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-sm);
   }
-  .provider-identity h1 {
+  .provider-identity {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-6);
+  }
+  .identity-text h1 {
     margin: 0 0 var(--spacing-2) 0;
-    font-size: 2.5rem;
+    font-size: var(--text-3xl);
+    font-weight: var(--font-weight-bold);
   }
   .badges {
     display: flex;
-    gap: var(--spacing-2);
+    gap: var(--spacing-3);
   }
   .badge.pick {
-    background-color: var(--color-primary);
-    color: white;
-    padding: 2px 8px;
-    border-radius: var(--radius-sm);
-    font-size: 0.75rem;
-    font-weight: 600;
+    background-color: var(--color-primary-soft);
+    color: var(--color-primary);
+    padding: 2px 10px;
+    border-radius: var(--radius-full);
+    font-size: var(--text-xs);
+    font-weight: var(--font-weight-semibold);
+  }
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-4);
+  }
+  .promo-container {
+    min-width: 200px;
   }
   .section {
-    margin: var(--spacing-8) 0;
+    margin: var(--spacing-12) 0;
   }
   .section h2 {
-    margin-bottom: var(--spacing-4);
+    margin-bottom: var(--spacing-6);
+    font-size: var(--text-xl);
+    color: var(--color-text-main);
   }
   .bottom-cta {
     display: flex;
     justify-content: center;
-    margin: var(--spacing-8) 0;
+    margin: var(--spacing-12) 0;
   }
-  .btn-large {
-    padding: var(--spacing-3) var(--spacing-6);
-    font-size: 1.1rem;
+  :global(.btn-large) {
+    padding: var(--spacing-4) var(--spacing-8) !important;
+    font-size: var(--text-lg) !important;
   }
   :global(.custom-editorial) {
     margin: var(--spacing-8) 0;
   }
+  :global(.custom-editorial h2) {
+    margin-top: var(--spacing-8);
+    margin-bottom: var(--spacing-4);
+    font-size: var(--text-2xl);
+    color: var(--color-text-main);
+  }
+  :global(.custom-editorial h2:first-child) {
+    margin-top: 0;
+  }
   :global(.custom-editorial h3) {
     margin-top: var(--spacing-6);
     margin-bottom: var(--spacing-3);
-    font-size: 1.25rem;
-    color: var(--color-text);
+    font-size: var(--text-xl);
+    color: var(--color-text-main);
   }
   :global(.custom-editorial h3:first-child) {
     margin-top: 0;
   }
   :global(.custom-editorial p) {
-    color: var(--color-text-muted);
-    font-size: 1rem;
-    line-height: 1.7;
-    margin-bottom: var(--spacing-4);
+    color: var(--color-text-secondary);
+    font-size: var(--text-base);
+    line-height: var(--line-height-loose);
+    margin-bottom: var(--spacing-5);
   }
   :global(.custom-editorial a) {
     color: var(--color-primary);
     text-decoration: underline;
+  }
+  @media (max-width: 768px) {
+    .provider-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .header-actions {
+      width: 100%;
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .promo-container {
+      width: 100%;
+    }
   }
 </style>

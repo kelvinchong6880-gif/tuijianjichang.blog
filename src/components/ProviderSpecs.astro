@@ -8,16 +8,15 @@ export interface Props {
 const { provider } = Astro.props;
 
 function renderClaim(claim: boolean | null) {
-  if (claim === true) return '<span class="status-yes">✅ 官方声明支持</span>';
-  if (claim === false) return '<span class="status-no">❌ 官方声明不支持</span>';
-  return '<span class="status-null">❓ 官方未说明</span>';
+  if (claim === true) return '<span class="status-yes">支持</span>';
+  if (claim === false) return '<span class="status-no">不支持</span>';
+  return '<span class="status-null">资料未说明</span>';
 }
 ---
-
 <div class="provider-specs">
   <div class="spec-item">
     <div class="spec-label">起步价格</div>
-    <div class="spec-value">¥{provider.entryPrice}</div>
+    <div class="spec-value price tabular-nums">¥{provider.entryPrice}</div>
   </div>
   <div class="spec-item">
     <div class="spec-label">线路类型</div>
@@ -27,8 +26,8 @@ function renderClaim(claim: boolean | null) {
     <div class="spec-label">不限时套餐</div>
     <div class="spec-value">
       {provider.hasNoExpiry 
-        ? <span style="color:#16a34a; font-size: 0.95rem;">✓ 提供不限时套餐</span> 
-        : <span style="color:var(--color-text-muted); font-size: 0.95rem;">— 当前资料未发现不限时套餐</span>}
+        ? <span class="status-yes">提供</span> 
+        : <span class="status-null">—</span>}
     </div>
   </div>
   <div class="spec-item">
@@ -44,27 +43,41 @@ function renderClaim(claim: boolean | null) {
 <style>
   .provider-specs {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: var(--spacing-4);
-    margin: var(--spacing-6) 0;
+    margin: var(--spacing-8) 0;
   }
   .spec-item {
     background-color: var(--color-surface);
-    padding: var(--spacing-4);
-    border-radius: var(--radius-md);
+    padding: var(--spacing-5);
+    border-radius: var(--radius-lg);
     border: 1px solid var(--color-border);
-    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
   }
   .spec-label {
-    font-size: 0.85rem;
+    font-size: var(--text-xs);
     color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     margin-bottom: var(--spacing-2);
+    line-height: 1.4;
   }
   .spec-value {
-    font-weight: 600;
-    font-size: 1.1rem;
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-lg);
+    color: var(--color-text-main);
+    line-height: 1.4;
+    word-break: break-word;
   }
-  :global(.status-yes) { color: #16a34a; font-size: 0.95rem; }
-  :global(.status-no) { color: #dc2626; font-size: 0.95rem; }
-  :global(.status-null) { color: var(--color-text-muted); font-size: 0.95rem; }
+  .spec-value.price {
+    color: var(--color-primary);
+    font-size: var(--text-xl);
+  }
+  :global(.status-yes) { color: var(--color-primary); font-weight: var(--font-weight-medium); }
+  :global(.status-no) { color: var(--color-text-muted); }
+  :global(.status-null) { color: var(--color-text-muted); font-weight: var(--font-weight-normal); }
 </style>

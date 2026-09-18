@@ -1,16 +1,46 @@
 ---
 import ProviderCard from './ProviderCard.astro';
+import FeaturedProviderCard from './FeaturedProviderCard.astro';
 import type { Provider } from '../data/schema';
 
 export interface Props {
   providers: Provider[];
+  featuredSlug?: string;
 }
-const { providers } = Astro.props;
+const { providers, featuredSlug } = Astro.props;
 
-const top8 = providers.filter(p => p.editorialPick).sort((a,b) => (a.editorialRank || 0) - (b.editorialRank || 0));
-const others = providers.filter(p => !p.editorialPick);
+let featuredProvider = null;
+let gridProviders = providers;
+
+if (featuredSlug) {
+  featuredProvider = providers.find(p => p.slug === featuredSlug);
+  if (featuredProvider) {
+    gridProviders = providers.filter(p => p.slug !== featuredSlug);
+  }
+}
+
+const top8 = gridProviders.filter(p => p.editorialPick).sort((a,b) => (a.editorialRank || 0) - (b.editorialRank || 0));
+const others = gridProviders.filter(p => !p.editorialPick);
 const sortedProviders = [...top8, ...others];
 ---
+{featuredProvider && (
+  <div class="featured-section">
+    <FeaturedProviderCard provider={featuredProvider} />
+    <div class="transition-heading" id="otherProvidersHeading">
+      <div class="heading-left">
+        <h2>其他机场</h2>
+        <p><span id="filterCountDisplay">{providers.length}</span> 家机场可继续筛选比较，找到更适合你的选择</p>
+      </div>
+      <div class="heading-right">
+        <select>
+          <option>综合排序</option>
+          <option>价格最低</option>
+          <option>流量最多</option>
+        </select>
+      </div>
+    </div>
+  </div>
+)}
 <div class="provider-grid">
   {sortedProviders.map(provider => (
     <ProviderCard provider={provider} />
@@ -18,10 +48,66 @@ const sortedProviders = [...top8, ...others];
 </div>
 
 <style>
+  .transition-heading {
+    margin: var(--spacing-6) 0 var(--spacing-6) 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .heading-left {
+    display: flex;
+    align-items: baseline;
+    gap: var(--spacing-4);
+  }
+  .transition-heading h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--color-text-main);
+    margin: 0;
+  }
+  .transition-heading p {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+  .heading-right select {
+    appearance: none;
+    background: var(--color-surface);
+    color: var(--color-text-main);
+    border: 1px solid var(--color-border);
+    padding: 8px 36px 8px 16px;
+    border-radius: 9999px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-main);
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23334155' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+  }
   .provider-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: var(--spacing-4);
-    margin-bottom: var(--spacing-8);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+    margin-bottom: var(--spacing-12);
+  }
+  @media (max-width: 1024px) {
+    .provider-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 768px) {
+    .provider-grid {
+      grid-template-columns: 1fr;
+    }
+    .transition-heading {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--spacing-3);
+    }
+    .heading-left {
+      flex-direction: column;
+      gap: 4px;
+    }
   }
 </style>

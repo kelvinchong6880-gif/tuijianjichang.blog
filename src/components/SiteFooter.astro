@@ -2,21 +2,54 @@
 ---
 <footer class="site-footer">
   <div class="container footer-inner">
-    <div class="footer-col">
-      <h4>数据透明度声明</h4>
+    <div class="footer-col brand-col">
+      <div class="brand">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+          <rect width="24" height="24" rx="6" fill="var(--color-primary)"/>
+          <path d="M7 14L12 9L17 14" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>推荐机场数据库</span>
+      </div>
       <p>本站致力于提供客观的机场数据查询。所有的流量、价格、线路标签均直接提取自对应服务商官网公开信息。本站未进行任何未经证实的“测速”背书。</p>
     </div>
+    
     <div class="footer-col links">
-      <h4>快速导航</h4>
-      <a href="/recommend/">编辑精选</a>
-      <a href="/scenario/">机场选购场景</a>
-      <a href="/compare/">套餐决策指南</a>
+      <h4>数据库</h4>
+      <a href="/">条件筛选</a>
       <a href="/airports/">全部机场</a>
-      <a href="/methodology/">数据方法论</a>
+      <a href="/recommend/">编辑精选</a>
+    </div>
+    
+    <div class="footer-col links">
+      <h4>选购工具</h4>
+      <a href="/scenario/">选购场景</a>
+      <a href="/compare/">决策指南</a>
+    </div>
+    
+    <div class="footer-col links">
+      <h4>方法与透明度</h4>
+      <a href="/methodology/">收录标准</a>
+      <a href="/methodology/#disclaimer">免责声明</a>
     </div>
   </div>
-  <div class="footer-bottom">
-    <p>&copy; 2026 推荐机场数据库 (tuijianjichang.blog). All rights reserved.</p>
+  
+  
+  <div class="container">
+    <div class="friends-links">
+      <span class="friends-title">友情链接：</span>
+      <a href="https://clash-vpn.org/" target="_blank" rel="noopener noreferrer">clash-vpn.org</a>
+      <a href="https://clashjiedian.org/" target="_blank" rel="noopener noreferrer">clashjiedian.org</a>
+      <a href="https://findjichang.com/" target="_blank" rel="noopener noreferrer">findjichang.com</a>
+      <a href="https://haoyongjichang.com/" target="_blank" rel="noopener noreferrer">haoyongjichang.com</a>
+      <a href="https://jichangtuijian.pro/" target="_blank" rel="noopener noreferrer">jichangtuijian.pro</a>
+      <a href="https://ainavbase.com/" target="_blank" rel="noopener noreferrer">ainavbase.com</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="footer-bottom">
+      <p>&copy; 2026 推荐机场数据库 (tuijianjichang.blog). All rights reserved.</p>
+    </div>
   </div>
 </footer>
 
@@ -24,46 +57,90 @@
   .site-footer {
     background: var(--color-surface);
     border-top: 1px solid var(--color-border);
-    padding-top: var(--spacing-8);
-    margin-top: var(--spacing-8);
+    padding-top: var(--spacing-16);
+    margin-top: var(--spacing-24);
   }
   .footer-inner {
     display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: var(--spacing-6);
-    margin-bottom: var(--spacing-8);
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: var(--spacing-8);
+    margin-bottom: var(--spacing-12);
   }
-  .footer-col h4 {
-    font-size: 1rem;
+  .brand-col {
+    max-width: 400px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--text-base);
+    color: var(--color-text-main);
     margin-bottom: var(--spacing-4);
   }
-  .footer-col p {
+  .brand-col p {
     color: var(--color-text-muted);
-    font-size: 0.9rem;
-    max-width: 600px;
+    font-size: var(--text-sm);
+    line-height: var(--line-height-normal);
+  }
+  .footer-col h4 {
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-main);
+    margin-bottom: var(--spacing-4);
   }
   .links {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-2);
+    gap: var(--spacing-3);
   }
   .links a {
-    color: var(--color-text-muted);
-    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+    transition: color var(--transition-fast);
   }
   .links a:hover {
-    color: var(--color-text-main);
+    color: var(--color-primary);
   }
   .footer-bottom {
     border-top: 1px solid var(--color-border);
-    text-align: center;
-    padding: var(--spacing-4) 0;
+    padding: var(--spacing-6) 0;
     color: var(--color-text-muted);
-    font-size: 0.85rem;
+    font-size: var(--text-sm);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
-  @media (max-width: 600px) {
+  @media (max-width: 768px) {
     .footer-inner {
       grid-template-columns: 1fr;
+      gap: var(--spacing-8);
     }
+    .footer-bottom {
+      flex-direction: column;
+      text-align: center;
+      gap: var(--spacing-4);
+    }
+  }
+
+  .friends-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-4);
+    align-items: center;
+    padding-bottom: var(--spacing-6);
+    font-size: var(--text-sm);
+  }
+  .friends-title {
+    color: var(--color-text-main);
+    font-weight: var(--font-weight-semibold);
+  }
+  .friends-links a {
+    color: var(--color-text-secondary);
+    transition: color var(--transition-fast);
+    word-break: break-all;
+  }
+  .friends-links a:hover {
+    color: var(--color-primary);
   }
 </style>

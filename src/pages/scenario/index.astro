@@ -27,36 +27,43 @@ const description = "机场选购场景中心：提供便宜机场、IPLC/IEPL�
       
       <section class="scenario-grid">
         <a href="/scenario/cheap/" class="scenario-card">
+          <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
           <h2>便宜机场推荐</h2>
           <p>月付门槛低至 ¥15 的候选机场集合。适合预算有限或优先考虑价格的用户。</p>
           <span class="cta">进入筛选 &rarr;</span>
         </a>
         <a href="/scenario/iplc-iepl/" class="scenario-card">
+          <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
           <h2>IPLC / IEPL 专线机场</h2>
           <p>官方资料中标注支持 IPLC 或 IEPL 专线传输的机场集合。</p>
           <span class="cta">进入筛选 &rarr;</span>
         </a>
         <a href="/scenario/no-expiry/" class="scenario-card">
+          <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
           <h2>不限时机场套餐</h2>
           <p>提供流量永久有效或无到期时间限制的套餐候选集合，适合轻度或极不规律的使用者。</p>
           <span class="cta">进入筛选 &rarr;</span>
         </a>
         <a href="/scenario/high-traffic/" class="scenario-card">
+          <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></div>
           <h2>大流量机场</h2>
           <p>提供 500GB 及以上甚至数 TB 级大流量额度套餐的机场集合。</p>
           <span class="cta">进入筛选 &rarr;</span>
         </a>
         <a href="/scenario/ai-chatgpt/" class="scenario-card">
+          <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg></div>
           <h2>支持 ChatGPT 的机场</h2>
           <p>官方明确声明对 ChatGPT、Claude 等 AI 工具进行解锁支持的机场集合。</p>
           <span class="cta">进入筛选 &rarr;</span>
         </a>
         <a href="/scenario/streaming/" class="scenario-card">
+          <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg></div>
           <h2>流媒体解锁机场</h2>
           <p>官方明确声明支持 Netflix、Disney+ 等流媒体平台解锁的机场集合。</p>
           <span class="cta">进入筛选 &rarr;</span>
         </a>
         <a href="/scenario/backup/" class="scenario-card">
+          <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
           <h2>备用机场怎么选</h2>
           <p>备用机场选购指南：如何通过不同价格结构与套餐类型组合，建立可靠的备用防失联方案。</p>
           <span class="cta">查看指南 &rarr;</span>
@@ -144,5 +151,18 @@ const description = "机场选购场景中心：提供便宜机场、IPLC/IEPL�
   }
   .related-links a:hover {
     text-decoration: underline;
+  }
+  .card-icon {
+    width: 32px;
+    height: 32px;
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-4);
+    background: var(--color-primary-soft);
+    padding: 8px;
+    border-radius: var(--radius-md);
+  }
+  .card-icon svg {
+    width: 100%;
+    height: 100%;
   }
 </style>

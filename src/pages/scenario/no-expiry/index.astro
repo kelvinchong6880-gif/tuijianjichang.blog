@@ -3,16 +3,54 @@ import BaseHead from '../../../components/BaseHead.astro';
 import SiteHeader from '../../../components/SiteHeader.astro';
 import SiteFooter from '../../../components/SiteFooter.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
-import ScenarioMatrix from '../../../components/ScenarioMatrix.astro';
-import DataProvenance from '../../../components/DataProvenance.astro';
 import AffiliateDisclosure from '../../../components/AffiliateDisclosure.astro';
 import { providers } from '../../../data/providers';
 import '../../../styles/global.css';
 
-const title = "不限时机场套餐候选 - 流量永久有效";
-const description = "不限时机场套餐集合。收录官方明确提供“永久有效流量”或“无时间限制”套餐的机场候选，适合网络使用频率极不规律的用户。";
+const title = "不限时机场套餐推荐 - 一次性购买按流量计费候选";
+const description = "不限时机场套餐集合。收录数据库中“一次性购买，流量无到期时间限制”的候选套餐。分别展示已确认套餐及价格冲突待核实套餐。";
 
-const noExpiryProviders = providers.filter(p => p.hasNoExpiry);
+interface NoExpiryPlan {
+  providerName: string;
+  providerSlug: string;
+  planName: string;
+  price: number;
+  trafficDisplay: string;
+  validity: string;
+  reason?: string;
+}
+
+const validPlans: NoExpiryPlan[] = [];
+const conflictPlans: NoExpiryPlan[] = [];
+
+providers.forEach(p => {
+  p.plans.forEach(plan => {
+    // 识别为不限时套餐的标准
+    const valStr = plan.validity ? plan.validity.toLowerCase() : '';
+    const isNoExpiry = valStr.includes('不限时') || valStr.includes('无到期') || valStr.includes('永久') || valStr.includes('permanent') || valStr.includes('用完即止') || valStr.includes('无时间限制');
+    if (isNoExpiry) {
+      const planData = {
+        providerName: p.name,
+        providerSlug: p.slug,
+        planName: plan.name,
+        price: plan.price,
+        trafficDisplay: plan.trafficDisplay,
+        validity: plan.validity
+      };
+
+      if (plan.priceConflict || plan.paymentCycleConflict) {
+        conflictPlans.push({
+          ...planData,
+          reason: '标题标价与正文售价存在冲突，或流量规则存在矛盾，数据待核实。'
+        });
+      } else {
+        validPlans.push(planData);
+      }
+    }
+  });
+});
+
+validPlans.sort((a, b) => a.price - b.price);
 ---
 
 <html lang="zh-CN">
@@ -28,74 +66,150 @@ const noExpiryProviders = providers.filter(p => p.hasNoExpiry);
       ]} />
       
       <header class="section-header">
-        <h1>不限时机场套餐 / 流量永久有效候选</h1>
+        <h1>不限时机场套餐：按流量计费候选</h1>
         <p class="intro">
-          本页面收录了数据库中官方资料明确提供 <strong>“流量永久有效”</strong> 或 <strong>“无到期时间限制”</strong>（No-Fixed-Expiry）套餐的机场。<br/>
-          这种计费模式（一次性付费买断流量，用完即止）特别适合极低频或使用量极不规律的用户。
+          本页面收录了数据库中 <strong>一次性付费购买总流量、且官方声明无明确到期时间限制</strong> 的套餐（No-Fixed-Expiry）。适合那些轻度使用、或仅作为备用网络，不希望每月固定扣款的用户。
         </p>
       </header>
 
-      <AffiliateDisclosure />
+      <section class="seo-prose">
+        <h2>选购说明与风险提示</h2>
+        <div class="faq-list">
+          <div class="faq-item">
+            <h3>1. “不限时”意味着永久使用吗？</h3>
+            <p><strong>绝对不是。</strong>“不限时”仅仅是服务商定义的一种<strong>套餐计费规则</strong>（即未设定 30 天或 365 天强制清零的期限）。如果该服务商关停、跑路或修改规则，您的套餐依然会失效。它不代表永久的商业运营保证。</p>
+          </div>
+          <div class="faq-item">
+            <h3>2. 如何与常规“月付/年付”比较性价比？</h3>
+            <p>由于“不限时”是一次性买断总流量，而“月付/年付”通常是每 30 天刷新一次固定流量，两者不能直接比较总容量。请根据您的<strong>实际月消耗量</strong>来计算：<br/>
+            假设您每月仅使用 5GB，一个 ¥100 买断 100GB 的不限时套餐理论上可用 20 个月（折合 ¥5/月）；但如果您每月消耗 50GB，该套餐 2 个月即耗尽，此时反而不如直接购买常规的大流量月付套餐。</p>
+          </div>
+        </div>
+      </section>
 
       <section class="section">
-        <h2>提供不限时套餐的机场候选</h2>
-        <p>经过 Source 资料核实，以下 {noExpiryProviders.length} 家机场提供了无固定到期时间的流量包套餐：</p>
-        <ScenarioMatrix providers={noExpiryProviders} showNoExpiry={true} showPrice={false} showTraffic={false} />
-      </section>
-
-      <section class="section prose">
-        <h2>重要筛选规则与限制 (Important Limitations)</h2>
+        <h2>一、已确认不限时候选套餐</h2>
+        <p>以下为官方资料明确提供，且价格无严重冲突的不限时候选（共 {validPlans.length} 个）：</p>
         
-        <div class="warning-alert">
-          <strong>⚠️ 关键概念澄清：不限时 ≠ 无限流量</strong>
-          <p>
-            “不限时”仅仅代表<strong>时间维度</strong>上没有像月付那样按月清零的硬性过期时间，它<strong>绝对不等于</strong>无限可用流量（Unlimited Traffic）。<br/>
-            例如：购买一个 100GB 的不限时套餐，无论你用了一周还是一年，一旦消耗完这 100GB，套餐即宣告结束，需要重新购买。
-          </p>
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>品牌与套餐</th>
+                <th>一次性价格</th>
+                <th>总流量</th>
+                <th>官方有效期规则</th>
+                <th>详情入口</th>
+              </tr>
+            </thead>
+            <tbody>
+              {validPlans.length > 0 ? validPlans.map(plan => (
+                <tr>
+                  <td><strong>{plan.providerName}</strong> - {plan.planName}</td>
+                  <td><span style="color:var(--color-primary); font-weight:bold;">¥{plan.price}</span></td>
+                  <td>{plan.trafficDisplay}</td>
+                  <td>{plan.validity}</td>
+                  <td><a href={`/airport/${plan.providerSlug}/`} class="btn btn-small">查看资料</a></td>
+                </tr>
+              )) : <tr><td colspan="5" style="text-align:center;">暂无符合条件的套餐</td></tr>}
+            </tbody>
+          </table>
         </div>
-
-        <h3>适合谁 (Who This Fits)</h3>
-        <p>偶尔需要查阅海外资料、不固定看外网视频、不希望每个月都被强制月供绑定、或者纯粹想要保留一个永远不过期“备胎”防失联的用户。</p>
-
-        <h3>不适合谁 (Who This Does Not Fit)</h3>
-        <p>长期重度追剧、每日需要进行高强度外网视频会议或文件下载的用户。对于大流量使用者而言，不限时套餐的每 GB 单价通常远高于常规的月付套餐，极度不划算。</p>
       </section>
 
-      <section class="related-section">
-        <h2>相关决策指南</h2>
-        <div class="related-links">
-          <a href="/compare/monthly-vs-no-expiry/">月付套餐与不限时套餐怎么选？</a>
-          <a href="/scenario/backup/">如何组合不限时套餐作为备用方案？</a>
-        </div>
-      </section>
+      {conflictPlans.length > 0 && (
+        <section class="section">
+          <h2>二、标价冲突 / 待核实的不限时套餐</h2>
+          <p>以下套餐（包含 SOGO 云等品牌的部分款型）由于标题标价与正文价格严重冲突，或流量数字存在疑点，本站已将其剔除出排序。展示如下以供参考核对：</p>
+          <div class="table-container">
+            <table class="data-table" style="background-color: var(--color-surface); opacity: 0.9;">
+              <thead>
+                <tr>
+                  <th>品牌与套餐</th>
+                  <th>冲突标价</th>
+                  <th>冲突说明</th>
+                  <th>详情入口</th>
+                </tr>
+              </thead>
+              <tbody>
+                {conflictPlans.map(plan => (
+                  <tr>
+                    <td><strong>{plan.providerName}</strong> - {plan.planName}</td>
+                    <td>¥{plan.price}</td>
+                    <td style="color: var(--color-warning);">{plan.reason}</td>
+                    <td><a href={`/airport/${plan.providerSlug}/`} class="btn btn-small">查看资料</a></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )}
 
-      <DataProvenance />
+      <div style="margin-top: var(--spacing-8); display: flex; gap: var(--spacing-4);">
+        <a href="/scenario/cheap/" class="btn btn-outline">👉 去看便宜月付候选</a>
+        <a href="/compare/monthly-vs-no-expiry/" class="btn btn-outline">👉 月付与不限时对比指南</a>
+      </div>
+
+      <AffiliateDisclosure />
     </main>
     <SiteFooter />
   </body>
 </html>
 
 <style>
-  .section-header { margin: var(--spacing-8) 0; }
-  .section-header h1 { font-size: 2.2rem; margin-bottom: var(--spacing-4); }
-  .intro { font-size: 1.1rem; color: var(--color-text-muted); line-height: 1.6; }
-  .section { margin: var(--spacing-8) 0; }
-  .prose h2 { margin-top: var(--spacing-8); }
-  .prose h3 { margin-top: var(--spacing-6); }
-  .warning-alert {
-    background-color: rgba(220, 38, 38, 0.1);
-    border-left: 4px solid #dc2626;
-    padding: var(--spacing-4);
-    margin: var(--spacing-4) 0;
-    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  .intro {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-6);
+    line-height: 1.7;
   }
-  .warning-alert strong { display: block; margin-bottom: var(--spacing-2); color: #b91c1c; }
-  .warning-alert p { margin: 0; }
-  .related-section {
-    margin: var(--spacing-12) 0;
-    padding-top: var(--spacing-8);
-    border-top: 1px solid var(--color-border);
+  .table-container {
+    margin: var(--spacing-4) 0 var(--spacing-8) 0;
+    overflow-x: auto;
   }
-  .related-links { display: flex; flex-direction: column; gap: var(--spacing-3); }
-  .related-links a { color: var(--color-primary); text-decoration: none; font-size: 1.1rem; }
+  .data-table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 600px;
+  }
+  .data-table th, .data-table td {
+    border: 1px solid var(--color-border);
+    padding: var(--spacing-3);
+    text-align: left;
+  }
+  .data-table th {
+    background-color: var(--color-surface);
+    font-weight: var(--font-weight-bold);
+  }
+  .faq-list {
+    gap: var(--spacing-6);
+    margin: var(--spacing-6) 0;
+    flex-direction: column;
+    display: flex;
+  }
+  .faq-item h3 {
+    font-size: 1.1rem;
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-2);
+    color: var(--color-text-main);
+  }
+  .faq-item p {
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    margin: 0;
+  }
+  .btn-small {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+  }
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary);
+  }
+  .btn-outline:hover {
+    background: var(--color-primary);
+    color: white;
+  }
 </style>

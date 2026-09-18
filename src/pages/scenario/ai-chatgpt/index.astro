@@ -3,17 +3,14 @@ import BaseHead from '../../../components/BaseHead.astro';
 import SiteHeader from '../../../components/SiteHeader.astro';
 import SiteFooter from '../../../components/SiteFooter.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
-import ScenarioMatrix from '../../../components/ScenarioMatrix.astro';
-import DataProvenance from '../../../components/DataProvenance.astro';
 import AffiliateDisclosure from '../../../components/AffiliateDisclosure.astro';
 import { providers } from '../../../data/providers';
 import '../../../styles/global.css';
 
-const title = "支持 ChatGPT 的 AI 机场 - 官方解锁声明数据库";
-const description = "AI 机场检索工具。汇总官方明确声明支持 ChatGPT、Claude、Midjourney 等人工智能服务节点解锁的机场候选。";
+const title = "提供 AI 服务解锁声明的机场候选";
+const description = "提供 AI 服务解锁声明的机场候选。收录在官方资料中包含支持 AI 访问声明的机场。仅凭笼统声明不代表特定平台可用，需以实际验证为准。";
 
-const aiTrue = providers.filter(p => p.aiClaim === true);
-const aiNull = providers.filter(p => p.aiClaim === null);
+const aiProviders = providers.filter(p => p.aiClaim);
 ---
 
 <html lang="zh-CN">
@@ -25,66 +22,80 @@ const aiNull = providers.filter(p => p.aiClaim === null);
     <main class="container">
       <Breadcrumbs paths={[
         { label: '机场选购场景', url: '/scenario/' },
-        { label: '支持 ChatGPT 的 AI 机场', url: '/scenario/ai-chatgpt/' }
+        { label: 'AI 服务解锁', url: '/scenario/ai-chatgpt/' }
       ]} />
       
       <header class="section-header">
-        <h1>支持 ChatGPT 的 AI 机场解锁候选</h1>
+        <h1>声明提供 AI 解锁的机场候选</h1>
         <p class="intro">
-          在现代工作流中，无缝访问 ChatGPT、Claude 等大模型 AI 已经成为核心需求。<br/>
-          本页面汇总了官方资料中<strong>明确声明对 AI 服务进行线路解锁与防封锁优化</strong>的机场候选。
+          本页面汇总了官方资料中明确声明支持“AI 服务解锁”的机场候选。然而，不同的服务商对于“支持AI”的定义差别极大。
         </p>
       </header>
 
-      <AffiliateDisclosure />
-
-      <section class="section">
-        <h2>官方明确声明支持 AI 解锁的机场</h2>
-        <p>以下 {aiTrue.length} 家机场在其官网套餐详情或说明中，明确给出了支持 ChatGPT 或人工智能大模型访问的字样：</p>
-        <ScenarioMatrix providers={aiTrue} showAI={true} showPrice={false} showTraffic={false} showLine={false} />
-      </section>
-
-      <section class="section">
-        <h2>官方资料未说明 (Not Explicitly Claimed)</h2>
-        <p>
-          以下 {aiNull.length} 家机场在官网说明中<strong>没有提及</strong>任何 AI 相关的解锁支持。但这<strong>并不代表</strong>它们不支持，仅仅是官方未将此作为营销卖点（Null State）。如需确认，建议先购买小额套餐测试：
-        </p>
-        <ScenarioMatrix providers={aiNull} showAI={true} showPrice={false} showTraffic={false} showLine={false} />
-      </section>
-
-      <section class="section prose">
-        <h2>筛选说明与限制 (Important Limitations)</h2>
-        <ul>
-          <li><strong>非实时测试</strong>：请注意，AI 平台（特别是 OpenAI 旗下）的 IP 封锁策略极其频繁和严格，任何机场都可能出现短暂的解锁失败。此处的 <code>✅ 支持</code> 标签仅代表服务商的服务承诺，不保证 100% 永久有效。</li>
-          <li><strong>API vs 网页版</strong>：大部分机场声明支持 ChatGPT 通常是指支持 网页版（Web UI）登录使用。如果您是开发者需要高频调用 API，通常更建议选择具有固定出口 IP 甚至原生 IP 的独享定制套餐。</li>
-        </ul>
-      </section>
-
-      <section class="related-section">
-        <h2>相关决策指南</h2>
-        <div class="related-links">
-          <a href="/compare/how-to-choose-plans/">如何科学选择机场套餐？</a>
+      <section class="seo-prose">
+        <div class="warning-alert">
+          <strong>⚠️ 购买前必读：笼统声明 ≠ 实际可用</strong>
+          <p>
+            1. <strong>区分声明级别</strong>：官方的一句笼统“支持AI解锁”，不等于自动支持 ChatGPT、Claude、Midjourney 或具备防封锁路由优化。具体能解锁什么，必须以实际连通为准。<br/>
+            2. <strong>无长期可用承诺</strong>：由于 AI 平台（如 OpenAI）的封控策略频繁升级，节点随时可能被标记。本站仅记录其官方当前声明状态，若该状态没有实测快照支撑，即视为“未验证”。本站不承诺其账号安全或长期可用性。<br/>
+            3. <strong>建议验证</strong>：若您对特定平台有强烈需求，请购买短周期月付套餐进行本地实测。
+          </p>
         </div>
       </section>
 
-      <DataProvenance />
+      <section class="section">
+        <h2>包含 AI 解锁声明的品牌 (共 {aiProviders.length} 家)</h2>
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>品牌名称</th>
+                <th>起步价格</th>
+                <th>官方解锁声明</th>
+                <th>实测验证状态</th>
+                <th>详情入口</th>
+              </tr>
+            </thead>
+            <tbody>
+              {aiProviders.map(p => (
+                <tr>
+                  <td><strong>{p.name}</strong></td>
+                  <td>¥{p.entryPrice} / 月</td>
+                  <td><span style="color: #16a34a;">是 (官方笼统声明)</span></td>
+                  <td><span style="color: var(--color-warning);">未验证实际平台支持</span></td>
+                  <td><a href={`/airport/${p.slug}/`} class="btn btn-small">查看资料</a></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+      
+      <div style="margin-top: var(--spacing-8);">
+        <a href="/recommend/" class="btn btn-outline">👉 查看编辑推荐榜单</a>
+      </div>
+      
+      <section class="cta-section" style="margin-bottom: 2rem; background: var(--color-surface); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--color-border); text-align: center;">
+        <h2 style="font-size: var(--text-lg); margin-bottom: 0.5rem; margin-top: 0;">不知道怎么选？</h2>
+        <p style="color: var(--color-text-muted); margin-bottom: 1rem;">看看经过编辑筛选的综合表现最佳机场。</p>
+        <a href="/recommend/" class="btn btn-primary">查看编辑精选：机场推荐榜单</a>
+      </section>
+
+      <AffiliateDisclosure />
     </main>
     <SiteFooter />
   </body>
 </html>
 
 <style>
-  .section-header { margin: var(--spacing-8) 0; }
-  .section-header h1 { font-size: 2.2rem; margin-bottom: var(--spacing-4); }
-  .intro { font-size: 1.1rem; color: var(--color-text-muted); line-height: 1.6; }
-  .section { margin: var(--spacing-8) 0; }
-  .prose h2 { margin-top: var(--spacing-8); }
-  .prose h3 { margin-top: var(--spacing-6); }
-  .related-section {
-    margin: var(--spacing-12) 0;
-    padding-top: var(--spacing-8);
-    border-top: 1px solid var(--color-border);
-  }
-  .related-links { display: flex; flex-direction: column; gap: var(--spacing-3); }
-  .related-links a { color: var(--color-primary); text-decoration: none; font-size: 1.1rem; }
+  .intro { font-size: var(--text-lg); color: var(--color-text-secondary); margin-bottom: var(--spacing-6); line-height: 1.7; }
+  .table-container { margin: var(--spacing-4) 0 var(--spacing-8) 0; overflow-x: auto; }
+  .data-table { border-collapse: collapse; width: 100%; min-width: 600px; }
+  .data-table th, .data-table td { border: 1px solid var(--color-border); padding: var(--spacing-3); text-align: left; }
+  .data-table th { background-color: var(--color-surface); font-weight: var(--font-weight-bold); }
+  .warning-alert { background-color: rgba(234, 179, 8, 0.1); border-left: 4px solid #eab308; padding: var(--spacing-4); margin: var(--spacing-6) 0; }
+  .warning-alert strong { color: #b45309; }
+  .warning-alert p { margin: var(--spacing-2) 0 0 0; color: var(--color-text-main); line-height: 1.6; }
+  .btn-small { padding: 4px 8px; font-size: 0.8rem; }
+  .btn-outline { background: transparent; border: 1px solid var(--color-primary); color: var(--color-primary); }
 </style>

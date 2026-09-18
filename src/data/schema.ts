@@ -1,6 +1,17 @@
+
+export interface SourceRecord {
+  type: 'official' | 'user' | 'third_party';
+  urlOrFile: string;
+  sourceDate: string | null;
+  recordedDate: string | null;
+  verifiedDate: string | null;
+  supportedFacts: string[];
+}
 export interface Plan {
   name: string;
   price: number;
+  priceConflict?: boolean; // explicitly marks price as conflicting/unverified
+  paymentCycleConflict?: boolean; // explicitly marks payment cycle as conflicting or unverified
   currency: string;
   billingType: 'Monthly' | 'Quarterly' | 'Yearly' | 'One-Time' | 'Other';
   validity: string;
@@ -23,6 +34,7 @@ export interface Provider {
   aliases: string[];
   slug: string;
   logo: string | null;
+  promoCode?: string | null;
   editorialRank: number | null;
   editorialPick: boolean;
 
@@ -47,6 +59,8 @@ export interface Provider {
   sourceFile: string;
   affiliateSourceFile: string;
   lastVerified: string;
+  sourceNotes?: string | null;
 
   plans: Plan[];
+  sources?: SourceRecord[];
 }

@@ -1,46 +1,107 @@
 ---
+import ProviderLogo from './ProviderLogo.astro';
+import PromoCode from './PromoCode.astro';
+import Button from './Button.astro';
 import type { Provider } from '../data/schema';
 
 export interface Props {
   provider: Provider;
 }
 const { provider } = Astro.props;
----
-<div class="provider-card" data-price={provider.entryPrice} data-lines={provider.lineClaims.join(',')} data-no-expiry={provider.hasNoExpiry ? 'yes' : 'no'} data-streaming={provider.streamingClaim ? 'yes' : 'no'} data-ai={provider.aiClaim ? 'yes' : 'no'}>
-  <div class="card-header">
-    <div class="name-col">
-      <h3 class="name">{provider.name}</h3>
-      {provider.editorialPick && <span class="badge pick">Editor's Pick #{provider.editorialRank}</span>}
-      {!provider.editorialPick && <span class="badge listing">Database Listing</span>}
-    </div>
-  </div>
-  
-  <div class="specs">
-    <div class="spec-item">
-      <span class="label">起步价</span>
-      <span class="value">¥{provider.entryPrice}</span>
-    </div>
-    <div class="spec-item">
-      <span class="label">流量范围</span>
-      <span class="value">{provider.trafficDisplay}</span>
-    </div>
-    <div class="spec-item">
-      <span class="label">线路</span>
-      <span class="value">{provider.lineClaims.length > 0 ? provider.lineClaims.join(' / ') : '未知'}</span>
-    </div>
-  </div>
-  
-  <div class="tags">
-    {provider.hasNoExpiry && <span class="tag">不限时包</span>}
-    {provider.streamingClaim && <span class="tag">流媒体</span>}
-    {provider.aiClaim && <span class="tag">AI解锁</span>}
-  </div>
 
-  <div class="actions">
-    <a href={`/airport/${provider.slug}/`} class="btn btn-secondary">查看数据</a>
-    {provider.affiliateUrl && (
-      <a href={provider.affiliateUrl} target="_blank" rel="nofollow sponsored noopener" class="btn btn-primary">访问官网</a>
-    )}
+const validPlans = provider.plans.filter(p => p.traffic !== null);
+let trafficText = provider.trafficDisplay;
+if (validPlans.length > 0) {
+  const formatT = (v: number) => v >= 1000 ? `${(v/1000).toFixed(1).replace(/\.0$/, '')}TB` : `${v}GB`;
+  let minT = Math.min(...validPlans.map(p => p.traffic!));
+  let maxT = Math.max(...validPlans.map(p => p.traffic!));
+  if (minT === maxT) {
+    trafficText = formatT(minT);
+  } else {
+    trafficText = `${formatT(minT)}–${formatT(maxT)}`;
+  }
+}
+
+const highlights: string[] = [];
+if (provider.hasNoExpiry) highlights.push('提供不限时套餐');
+if (provider.streamingClaim === true) highlights.push('支持流媒体');
+if (provider.aiClaim === true) highlights.push('支持 AI');
+if (validPlans.length > 0) {
+  const maxT = Math.max(...validPlans.map(p => p.traffic!));
+  if (maxT > 0) {
+    const maxFormat = maxT >= 1000 ? `${(maxT/1000).toFixed(1).replace(/\.0$/, '')}TB` : `${maxT}GB`;
+    highlights.push(`最高套餐流量 ${maxFormat}`);
+  }
+}
+const hasOneTime = provider.plans.some(p => p.billingType === 'One-Time');
+if (hasOneTime && !provider.hasNoExpiry) highlights.push('含一次性套餐');
+highlights.push(`${provider.plans.length} 个套餐选择`);
+
+const finalHighlights = highlights.slice(0, 3);
+---
+<div class={`provider-card ${provider.editorialPick ? 'is-pick' : ''}`} data-price={provider.entryPrice} data-lines={provider.lineClaims.join(',')} data-no-expiry={provider.hasNoExpiry ? 'yes' : 'no'} data-streaming={provider.streamingClaim ? 'yes' : 'no'} data-ai={provider.aiClaim ? 'yes' : 'no'} data-name={provider.name.toLowerCase()}>
+  <div class="card-inner">
+    <div class="card-header">
+      <div class="identity">
+        <ProviderLogo name={provider.name} logo={provider.logo} size="md" />
+        <div class="identity-text">
+          <h3 class="name">
+            <a href={`/airport/${provider.slug}/`} class="card-link">{provider.name}</a>
+          </h3>
+          {provider.editorialPick ? (
+            <span class="rank-marker">#0{provider.editorialRank} 编辑推荐</span>
+          ) : (
+            <span class="rank-marker text-muted">数据库收录</span>
+          )}
+        </div>
+      </div>
+    </div>
+    
+    <div class="primary-metrics">
+      <div class="metric-block">
+        <span class="metric-value price tabular-nums">¥{provider.entryPrice}</span>
+        <span class="metric-label">起步价</span>
+      </div>
+      <div class="metric-block">
+        <span class="metric-value tabular-nums">{trafficText}</span>
+        <span class="metric-label">最高套餐流量</span>
+      </div>
+      <div class="metric-block">
+        <span class="metric-value">{provider.lineClaims.join(' / ') || 'BGP'}</span>
+        <span class="metric-label">线路类型</span>
+      </div>
+    </div>
+    
+    <div class="provider-details">
+      <div class="highlights-section">
+        <div class="highlights-label">资料特点</div>
+        <ul class="highlights-list">
+          {finalHighlights.map(hl => (
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="highlight-icon"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              <span>{hl}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+    
+    <div class="card-bottom">
+      <div class="promo-section">
+        {provider.promoCode ? (
+          <PromoCode code={provider.promoCode} />
+        ) : (
+          <div class="no-promo">暂无优惠码</div>
+        )}
+      </div>
+
+      <div class="actions">
+        <Button variant="secondary" href={`/airport/${provider.slug}/`}>查看详情</Button>
+        {provider.affiliateUrl && (
+          <Button variant="primary" href={provider.affiliateUrl} target="_blank" rel="nofollow sponsored noopener">访问官网 ↗</Button>
+        )}
+      </div>
+    </div>
   </div>
 </div>
 
@@ -48,97 +109,213 @@ const { provider } = Astro.props;
   .provider-card {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    padding: var(--spacing-4);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    box-shadow: var(--shadow-sm);
+    height: 100%;
+    position: relative;
+  }
+  .provider-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--color-primary), #3b82f6);
+    opacity: 0.8;
+  }
+  .provider-card.is-pick::before {
+    opacity: 1;
+    height: 4px;
+  }
+  .provider-card:hover {
+    box-shadow: 0 10px 20px -5px rgba(0,0,0,0.06), 0 4px 6px -4px rgba(0,0,0,0.02);
+    border-color: rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+  }
+  .card-inner {
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    z-index: 2;
+  }
+  .card-header {
+    margin-bottom: 16px;
+    display: flex;
+    align-items: flex-start;
+  }
+  .identity {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  :global(.provider-card .provider-logo.logo-md) {
+    width: 44px !important;
+    height: 44px !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    border: none;
+    flex-shrink: 0;
+  }
+  .identity-text {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    justify-content: center;
+    min-height: 44px;
+  }
+  .name {
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.25;
+    margin: 0;
+  }
+  .card-link {
+    color: var(--color-text-main);
+  }
+  .card-link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+  .card-bottom {
+    position: relative;
+    z-index: 2;
+    margin-top: auto;
+  }
+  .rank-marker {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-primary);
+    background: var(--color-primary-soft);
+    padding: 3px 8px;
+    border-radius: var(--radius-full);
+    display: inline-block;
+    line-height: 1.2;
+    align-self: flex-start;
+  }
+  .rank-marker.text-muted {
+    background: var(--color-base);
+    color: var(--color-text-muted);
+  }
+  .primary-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    gap: var(--spacing-2);
+    margin-bottom: var(--spacing-5);
+  }
+  .metric-block {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    align-items: flex-start;
+  }
+  .metric-value {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--color-text-main);
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+  .metric-value.price {
+    color: var(--color-primary);
+    font-size: 20px;
+  }
+  .metric-label {
+    font-size: 11px;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+  .provider-details {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-4);
-    transition: transform 0.2s, box-shadow 0.2s;
+    margin-bottom: var(--spacing-6);
   }
-  .provider-card:hover {
-    box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
-  }
-  .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
-  .name {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--color-text-main);
-    margin-bottom: 4px;
-  }
-  .badge {
-    font-size: 0.75rem;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-weight: 600;
-  }
-  .badge.pick {
-    background: var(--color-primary);
-    color: white;
-  }
-  .badge.listing {
-    background: var(--color-evidence-unverified);
-    color: var(--color-evidence-unverified-text);
-  }
-  .specs {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-2);
-  }
-  .spec-item {
+  .highlights-section {
     display: flex;
     flex-direction: column;
+    gap: var(--spacing-3);
   }
-  .spec-item .label {
-    font-size: 0.75rem;
+  .highlights-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     color: var(--color-text-muted);
-  }
-  .spec-item .value {
-    font-size: 0.95rem;
     font-weight: 600;
   }
-  .tags {
-    display: flex;
-    gap: var(--spacing-2);
-    flex-wrap: wrap;
+  .highlights-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
   }
-  .tag {
-    font-size: 0.75rem;
-    background: var(--color-evidence-source);
-    color: var(--color-evidence-source-text);
-    padding: 2px 6px;
-    border-radius: 4px;
+  .highlights-list li {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+  }
+  .highlight-icon {
+    width: 12px;
+    height: 12px;
+    color: #10b981;
+    flex-shrink: 0;
+  }
+  
+  .card-bottom {
+    position: relative;
+    z-index: 2;
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-2);
+    flex-wrap: nowrap;
+  }
+  .promo-section {
+    flex-shrink: 1;
+    min-width: 0;
   }
   .actions {
     display: flex;
-    gap: var(--spacing-3);
-    margin-top: auto;
+    gap: var(--spacing-2);
+    align-items: center;
+    flex-shrink: 0;
   }
-  .btn {
-    flex: 1;
+  .no-promo {
+    font-size: 11px;
+    color: var(--color-text-muted);
+    background: var(--color-surface);
+    padding: 6px 12px;
+    border-radius: 9999px;
     text-align: center;
-    padding: var(--spacing-2) 0;
-    border-radius: var(--radius-md);
-    font-size: 0.9rem;
-    font-weight: 500;
-    transition: background 0.2s;
+    white-space: nowrap;
   }
-  .btn-primary {
-    background: var(--color-primary);
-    color: white;
+  :global(.provider-card .actions .btn) {
+    padding: 5px 10px;
+    font-size: 12px;
   }
-  .btn-primary:hover {
-    background: var(--color-primary-hover);
-  }
-  .btn-secondary {
-    background: var(--color-border);
-    color: var(--color-text-main);
-  }
-  .btn-secondary:hover {
-    background: #d1d5db;
+  @media (max-width: 430px) {
+    .card-inner {
+      padding: var(--spacing-5);
+    }
+    .actions {
+      display: flex;
+      flex-direction: column;
+    }
   }
 </style>

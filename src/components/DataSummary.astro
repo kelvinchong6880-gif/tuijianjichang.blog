@@ -12,55 +12,76 @@ const { providerCount, planCount, pickCount, lastVerified } = Astro.props;
     <span class="value">{providerCount}</span>
     <span class="label">收录机场</span>
   </div>
+  <div class="divider"></div>
   <div class="summary-item">
     <span class="value">{planCount}</span>
     <span class="label">套餐资料</span>
   </div>
+  <div class="divider"></div>
   <div class="summary-item">
-    <span class="value">{pickCount}</span>
-    <span class="label">编辑精选</span>
+    <span class="value">20</span>
+    <span class="label">品牌 Logo</span>
   </div>
-  <div class="summary-item verification">
-    <span class="label">Last Verified</span>
+  <div class="divider"></div>
+  <div class="summary-item">
     <span class="value date">{lastVerified}</span>
+    <span class="label">资料持续整理</span>
   </div>
 </div>
 
 <style>
   .data-summary {
-    display: flex;
-    gap: var(--spacing-6);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-4);
     background: var(--color-surface);
-    padding: var(--spacing-4);
-    border-radius: var(--radius-md);
+    padding: var(--spacing-3) var(--spacing-6);
+    border-radius: var(--radius-lg);
     border: 1px solid var(--color-border);
-    margin-bottom: var(--spacing-6);
+    box-shadow: var(--shadow-sm);
     flex-wrap: wrap;
+    margin-bottom: var(--spacing-8);
+  }
+  .divider {
+    width: 1px;
+    height: 32px;
+    background: var(--color-border);
   }
   .summary-item {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
   .value {
-    font-size: 1.5rem;
-    font-weight: 700;
+    font-size: var(--text-xl);
+    font-weight: var(--font-weight-bold);
     color: var(--color-text-main);
     font-variant-numeric: tabular-nums;
+    line-height: 1;
+    margin-bottom: 4px;
   }
   .label {
-    font-size: 0.8rem;
+    font-size: var(--text-xs);
     color: var(--color-text-muted);
-    text-transform: uppercase;
-  }
-  .verification {
-    margin-left: auto;
-    text-align: right;
   }
   .value.date {
-    font-size: 1rem;
-    margin-top: 4px;
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    margin-bottom: 6px;
   }
   @media (max-width: 600px) {
-    .verification { margin-left: 0; text-align: left; width: 100%; margin-top: var(--spacing-2); }
+    .data-summary {
+      width: 100%;
+      justify-content: space-between;
+      padding: var(--spacing-4);
+    }
+    .divider {
+      display: none;
+    }
+    .summary-item {
+      width: calc(50% - var(--spacing-2));
+      margin-bottom: var(--spacing-2);
+    }
   }
 </style>

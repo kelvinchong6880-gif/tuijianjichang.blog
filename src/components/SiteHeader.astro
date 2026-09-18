@@ -1,24 +1,37 @@
 ---
+import Button from './Button.astro';
 ---
 <header class="site-header">
   <div class="container header-inner">
     <div class="logo">
-      <a href="/">推荐机场数据库</a>
+      <a href="/">
+        <div class="brand-symbol">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="24" height="24" rx="6" fill="var(--color-primary)"/>
+            <path d="M7 14L12 9L17 14" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span>推荐机场数据库</span>
+      </a>
     </div>
     <nav class="main-nav">
-      <a href="/">首页</a>
-      <a href="/recommend/">推荐榜单</a>
+      <a href="/airports/">机场数据库</a>
+      <a href="/recommend/">机场推荐</a>
       <a href="/scenario/">选购场景</a>
       <a href="/compare/">决策指南</a>
-      <a href="/airports/">全库检索</a>
       <a href="/methodology/">收录标准</a>
     </nav>
+    <div class="header-actions">
+      <Button variant="primary" href="/">开始筛选</Button>
+    </div>
   </div>
 </header>
 
 <style>
   .site-header {
-    background: var(--color-surface);
+    background: rgba(8, 18, 38, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--color-border);
     position: sticky;
     top: 0;
@@ -28,28 +41,49 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 60px;
+    height: 72px;
   }
   .logo a {
-    font-weight: 700;
-    font-size: 1.2rem;
-    color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--text-base);
+    color: var(--color-text-main);
+    transition: opacity var(--transition-fast);
+  }
+  .logo a:hover {
+    opacity: 0.8;
+  }
+  .brand-symbol {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .main-nav {
     display: flex;
-    gap: var(--spacing-4);
+    gap: var(--spacing-6);
   }
   .main-nav a {
-    color: var(--color-text-muted);
-    font-size: 0.9rem;
-    font-weight: 500;
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    transition: color var(--transition-fast);
   }
   .main-nav a:hover {
-    color: var(--color-text-main);
+    color: var(--color-primary);
   }
-  @media (max-width: 768px) {
+  .header-actions {
+    display: flex;
+  }
+  @media (max-width: 900px) {
     .main-nav {
-      display: none; /* simple mobile nav hide for now */
+      display: none;
+    }
+    .header-actions {
+      display: none;
     }
   }
 </style>

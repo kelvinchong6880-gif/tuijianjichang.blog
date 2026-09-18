@@ -1,35 +1,79 @@
 :root {
-  --color-base: #f9fafb;
-  --color-surface: #ffffff;
-  --color-text-main: #111827;
-  --color-text-muted: #6b7280;
-  --color-border: #e5e7eb;
-  
-  --color-primary: #2563eb;
-  --color-primary-hover: #1d4ed8;
-  
-  --color-evidence-source: #eff6ff;
-  --color-evidence-source-text: #1e40af;
-  
-  --color-evidence-editorial: #f3e8ff;
-  --color-evidence-editorial-text: #6b21a8;
+  /* Colors - Base & Surfaces */
+  --color-base: #081226;
+  --color-surface: #0E1E3A;
+  --color-surface-elevated: #162646;
 
-  --color-evidence-unverified: #f3f4f6;
-  --color-evidence-unverified-text: #374151;
+  /* Colors - Text */
+  --color-text-main: #E2E8F0;
+  --color-text-secondary: #94A3B8;
+  --color-text-muted: #64748B;
 
-  --font-sans: 'Inter', system-ui, sans-serif;
+  /* Colors - Borders */
+  --color-border: #1C355C;
+  --color-border-hover: #4CC3FF;
+  --color-border-strong: #4CC3FF;
+
+  /* Colors - Primary (Champagne Gold) */
+  --color-primary: #F0B35C;
+  --color-primary-hover: #F6C883;
+  --color-primary-soft: rgba(240, 179, 92, 0.1);
+  --color-primary-soft-hover: rgba(240, 179, 92, 0.2);
+
+  /* Colors - Secondary (Data Cyan) */
+  --color-secondary: #4CC3FF;
+  --color-secondary-soft: rgba(76, 195, 255, 0.1);
+
+  /* Colors - Semantic */
+  --color-success: #4CC3FF;
+  --color-success-bg: rgba(76, 195, 255, 0.1);
+  --color-warning: #F0B35C;
+  --color-warning-bg: rgba(240, 179, 92, 0.1);
+  --color-danger: #ef4444;
+  --color-danger-bg: rgba(239, 68, 68, 0.1);
+
+  /* Typography */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, Consolas, monospace;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Spacing */
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  --spacing-10: 40px;
+  --spacing-12: 48px;
+  --spacing-16: 64px;
+  --spacing-24: 96px;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 10px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.3);
   
-  --spacing-1: 0.25rem;
-  --spacing-2: 0.5rem;
-  --spacing-3: 0.75rem;
-  --spacing-4: 1rem;
-  --spacing-6: 1.5rem;
-  --spacing-8: 2rem;
-  
-  --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 8px;
-  
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  /* Containers */
+  --container-page: 1280px;
+  --container-data: 1024px;
+  --container-reading: 768px;
 }

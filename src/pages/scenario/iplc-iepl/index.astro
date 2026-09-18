@@ -3,18 +3,14 @@ import BaseHead from '../../../components/BaseHead.astro';
 import SiteHeader from '../../../components/SiteHeader.astro';
 import SiteFooter from '../../../components/SiteFooter.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
-import ScenarioMatrix from '../../../components/ScenarioMatrix.astro';
-import DataProvenance from '../../../components/DataProvenance.astro';
 import AffiliateDisclosure from '../../../components/AffiliateDisclosure.astro';
 import { providers } from '../../../data/providers';
 import '../../../styles/global.css';
 
-const title = "IPLC / IEPL 专线机场 - 官方声明线路类型检索";
-const description = "根据机场官方资料中标注的线路类型（IPLC、IEPL、BGP等）为您整理的机场集合。注意：线路标签属于资料属性，不等于本站统一测速结果。";
+const title = "IPLC / IEPL 专线机场候选";
+const description = "专线机场套餐筛选。收集官方资料中明确标注采用 IPLC、IEPL 或 BGP 跨境专线的机场品牌。";
 
-const iplcProviders = providers.filter(p => p.lineClaims.includes('IPLC'));
-const ieplProviders = providers.filter(p => p.lineClaims.includes('IEPL'));
-const bgpProviders = providers.filter(p => p.lineClaims.includes('BGP'));
+const iplcProviders = providers.filter(p => p.lineClaims && p.lineClaims.some(l => l.includes('IPLC') || l.includes('IEPL')));
 ---
 
 <html lang="zh-CN">
@@ -26,72 +22,57 @@ const bgpProviders = providers.filter(p => p.lineClaims.includes('BGP'));
     <main class="container">
       <Breadcrumbs paths={[
         { label: '机场选购场景', url: '/scenario/' },
-        { label: 'IPLC / IEPL 专线机场', url: '/scenario/iplc-iepl/' }
+        { label: 'IPLC / IEPL 专线', url: '/scenario/iplc-iepl/' }
       ]} />
       
       <header class="section-header">
-        <h1>IPLC / IEPL 专线机场检索</h1>
+        <h1>声明包含 IPLC / IEPL 专线的候选机场</h1>
         <p class="intro">
-          本页面根据各机场<strong>官方资料</strong>中明确标注的线路类型（IPLC、IEPL 或 BGP）进行分类汇编。<br/>
-          请注意：一个机场可能同时提供多种线路的套餐。
+          本页面汇总了官方套餐资料中明确标注了“IPLC”或“IEPL”跨境专线的机场品牌。请注意区分：这是商家的 <strong>线路标签声明</strong>，并不等同于其实际验证网络表现。
         </p>
       </header>
 
-      <AffiliateDisclosure />
-
       <section class="section">
-        <h2>包含 IPLC 线路声明的机场</h2>
-        <p>官方资料中提及包含 IPLC 专线的机场（共 {iplcProviders.length} 家）：</p>
-        <ScenarioMatrix providers={iplcProviders} showLine={true} showPrice={true} showTraffic={false} />
-      </section>
-
-      <section class="section">
-        <h2>包含 IEPL 线路声明的机场</h2>
-        <p>官方资料中提及包含 IEPL 专线的机场（共 {ieplProviders.length} 家）：</p>
-        <ScenarioMatrix providers={ieplProviders} showLine={true} showPrice={true} showTraffic={false} />
-      </section>
-      
-      <section class="section">
-        <h2>包含 BGP / 中转线路声明的机场</h2>
-        <p>官方资料中提及包含 BGP 隧道中转的机场（共 {bgpProviders.length} 家）：</p>
-        <ScenarioMatrix providers={bgpProviders} showLine={true} showPrice={true} showTraffic={false} />
-      </section>
-
-      <section class="section prose">
-        <h2>筛选说明与限制 (Important Limitations)</h2>
-        <ul>
-          <li><strong>数据属性</strong>：此分类纯粹基于官方文案声明的 <code>lineClaims</code> 属性进行划分。</li>
-          <li><strong>非测试背书</strong>：请注意，线路标签仅仅代表商家的技术方案宣称，<strong>不等于本站的统一测速结果</strong>。我们不保证标有“IPLC”的就一定更快，也不保证标有“IEPL”的就一定更稳定。</li>
-          <li><strong>混合线路</strong>：许多服务商在低配套餐提供 BGP 或公网中转，在高级套餐中才提供 IPLC/IEPL，请务必进入详情页查看具体套餐说明。</li>
-        </ul>
-      </section>
-
-      <section class="related-section">
-        <h2>相关决策指南</h2>
-        <div class="related-links">
-          <a href="/compare/iplc-vs-iepl/">IPLC 和 IEPL 有什么区别？</a>
-          <a href="/scenario/high-traffic/">大流量套餐需求候选 &rarr;</a>
+        <h2>专线标签服务商 (共 {iplcProviders.length} 家)</h2>
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>品牌名称</th>
+                <th>官方线路宣称</th>
+                <th>性能实测验证</th>
+                <th>详情入口</th>
+              </tr>
+            </thead>
+            <tbody>
+              {iplcProviders.map(p => (
+                <tr>
+                  <td><strong>{p.name}</strong></td>
+                  <td>{p.lineClaims.join(', ')}</td>
+                  <td><span style="color: var(--color-text-muted);">需用户实地测速</span></td>
+                  <td><a href={`/airport/${p.slug}/`} class="btn btn-small">查看资料</a></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </section>
-
-      <DataProvenance />
+      
+      <div style="margin-top: var(--spacing-8);">
+        <a href="/compare/iplc-vs-iepl/" class="btn btn-outline">👉 IPLC、IEPL 与公网到底有什么区别？</a>
+      </div>
+      <AffiliateDisclosure />
     </main>
     <SiteFooter />
   </body>
 </html>
 
 <style>
-  .section-header { margin: var(--spacing-8) 0; }
-  .section-header h1 { font-size: 2.2rem; margin-bottom: var(--spacing-4); }
-  .intro { font-size: 1.1rem; color: var(--color-text-muted); line-height: 1.6; }
-  .section { margin: var(--spacing-8) 0; }
-  .prose h2 { margin-top: var(--spacing-8); }
-  .prose h3 { margin-top: var(--spacing-6); }
-  .related-section {
-    margin: var(--spacing-12) 0;
-    padding-top: var(--spacing-8);
-    border-top: 1px solid var(--color-border);
-  }
-  .related-links { display: flex; flex-direction: column; gap: var(--spacing-3); }
-  .related-links a { color: var(--color-primary); text-decoration: none; font-size: 1.1rem; }
+  .intro { font-size: var(--text-lg); color: var(--color-text-secondary); margin-bottom: var(--spacing-6); line-height: 1.7; }
+  .table-container { margin: var(--spacing-4) 0 var(--spacing-8) 0; overflow-x: auto; }
+  .data-table { border-collapse: collapse; width: 100%; min-width: 600px; }
+  .data-table th, .data-table td { border: 1px solid var(--color-border); padding: var(--spacing-3); text-align: left; }
+  .data-table th { background-color: var(--color-surface); font-weight: var(--font-weight-bold); }
+  .btn-small { padding: 4px 8px; font-size: 0.8rem; }
+  .btn-outline { background: transparent; border: 1px solid var(--color-primary); color: var(--color-primary); }
 </style>

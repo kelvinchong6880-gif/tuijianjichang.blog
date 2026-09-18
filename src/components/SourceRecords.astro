@@ -1,0 +1,127 @@
+---
+import type { SourceRecord } from '../data/schema';
+
+export interface Props {
+  sources?: SourceRecord[];
+}
+
+const { sources } = Astro.props;
+
+function getTypeName(type: string) {
+  if (type === 'official') return '官方声明';
+  if (type === 'third_party') return '第三方记录';
+  if (type === 'user') return '用户提供';
+  return type;
+}
+
+function isUrl(str: string) {
+  return str.startsWith('http://') || str.startsWith('https://');
+}
+---
+
+{sources && sources.length > 0 && (
+  <div class="source-records">
+    <h4>资料来源与记录</h4>
+    <p class="source-desc">
+      以下记录了本页面关键数据的快照来源。了解本站如何定义和使用不同类型的数据，请阅读<a href="/methodology/">收录标准与编辑方法论</a>。
+    </p>
+    <div class="table-container">
+      <table class="source-table">
+        <thead>
+          <tr>
+            <th>类型</th>
+            <th>依据凭证</th>
+            <th>原始日期</th>
+            <th>本站登记</th>
+            <th>本站核验</th>
+            <th>支持事实</th>
+          </tr>
+        </thead>
+        <tbody>
+          {sources.map(s => (
+            <tr>
+              <td><span class={`source-tag type-${s.type}`}>{getTypeName(s.type)}</span></td>
+              <td>
+                {isUrl(s.urlOrFile) 
+                  ? <a href={s.urlOrFile} target="_blank" rel="nofollow noopener" style="color:var(--color-primary);text-decoration:underline;">外部链接</a> 
+                  : s.urlOrFile}
+              </td>
+              <td class="tabular-nums">{s.sourceDate || '未知'}</td>
+              <td class="tabular-nums">{s.recordedDate || '未知'}</td>
+              <td class="tabular-nums">{s.verifiedDate || '待补'}</td>
+              <td>{s.supportedFacts.length > 0 ? s.supportedFacts.join('、') : '无'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+)}
+
+<style>
+  .source-records {
+    margin: var(--spacing-8) 0;
+    background-color: var(--color-base);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-6);
+  }
+  .source-records h4 {
+    margin-top: 0;
+    margin-bottom: var(--spacing-2);
+    font-size: 1.1rem;
+    color: var(--color-text-main);
+  }
+  .source-desc {
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: var(--spacing-4);
+  }
+  .source-desc a {
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+  .table-container {
+    overflow-x: auto;
+  }
+  .source-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+    font-size: 0.9rem;
+  }
+  .source-table th, .source-table td {
+    padding: var(--spacing-3) var(--spacing-4);
+    text-align: left;
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text-main);
+  }
+  .source-table th {
+    background-color: var(--color-surface);
+    font-weight: 600;
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+  }
+  .source-table tr:last-child td {
+    border-bottom: none;
+  }
+  .source-tag {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  .type-official {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: #2563eb;
+  }
+  .type-third_party {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #059669;
+  }
+  .type-user {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: #d97706;
+  }
+</style>

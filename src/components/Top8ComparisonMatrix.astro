@@ -1,42 +1,89 @@
 ---
 import { providers } from '../data/providers';
+import ProviderLogo from './ProviderLogo.astro';
+import Button from './Button.astro';
 
-const top8 = providers.filter(p => p.editorialPick).sort((a, b) => a.editorialRank - b.editorialRank);
+const top8 = providers.filter(p => p.editorialPick).sort((a, b) => a.editorialRank! - b.editorialRank!);
 
 function renderClaimStatus(claim: boolean | null) {
-  if (claim === true) return '<span class="status-yes">✅</span>';
-  if (claim === false) return '<span class="status-no">❌</span>';
-  return '<span class="status-null">❓</span>';
+  if (claim === true) return '<span class="status-yes">支持</span>';
+  if (claim === false) return '<span class="status-no">不支持</span>';
+  return '<span class="status-null">未说明</span>';
+}
+
+function getTrafficDisplay(p: any) {
+  const validPlans = p.plans.filter((x: any) => x.traffic !== null);
+  if (validPlans.length === 0) return p.trafficDisplay || '未说明';
+  let maxT = Math.max(...validPlans.map((x: any) => x.traffic));
+  if (p.trafficDisplay && p.trafficDisplay.includes('已确认')) return p.trafficDisplay;
+  return maxT >= 1000 ? `${(maxT/1000).toFixed(1).replace(/\.0$/, '')}TB` : `${maxT}GB`;
+}
+
+function getMonthlyInfo(p: any) {
+  const monthlyPlans = p.plans.filter((x: any) => !x.priceConflict && x.billingType === 'Monthly' && x.price !== null).sort((a: any, b: any) => a.price - b.price);
+  if (monthlyPlans.length > 0) {
+    const min = monthlyPlans[0];
+    if (min.paymentCycleConflict) {
+      return `<span style="color:var(--color-warning); font-size:0.9em;">标价¥${min.price}/月；实际付款周期与金额待核实</span>`;
+    }
+    return `¥${min.price}/月 (${min.name.split('（')[0].split('(')[0].trim()})`;
+  }
+  return '月付资料待核实';
+}
+
+function getYearlyInfo(p: any) {
+  const validYearly = p.plans.filter((x: any) => !x.priceConflict && x.billingType === 'Yearly' && x.price !== null).sort((a: any, b: any) => a.price - b.price);
+  if (validYearly.length > 0) {
+    const min = validYearly[0];
+    let extra = min.features && min.features.some((f: string) => f.includes('一次性支付')) ? '，需一次支付' : '';
+    // dynamically detect one-time yearly payment if mentioned in name or features
+    if (!extra && min.name.includes('年付版')) {
+      extra = '，需一次支付';
+    }
+    return `¥${min.price}/年 (约¥${(min.price/12).toFixed(2).replace(/\.00$/, '')}/月${extra})`;
+  }
+  return '-';
 }
 ---
-
 <div class="matrix-container">
   <table class="matrix-table">
     <thead>
       <tr>
-        <th>排名</th>
-        <th>品牌</th>
-        <th>起步价格</th>
-        <th>流量范围</th>
-        <th>线路</th>
+        <th class="rank-col">排名</th>
+        <th class="brand-col">品牌</th>
+        <th>已确认月付套餐</th>
+        <th>年付方案 / 折合月价</th>
+        <th>流量概况 (刷新/有效期)</th>
+        <th>线路声明</th>
         <th>不限时</th>
         <th>流媒体</th>
         <th>AI</th>
-        <th>详情</th>
+        <th class="action-col">详情</th>
       </tr>
     </thead>
     <tbody>
       {top8.map(p => (
-        <tr>
-          <td><div class="rank-badge">#{p.editorialRank}</div></td>
-          <td class="brand-name"><strong>{p.name}</strong></td>
-          <td>¥{p.entryPrice}</td>
-          <td>{p.trafficMin}-{p.trafficMax}GB</td>
-          <td>{p.lineClaims.length > 0 ? p.lineClaims.join('/') : '未说明'}</td>
-          <td>{p.hasNoExpiry ? <span class="status-yes">✓</span> : <span class="status-null">—</span>}</td>
+        <tr class={p.editorialRank && p.editorialRank <= 3 ? 'top-tier' : ''}>
+          <td class="rank-col">
+            <div class={`rank-badge ${p.editorialRank && p.editorialRank <= 3 ? 'rank-highlight' : ''}`}>#0{p.editorialRank}</div>
+          </td>
+          <td class="brand-col">
+            <div class="brand-identity">
+              <ProviderLogo name={p.name} logo={p.logo} size="sm" />
+              <strong>{p.name}</strong>
+            </div>
+          </td>
+          <td class="price-cell tabular-nums" set:html={getMonthlyInfo(p)}>
+          </td>
+          <td class="price-cell tabular-nums" style="color: var(--color-text-muted); font-size: 0.9em;">
+            {getYearlyInfo(p)}
+          </td>
+          <td class="tabular-nums">{getTrafficDisplay(p)}</td>
+          <td>{p.lineClaims.length > 0 ? p.lineClaims.join(' / ') : '资料未说明'}</td>
+          <td>{p.hasNoExpiry ? <span class="status-yes">提供</span> : <span class="status-null">未收录</span>}</td>
           <td set:html={renderClaimStatus(p.streamingClaim)} />
           <td set:html={renderClaimStatus(p.aiClaim)} />
-          <td>
+          <td class="action-col">
             <a href={`/airport/${p.slug}/`} class="detail-link">看数据</a>
           </td>
         </tr>
@@ -50,54 +97,76 @@ function renderClaimStatus(claim: boolean | null) {
     overflow-x: auto;
     margin: var(--spacing-6) 0;
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
   }
   .matrix-table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 800px;
+    min-width: 900px;
   }
   .matrix-table th, .matrix-table td {
-    padding: var(--spacing-3);
+    padding: var(--spacing-4);
     text-align: center;
     border-bottom: 1px solid var(--color-border);
-    font-size: 0.9rem;
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
   }
   .matrix-table th {
-    background-color: var(--color-surface);
-    font-weight: 600;
+    background-color: var(--color-base);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
   }
-  .matrix-table th:first-child, .matrix-table td:first-child {
-    position: sticky;
-    left: 0;
-    background-color: var(--color-background);
-    z-index: 2;
-    border-right: 1px solid var(--color-border);
+  .matrix-table tr:hover td {
+    background-color: var(--color-base);
   }
-  .matrix-table th:first-child {
-    background-color: var(--color-surface);
+  .matrix-table tr.top-tier td {
+    background-color: rgba(255, 255, 255, 0.03);
   }
   .matrix-table tr:last-child td {
     border-bottom: none;
   }
-  .rank-badge {
-    background-color: var(--color-primary);
-    color: white;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-weight: 600;
-    font-size: 0.8rem;
-    display: inline-block;
-  }
-  .brand-name {
+  .brand-identity {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
     text-align: left;
+    color: var(--color-text-main);
+  }
+  .brand-col {
+    text-align: left !important;
+  }
+  .rank-badge {
+    background-color: var(--color-base);
+    color: var(--color-text-muted);
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-xs);
+    display: inline-block;
+    border: 1px solid var(--color-border);
+  }
+  .rank-highlight {
+    background-color: var(--color-primary-soft);
+    color: var(--color-primary);
+    border-color: transparent;
+  }
+  .price-cell {
+    color: var(--color-text-main);
+    font-weight: var(--font-weight-semibold);
   }
   .detail-link {
     color: var(--color-primary);
-    text-decoration: underline;
-    font-weight: 500;
+    font-weight: var(--font-weight-medium);
   }
-  :global(.status-yes) { color: #16a34a; font-size: 1.1rem; }
-  :global(.status-no) { color: #dc2626; font-size: 1.1rem; }
-  :global(.status-null) { color: var(--color-text-muted); font-size: 1.1rem; }
+  .detail-link:hover {
+    text-decoration: underline;
+  }
+  :global(.status-yes) { color: var(--color-primary); }
+  :global(.status-no) { color: var(--color-text-muted); }
+  :global(.status-null) { color: var(--color-text-muted); font-size: 0.9em; }
 </style>

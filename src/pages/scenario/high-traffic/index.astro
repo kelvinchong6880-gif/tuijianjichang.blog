@@ -3,17 +3,80 @@ import BaseHead from '../../../components/BaseHead.astro';
 import SiteHeader from '../../../components/SiteHeader.astro';
 import SiteFooter from '../../../components/SiteFooter.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
-import ScenarioMatrix from '../../../components/ScenarioMatrix.astro';
-import DataProvenance from '../../../components/DataProvenance.astro';
 import AffiliateDisclosure from '../../../components/AffiliateDisclosure.astro';
 import { providers } from '../../../data/providers';
 import '../../../styles/global.css';
 
-const title = "大流量机场推荐 - 提供高流量额度的候选机场";
-const description = "大流量机场检索。提供 500GB 乃至 1TB 以上超大流量包套餐的机场集合，适合大流量网络需求者。注意：高流量不等于高性能。";
+const title = "大流量机场推荐 - 500GB及以上套餐候选";
+const description = "大流量机场检索。筛选数据库中包含 500GB 乃至 1TB 以上具体流量指标的套餐，根据计费周期与流量刷新规则进行明确分组，适合重度网络需求者。";
 
-const gt500 = providers.filter(p => p.plans.some(pl => pl.traffic >= 500 || pl.traffic === -1));
-const gt1000 = providers.filter(p => p.plans.some(pl => pl.traffic >= 1000 || pl.traffic === -1));
+interface HighTrafficPlan {
+  providerName: string;
+  providerSlug: string;
+  planName: string;
+  price: number;
+  currency: string;
+  billingType: string;
+  traffic: number;
+  trafficDisplay: string;
+  validity: string;
+}
+
+const monthly500to999: HighTrafficPlan[] = [];
+const monthly1000plus: HighTrafficPlan[] = [];
+const periodic500plus: HighTrafficPlan[] = []; 
+const oneTime500plus: HighTrafficPlan[] = [];
+const conflictPlans: { providerName: string; planName: string; reason: string; providerSlug: string; }[] = [];
+
+providers.forEach(p => {
+  p.plans.forEach(plan => {
+    const isTrafficConflict = plan.trafficDisplay && plan.trafficDisplay.includes('待核实');
+    if (plan.priceConflict || plan.paymentCycleConflict || isTrafficConflict) {
+      const matchHigh = (plan.traffic !== null && plan.traffic >= 500) || (isTrafficConflict && (plan.trafficDisplay.includes('500') || plan.trafficDisplay.includes('1000') || plan.trafficDisplay.includes('1050') || plan.trafficDisplay.includes('TB')));
+      if (matchHigh) {
+        conflictPlans.push({
+          providerName: p.name,
+          providerSlug: p.slug,
+          planName: plan.name + ' (' + plan.trafficDisplay + ')',
+          reason: '标价或流量数值存在矛盾/冲突待核实'
+        });
+      }
+      return;
+    }
+
+    // 排除明显无效或无流量数据
+    if (plan.traffic === null || plan.traffic < 500) return;
+
+    const planData = {
+      providerName: p.name,
+      providerSlug: p.slug,
+      planName: plan.name,
+      price: plan.price,
+      currency: plan.currency,
+      billingType: plan.billingType,
+      traffic: plan.traffic,
+      trafficDisplay: plan.trafficDisplay,
+      validity: plan.validity
+    };
+
+    if (plan.billingType === 'Monthly') {
+      if (plan.traffic >= 1000) {
+        monthly1000plus.push(planData);
+      } else {
+        monthly500to999.push(planData);
+      }
+    } else if (plan.billingType === 'One-Time') {
+      oneTime500plus.push(planData);
+    } else {
+      periodic500plus.push(planData);
+    }
+  });
+});
+
+monthly500to999.sort((a, b) => a.price - b.price);
+monthly1000plus.sort((a, b) => a.price - b.price);
+periodic500plus.sort((a, b) => b.traffic - a.traffic);
+oneTime500plus.sort((a, b) => b.traffic - a.traffic);
 ---
 
 <html lang="zh-CN">
@@ -29,75 +92,231 @@ const gt1000 = providers.filter(p => p.plans.some(pl => pl.traffic >= 1000 || pl
       ]} />
       
       <header class="section-header">
-        <h1>大流量机场套餐候选</h1>
+        <h1>大流量机场套餐候选（500GB及以上）</h1>
         <p class="intro">
-          本页面专门收录了在数据库中包含 <strong>500GB</strong> 甚至 <strong>1000GB (1TB) </strong>及以上超大流量套餐的机场候选。<br/>
-          请注意：本分类纯粹基于<strong>流量额度指标 (Traffic Capacity)</strong>，与线路速度、延迟、稳定性的性能表现无关。
+          本页面专门收录了在数据库中明确标明包含 <strong>500GB 乃至 1TB (1000GB) 及以上</strong> 流量额度的套餐。为避免混淆，我们将“每月刷新的月付套餐”与“一次性或长周期的总流量套餐”分开展示。
         </p>
       </header>
 
-      <AffiliateDisclosure />
-
-      <section class="section prose">
+      <section class="seo-prose">
         <div class="warning-alert">
           <strong>⚠️ 关键认知纠偏：大流量 ≠ 速度快 ≠ 适合下载</strong>
           <p>
-            流量额度较高仅仅意味着用户拥有更大的数据使用限额（能下更多文件），但这<strong>绝对不代表</strong>：网速更快、更稳定、更适合下载、或者是影视体验最佳。<br/>
-            部分廉价 BGP 机场可能会提供极大的流量包（如 20元 2TB），但在晚高峰时段由于严重拥堵，其实际下载体验可能极其糟糕。相反，优质的 IPLC/IEPL 专线提供 100GB 流量，单价高昂，但能保证全天候的超高速传输。<br/>
-            <strong>切勿单纯为了“流量看起来很大”而忽视了线路质量的选择。</strong>
+            流量额度较高仅仅意味着用户拥有更大的数据使用限额（能下更多文件），但这<strong>绝对不代表</strong>：网速更快、更稳定、或者是影视体验最佳。<br/>
+            部分廉价服务商可能会提供极大的流量包（如 2TB），但在晚高峰时段由于严重拥堵，其实际下载体验可能极其糟糕。<strong>切勿单纯为了“流量看起来很大”而忽视了线路类型的综合比较。</strong>
           </p>
         </div>
       </section>
 
       <section class="section">
-        <h2>提供 1000GB (1TB) 及以上流量的机场</h2>
-        <p>在其套餐系列中，包含了 1000GB / 1TB 甚至更大单月/单次可用流量的机场候选（共 {gt1000.length} 家）：</p>
-        <ScenarioMatrix providers={gt1000} showPrice={true} showTraffic={true} showLine={true} showNoExpiry={false} showAI={false} showStreaming={false} />
-      </section>
-
-      <section class="section">
-        <h2>提供 500GB - 1000GB 流量的机场</h2>
-        <p>
-          在其套餐系列中，最高流量达到了 500GB 门槛，且也是市面普遍认为的“大流量”候选（共 {gt500.length} 家，包含以上 1TB+ 机场）：
-        </p>
-        <ScenarioMatrix providers={gt500} showPrice={true} showTraffic={true} showLine={true} showNoExpiry={false} showAI={false} showStreaming={false} />
-      </section>
-
-      <section class="related-section">
-        <h2>相关决策指南</h2>
-        <div class="related-links">
-          <a href="/compare/how-to-choose-plans/">如何科学选择机场套餐？</a>
-          <a href="/scenario/cheap/">便宜机场低月付门槛组合 &rarr;</a>
+        <h2>一、月付大流量：500GB – 999GB</h2>
+        <p>以下月付套餐额度在 500GB 至 999GB 之间，已确认可以按单月周期购买。共 {monthly500to999.length} 个候选：</p>
+        
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>品牌与套餐</th>
+                <th>月付价格</th>
+                <th>标称流量 (每月刷新)</th>
+                <th>详情入口</th>
+              </tr>
+            </thead>
+            <tbody>
+              {monthly500to999.length > 0 ? monthly500to999.map(plan => (
+                <tr>
+                  <td><strong>{plan.providerName}</strong> - {plan.planName}</td>
+                  <td>¥{plan.price}</td>
+                  <td>{plan.trafficDisplay}</td>
+                  <td><a href={`/airport/${plan.providerSlug}/`} class="btn btn-small">查看资料</a></td>
+                </tr>
+              )) : <tr><td colspan="5" style="text-align:center;">暂无符合条件的套餐</td></tr>}
+            </tbody>
+          </table>
         </div>
       </section>
 
-      <DataProvenance />
+      <section class="section">
+        <h2>二、月付超大流量：1000GB (1TB) 及以上</h2>
+        <p>以下月付套餐额度达到或超过 1000GB，共 {monthly1000plus.length} 个候选：</p>
+        
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>品牌与套餐</th>
+                <th>月付价格</th>
+                <th>标称流量 (每月刷新)</th>
+                <th>详情入口</th>
+              </tr>
+            </thead>
+            <tbody>
+              {monthly1000plus.length > 0 ? monthly1000plus.map(plan => (
+                <tr>
+                  <td><strong>{plan.providerName}</strong> - {plan.planName}</td>
+                  <td>¥{plan.price}</td>
+                  <td>{plan.trafficDisplay}</td>
+                  <td><a href={`/airport/${plan.providerSlug}/`} class="btn btn-small">查看资料</a></td>
+                </tr>
+              )) : <tr><td colspan="5" style="text-align:center;">暂无符合条件的套餐</td></tr>}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>三、非月付周期订阅大流量</h2>
+        <p>以下套餐为季付、半年付或年付，流量在周期内<strong>按固定规律刷新</strong>（如每30天、或每月1日）。资料未说明时则标记为“刷新规则未说明”。共 {periodic500plus.length} 个候选：</p>
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>品牌与套餐</th>
+                <th>计费周期</th>
+                <th>价格</th>
+                <th>每期流量与刷新规则</th>
+                <th>套餐有效期</th>
+                <th>详情入口</th>
+              </tr>
+            </thead>
+            <tbody>
+              {periodic500plus.length > 0 ? periodic500plus.map(plan => (
+                <tr>
+                  <td><strong>{plan.providerName}</strong> - {plan.planName}</td>
+                  <td>{plan.billingType === 'Yearly' ? '年付' : plan.billingType === 'Quarterly' ? '季付' : plan.billingType === 'Half-Yearly' ? '半年付' : plan.billingType}</td>
+                  <td>¥{plan.price}</td>
+                  <td>{plan.trafficDisplay.includes("天") || plan.trafficDisplay.includes("月") ? plan.trafficDisplay : plan.trafficDisplay + " (刷新规则未说明)"}</td>
+                  <td>{plan.validity || "资料未说明"}</td>
+                  <td><a href={`/airport/${plan.providerSlug}/`} class="btn btn-small">查看资料</a></td>
+                </tr>
+              )) : <tr><td colspan="6" style="text-align:center;">暂无符合条件的套餐</td></tr>}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>四、一次性购买大流量</h2>
+        <p>以下套餐为一次性买断的总流量包（>500GB）。共 {oneTime500plus.length} 个候选：</p>
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>品牌与套餐</th>
+                <th>价格</th>
+                <th>总流量</th>
+                <th>套餐有效期</th>
+                <th>详情入口</th>
+              </tr>
+            </thead>
+            <tbody>
+              {oneTime500plus.length > 0 ? oneTime500plus.map(plan => (
+                <tr>
+                  <td><strong>{plan.providerName}</strong> - {plan.planName}</td>
+                  <td>¥{plan.price}</td>
+                  <td>{plan.trafficDisplay}</td>
+                  <td>{plan.validity || "资料未说明"}</td>
+                  <td><a href={`/airport/${plan.providerSlug}/`} class="btn btn-small">查看资料</a></td>
+                </tr>
+              )) : <tr><td colspan="5" style="text-align:center;">暂无符合条件的套餐</td></tr>}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {conflictPlans.length > 0 && (
+        <section class="section">
+          <h2>五、流量/价格待核实的大流量套餐</h2>
+          <p>以下套餐表面上看流量很大，但由于官方文本存在标价或数值上的冲突，已被剔除出大流量有效排序。如 SOGO 云的高配款型等，在取得明确结算证据前，暂列于此供参考：</p>
+          <div class="table-container">
+            <table class="data-table" style="background-color: var(--color-surface); opacity: 0.9;">
+              <thead>
+                <tr>
+                  <th>品牌与套餐</th>
+                  <th>排除原因</th>
+                  <th>详情入口</th>
+                </tr>
+              </thead>
+              <tbody>
+                {conflictPlans.map(plan => (
+                  <tr>
+                    <td><strong>{plan.providerName}</strong> - {plan.planName}</td>
+                    <td style="color: var(--color-warning);">{plan.reason}</td>
+                    <td><a href={`/airport/${plan.providerSlug}/`} class="btn btn-small">查看资料</a></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )}
+
+      
+      <section class="cta-section" style="margin-bottom: 2rem; background: var(--color-surface); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--color-border); text-align: center;">
+        <h2 style="font-size: var(--text-lg); margin-bottom: 0.5rem; margin-top: 0;">不知道怎么选？</h2>
+        <p style="color: var(--color-text-muted); margin-bottom: 1rem;">看看经过编辑筛选的综合表现最佳机场。</p>
+        <a href="/recommend/" class="btn btn-primary">查看编辑精选：机场推荐榜单</a>
+      </section>
+
+      <AffiliateDisclosure />
     </main>
     <SiteFooter />
   </body>
 </html>
 
 <style>
-  .section-header { margin: var(--spacing-8) 0; }
-  .section-header h1 { font-size: 2.2rem; margin-bottom: var(--spacing-4); }
-  .intro { font-size: 1.1rem; color: var(--color-text-muted); line-height: 1.6; }
-  .section { margin: var(--spacing-8) 0; }
-  .prose h2 { margin-top: var(--spacing-8); }
-  .prose h3 { margin-top: var(--spacing-6); }
+  .intro {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-6);
+    line-height: 1.7;
+  }
   .warning-alert {
-    background-color: rgba(220, 38, 38, 0.1);
-    border-left: 4px solid #dc2626;
+    background-color: rgba(234, 179, 8, 0.1);
+    border-left: 4px solid #eab308;
     padding: var(--spacing-4);
-    margin: var(--spacing-4) 0;
+    margin: var(--spacing-6) 0;
     border-radius: 0 var(--radius-md) var(--radius-md) 0;
   }
-  .warning-alert strong { display: block; margin-bottom: var(--spacing-2); color: #b91c1c; }
-  .warning-alert p { margin: 0; }
-  .related-section {
-    margin: var(--spacing-12) 0;
-    padding-top: var(--spacing-8);
-    border-top: 1px solid var(--color-border);
+  .warning-alert strong {
+    color: #b45309;
+    display: block;
+    margin-bottom: var(--spacing-2);
   }
-  .related-links { display: flex; flex-direction: column; gap: var(--spacing-3); }
-  .related-links a { color: var(--color-primary); text-decoration: none; font-size: 1.1rem; }
+  .warning-alert p {
+    margin: 0;
+    color: var(--color-text-main);
+    line-height: 1.6;
+  }
+  .table-container {
+    margin: var(--spacing-4) 0 var(--spacing-8) 0;
+    overflow-x: auto;
+  }
+  .data-table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 600px;
+  }
+  .data-table th, .data-table td {
+    border: 1px solid var(--color-border);
+    padding: var(--spacing-3);
+    text-align: left;
+  }
+  .data-table th {
+    background-color: var(--color-surface);
+    font-weight: var(--font-weight-bold);
+  }
+  .btn-small {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+  }
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary);
+  }
+  .btn-outline:hover {
+    background: var(--color-primary);
+    color: white;
+  }
 </style>

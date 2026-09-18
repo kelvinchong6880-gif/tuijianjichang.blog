@@ -12,10 +12,9 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-
 # environment variables
 .env
-.env.production
+.env.*
 
 # macOS-specific files
 .DS_Store
@@ -27,3 +26,44 @@ pnpm-debug.log*
 .vscode/
 AGENTS.md
 CLAUDE.md
+
+# Screenshots
+screenshot*.png
+
+# Temporary Audit and Fix scripts (Root only)
+/audit*.cjs
+/fix*.cjs
+/add*.cjs
+/append*.cjs
+/update*.cjs
+/temp*.cjs
+/temp*.js
+/check*.cjs
+/seo*.cjs
+/sim*.cjs
+/test*.cjs
+/test*.ts
+/layer*.cjs
+/make_report.js
+/writeFilter.js
+/get_info.cjs
+/indexFix.cjs
+/insert_links.cjs
+/blueprint.cjs
+/clean_promo.cjs
+/count.cjs
+/create_value_page.cjs
+/restore_logos*.cjs
+/safe_update*.cjs
+/screenshot.cjs
+/sogo_plans.cjs
+/validate_html.cjs
+/verify_html.cjs
+/advanced_seo_audit.cjs
+/value_audit.ts
+
+# JSON and Text Audit Reports
+/link-audit-external.json
+/EXTERNAL_LINKS_AUDIT.json
+/summary.txt
+/seo_audit_report.txt
