@@ -15,11 +15,11 @@ const sizeMap = {
 };
 const dimension = sizeMap[size];
 ---
-<div class={`provider-logo logo-${size}`} aria-label={`${name} Logo`}>
+<div class={`provider-logo logo-${size}`}>
   {logo ? (
-    <img src={logo} alt="" loading="lazy" />
+    <img src={logo} alt={`${name} Logo`} loading="lazy" />
   ) : (
-    <div class="fallback-logo">
+    <div class="fallback-logo" aria-label={`${name} Logo`}>
       <span aria-hidden="true">{fallbackChar}</span>
     </div>
   )}
