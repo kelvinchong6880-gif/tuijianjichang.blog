@@ -1,0 +1,98 @@
+---
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import BaseHead from '../../components/BaseHead.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import '../../styles/global.css';
+
+const title = '关于我们 | tuijianjichang.blog';
+const description = '推荐机场数据库的运营者、编辑流程与联系方式说明。';
+---
+
+<html lang="zh-CN">
+  <head>
+    <BaseHead title={title} description={description} canonicalPath="/about/" />
+  </head>
+  <body>
+    <SiteHeader />
+    <main class="container">
+      <Breadcrumbs paths={[{ label: '关于我们', url: '/about/' }]} />
+
+      <article class="about-content">
+        <h1>关于我们</h1>
+
+        <h2>我们是谁</h2>
+        <!-- TODO(Kelvin): 用真实信息替换下面这句占位文字。
+             哪怕只是一个长期使用的笔名 + 从什么时候开始关注这个领域，
+             也比完全匿名更有可信度。不需要暴露真实身份或联系方式之外的隐私信息。 -->
+        <p>
+          [在此填写：你的笔名/团队名称，从何时开始关注机场/代理服务这个领域，
+          运营本站的初衷]。
+        </p>
+
+        <h2>我们做什么</h2>
+        <p>
+          本站长期追踪市面上的机场（代理/VPN 订阅）服务商，收集并整理其官网公开的套餐价格、
+          流量额度、线路类型等信息，按预算、流量与使用场景提供筛选与对比工具，帮助读者更快找到
+          符合自己需求的服务。完整的数据采集规则与来源分级，详见
+          <a href="/methodology/">数据采集说明与编辑方法论</a>。
+        </p>
+
+        <h2>我们不做什么</h2>
+        <ul>
+          <li>不进行未经标注的"测速"背书——所有测速引用均注明来源、日期与测试条件。</li>
+          <li>不为任何品牌的长期稳定性做刚性担保。</li>
+          <li>不隐瞒商业合作关系——涉及返佣的品牌会在页面中明确标注。</li>
+        </ul>
+
+        <h2>商业模式</h2>
+        <p>
+          本站通过部分品牌的推广返佣计划获得维持网站运转的收入。这不会改变页面展示的客观参数与
+          原始官方套餐资料。完整的利益披露见各品牌详情页及
+          <a href="/methodology/#disclaimer">免责声明</a>。
+        </p>
+
+        <h2>联系方式</h2>
+        <!-- TODO(Kelvin): 建议提供一个可核实的联系渠道（邮箱/表单皆可），
+             既方便读者反馈数据错误，也是外部（含搜索引擎）判断网站真实性的常见信号之一。 -->
+        <p>
+          [在此填写：反馈邮箱或联系表单]。发现套餐价格、流量或链接有误，欢迎通过此渠道告知我们，
+          我们会尽快核实更新。
+        </p>
+      </article>
+    </main>
+    <SiteFooter />
+  </body>
+</html>
+
+<style>
+  .about-content {
+    max-width: 800px;
+    margin: 0 auto var(--spacing-10) auto;
+  }
+  .about-content h1 {
+    font-size: 2rem;
+    margin-bottom: var(--spacing-6);
+  }
+  .about-content h2 {
+    font-size: 1.25rem;
+    margin-top: var(--spacing-8);
+    margin-bottom: var(--spacing-3);
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: var(--spacing-2);
+  }
+  .about-content p {
+    line-height: 1.7;
+    margin-bottom: var(--spacing-4);
+    color: var(--color-text-main);
+  }
+  .about-content ul {
+    margin-bottom: var(--spacing-4);
+    padding-left: var(--spacing-6);
+    color: var(--color-text-main);
+  }
+  .about-content li {
+    line-height: 1.7;
+    margin-bottom: var(--spacing-3);
+  }
+</style>

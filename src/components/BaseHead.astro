@@ -4,9 +4,11 @@ export interface Props {
   description: string;
   canonicalPath?: string;
   noCanonical?: boolean;
+  /** Extra JSON-LD objects (FAQPage, ItemList, etc.) rendered in addition to the sitewide WebSite/Organization schema. */
+  extraSchema?: Record<string, any>[];
 }
 
-const { title, description, canonicalPath, noCanonical = false } = Astro.props;
+const { title, description, canonicalPath, noCanonical = false, extraSchema = [] } = Astro.props;
 const canonicalURL = canonicalPath ? `https://tuijianjichang.blog${canonicalPath}` : 'https://tuijianjichang.blog/';
 ---
 
@@ -39,3 +41,15 @@ const canonicalURL = canonicalPath ? `https://tuijianjichang.blog${canonicalPath
   "url": "https://tuijianjichang.blog/"
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "推荐机场数据库",
+  "url": "https://tuijianjichang.blog/",
+  "logo": "https://tuijianjichang.blog/favicon.svg"
+}
+</script>
+{extraSchema.map((schema) => (
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+))}

@@ -144,7 +144,8 @@ htmlFiles.forEach(file => {
   const linkMatches = content.match(/<a[^>]+href="(\/[^"]+)"/g);
   if (linkMatches) {
     linkMatches.forEach(l => {
-      const href = l.match(/href="([^"]+)"/)[1];
+      const rawHref = l.match(/href="([^"]+)"/)[1];
+      const href = rawHref.split('#')[0] || '/'; // strip in-page anchors before checking file existence
       stats.internalLinksChecked++;
       const targetHtmlPath = href.endsWith('/') ? href + 'index.html' : href;
       if (!htmlFiles.some(f => f.replace(/\\/g, '/').endsWith(targetHtmlPath))) {
@@ -156,9 +157,18 @@ htmlFiles.forEach(file => {
   const affMatches = content.match(/<a[^>]+href="(https?:\/\/(?!tuijianjichang\.org)[^"]+)"[^>]*>/g);
   if (affMatches) {
     affMatches.forEach(l => {
+      const hrefMatch = l.match(/href="([^"]+)"/);
+      const href = hrefMatch ? hrefMatch[1] : '';
+      const isMonetizedAffiliate = /aff|\?code=/.test(href); // provider referral links, e.g. *aff.com/#/?code=...
       stats.affiliateCtaCount++;
       if (l.includes('href=""') || l.includes('href="#"') || l.includes('javascript:')) stats.emptyAffiliateHref++;
-      if (!l.includes('rel="nofollow sponsored noopener"') || !l.includes('target="_blank"')) stats.affiliateRelErrors++;
+      if (isMonetizedAffiliate) {
+        // Paid/referral links must carry "sponsored" per Google's link-attribute guidance.
+        if (!l.includes('rel="nofollow sponsored noopener"') || !l.includes('target="_blank"')) stats.affiliateRelErrors++;
+      } else {
+        // Plain outbound (e.g. footer friend links) just need nofollow + noopener so they don't pass SEO equity.
+        if (!/rel="[^"]*nofollow[^"]*"/.test(l) || !/rel="[^"]*noopener[^"]*"/.test(l) || !l.includes('target="_blank"')) stats.affiliateRelErrors++;
+      }
     });
   }
 

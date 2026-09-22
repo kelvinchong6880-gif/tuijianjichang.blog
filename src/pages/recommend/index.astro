@@ -17,6 +17,47 @@ const description = `整理${totalCount}家机场的价格、流量与套餐资�
 
 const top8 = providers.filter(p => p.editorialPick).sort((a, b) => a.editorialRank! - b.editorialRank!);
 
+const faqEntries = [
+  {
+    q: '我应该怎么选出适合自己的套餐？',
+    a: '第一看预算，确定你每个月愿意支付多少钱；第二看需求流量，是偶尔查阅资料（50GB以内），还是天天看视频（200GB以上）；第三看付款周期，初次使用切忌直接年付。建议先从低价月付开始试错。'
+  },
+  {
+    q: '月付和年付的区别是什么？最低标价等于月付价吗？',
+    a: '不等于！许多商家会在首页写着"¥8起"，但这往往是指年付总额平摊下来的月均价（且要求一次性支付年费）。真正的月付（Monthly）套餐往往价格更高。我们建议您在我们的对比表中，仔细区分"月付实际扣款"与"年付折合月均"，看清楚再下单。'
+  },
+  {
+    q: '为什么本站把 SOGO云 作为首位主推？',
+    a: 'SOGO云是本站的商业合作伙伴，我们从其返佣计划中获得维持网站运转的收入。但同时，其 ¥25/150GB 以及 ¥98 年付小包的结构，确实能覆盖很广的用户需求区间；并且其在部分第三方历史测速样本中，展现出了在日美地区的真实带宽潜力。但请注意，本站不对其未来稳定性做任何保证，建议您按月付试用。'
+  },
+  {
+    q: '官方宣称（如"2.5Gbps"和"全解锁"）和实际测试有区别吗？',
+    a: '区别很大。官方宣称代表的是其服务器端口接入的理论上限，或者某个测试瞬间的结果。实际您用起来的速度，取决于您本地宽带运营商、物理距离、晚高峰拥塞程度以及目标网站的限速策略。这也是为什么我们要求读者不要轻信单一的"历史63节点样本"，一切以本地实测为准。'
+  }
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqEntries.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a }
+  }))
+};
+
+const itemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: `2026机场推荐 Top ${top8.length} 编辑精选`,
+  itemListElement: top8.map((p, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    url: `https://tuijianjichang.blog/airport/${p.slug}/`,
+    name: p.name
+  }))
+};
+
 const editorialReviews: Record<string, { strength: string, limitation: string, fit: string, unfit: string }> = {
   'sogo-yun': {
     strength: '根据官方资料，提供 IPLC/IEPL 线路与 2.5Gbps 标称峰值，且日本/美国线路在第三方历史快照中曾表现出较强带宽。支持按月付（150GB-550GB）与年付小包，具备高度灵活性。',
@@ -80,7 +121,7 @@ function getTrafficDisplay(p: any) {
 
 <html lang="zh-CN">
   <head>
-    <BaseHead title={title} description={description} canonicalPath="/recommend/" />
+    <BaseHead title={title} description={description} canonicalPath="/recommend/" extraSchema={[faqSchema, itemListSchema]} />
   </head>
   <body>
     <SiteHeader />
