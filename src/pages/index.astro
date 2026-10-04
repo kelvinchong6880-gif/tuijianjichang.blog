@@ -2,46 +2,105 @@
 import '../styles/global.css';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import DataSummary from '../components/DataSummary.astro';
 import ProviderFilter from '../components/ProviderFilter.astro';
 import ProviderGrid from '../components/ProviderGrid.astro';
 import { providers } from '../data/providers';
+import { verifyProviders } from '../data/verify';
 import BaseHead from '../components/BaseHead.astro';
+import ProviderLogo from '../components/ProviderLogo.astro';
+import { ranked, monthlyPlans, yearlyPlans, oneTimePlans, perGB, fmtGB, lineLabel, faqSchema } from '../data/analysis';
+import { UPDATED_ISO, UPDATED_LABEL, UPDATED_MONTH, UPDATED_MONTH_SHORT, SITE_URL } from '../data/site';
+
+verifyProviders(providers);
 
 const planCount = providers.reduce((acc, p) => acc + p.plans.length, 0);
-const pickCount = providers.filter(p => p.editorialPick).length;
-const title = '机场数据库：22家机场套餐价格、流量与线路对比筛选';
-const description = '收录22家机场的套餐价格、流量与线路资料，可按价格、流量、IPLC/IEPL、AI、流媒体等条件筛选比较，并继续查看不同场景与机场推荐内容。';
+const n = providers.length;
+const title = `机场推荐2026：${n}家机场对比与Top 8排行（${UPDATED_MONTH_SHORT}更新）`;
+const description = `2026机场推荐（${UPDATED_MONTH}更新）：整理${n}家机场${planCount}个套餐的月付价格、流量、IPLC/IEPL专线与优惠码，按预算和用量帮你挑选。本月首推SOGO云：¥25/月150GB全IEPL专线，晚高峰不降速。`;
+const top8 = ranked();
+const first = top8[0];
+
+// 按需求的快速推荐（全部由数据自动计算）
+const allMonthly = providers.flatMap((p) => monthlyPlans(p).map((pl) => ({ p, pl })));
+const cheapestMonthly = [...allMonthly].sort((a, b) => a.pl.price - b.pl.price || b.pl.traffic! - a.pl.traffic!)[0];
+const bigValue = allMonthly
+  .filter((x) => (x.pl.traffic ?? 0) >= 1000 && x.p.lineClaims.some((l) => l === 'IPLC' || l === 'IEPL'))
+  .sort((a, b) => perGB(a.pl)! - perGB(b.pl)!)[0];
+const allYearly = providers.flatMap((p) => yearlyPlans(p).map((pl) => ({ p, pl })));
+const cheapestYearly = [...allYearly].sort((a, b) => a.pl.price - b.pl.price)[0];
+const allOneTime = providers.flatMap((p) => oneTimePlans(p).map((pl) => ({ p, pl })));
+const cheapestOneTime = [...allOneTime].sort((a, b) => a.pl.price - b.pl.price)[0];
+
+const quickPicks = [
+  { tag: '综合首推', name: first.name, slug: first.slug, text: `月付 ¥${first.entryPrice} 起，${first.lineClaims.join('/')} 专线，晚高峰不降速，${first.plans.length} 个套餐覆盖轻度到重度用户。` },
+  { tag: '最便宜月付', name: cheapestMonthly.p.name, slug: cheapestMonthly.p.slug, text: `${cheapestMonthly.pl.name}：¥${cheapestMonthly.pl.price}/月 ${fmtGB(cheapestMonthly.pl.traffic)}，${lineLabel(cheapestMonthly.p)} 线路。` },
+  { tag: '年付最便宜', name: cheapestYearly.p.name, slug: cheapestYearly.p.slug, text: `${cheapestYearly.pl.name}：¥${cheapestYearly.pl.price}/年，每月 ${fmtGB(cheapestYearly.pl.traffic)}，折合约 ¥${(cheapestYearly.pl.price / 12).toFixed(1)}/月。` },
+  { tag: '大流量最划算', name: bigValue.p.name, slug: bigValue.p.slug, text: `${bigValue.pl.name}：¥${bigValue.pl.price}/月 ${fmtGB(bigValue.pl.traffic)}，约 ¥${perGB(bigValue.pl)!.toFixed(3)}/GB，1TB 以上专线套餐里单价最低。` },
+  { tag: '不限时备用', name: cheapestOneTime.p.name, slug: cheapestOneTime.p.slug, text: `${cheapestOneTime.pl.name}：¥${cheapestOneTime.pl.price} 买 ${fmtGB(cheapestOneTime.pl.traffic)}，流量永久有效，用完为止。` },
+];
+
+const faqItems = [
+  { q: '机场是什么？为什么叫“机场”？', a: '“机场”是国内用户对代理订阅服务的俗称：服务商把很多海外服务器（节点）打包成一个订阅链接，你导入 Clash、Shadowrocket 等客户端后就能一键连接，就像从“机场”选航班一样选节点。机场按套餐收费，每月给你一定流量。' },
+  { q: '2026 年机场推荐哪家？', a: `${UPDATED_MONTH}本站首推 ${first.name}：月付 ¥${first.entryPrice} 起 150GB，全 IEPL 专线、晚高峰不降速。追求最低价可以看 ${cheapestMonthly.p.name}（¥${cheapestMonthly.pl.price}/月起），轻度用户可以看 ${cheapestYearly.p.name} 的年付小包（¥${cheapestYearly.pl.price}/年）。完整排名见 Top 8 机场排行榜。` },
+  { q: '怎么选机场？最重要看什么？', a: '看四点：① 线路——优先选 IPLC/IEPL 专线机场，晚高峰更稳；② 价格——分清“月付价”和“年付折合月价”；③ 流量——轻度 50GB、日常 150GB、追剧 300GB、全家 600GB 以上；④ 解锁——用 ChatGPT 或 Netflix 的话，确认官网写明支持。' },
+  { q: '便宜机场能用吗？', a: '能用，但要看线路。本站收录的机场里，¥15–¥20/月 就能买到 100–150GB 的专线套餐。真正需要警惕的是没有写明线路、倍率很高（如 2 倍、3 倍扣流量）或只有年付的超低价机场。第一次购买一律建议先月付试用。' },
+  { q: '机场和 VPN 有什么区别？', a: '机场通常基于 Shadowsocks、Trojan、VLESS 等协议，节点多、价格低、可按地区切换；传统商业 VPN 在国内连接成功率较低、价格也更高。对国内用户来说，机场 + Clash 类客户端是目前更主流的方案。' },
+  { q: '本站的数据多久更新一次？', a: `本站每月按机场官网核对一次套餐价格、流量和优惠码，本页最近一次更新是 ${UPDATED_LABEL}。机场经常有限时活动，最终价格以官网结算页为准。` },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: `${UPDATED_MONTH}机场推荐 Top 8`,
+    itemListOrder: 'https://schema.org/ItemListOrderAscending',
+    numberOfItems: top8.length,
+    itemListElement: top8.map((p, i) => ({ '@type': 'ListItem', position: i + 1, name: p.name, url: `${SITE_URL}/airport/${p.slug}/` })),
+  },
+  faqSchema(faqItems),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: title,
+    description,
+    inLanguage: 'zh-CN',
+    dateModified: UPDATED_ISO,
+    url: `${SITE_URL}/`,
+  },
+];
 ---
 <html lang="zh-CN">
   <head>
-    <BaseHead title={title} description={description} canonicalPath="/" />
+    <BaseHead title={title} description={description} canonicalPath="/" jsonLd={jsonLd} />
   </head>
   <body>
     <SiteHeader />
     <div class="hero-wrapper">
-      <div class="hero-bg-glow"></div>
       <div class="container">
         <section class="hero-section">
           <div class="hero-text">
-            <div class="product-label">2026 机场数据库</div>
-            <h1>机场参数过滤与对比数据库</h1>
-            <p class="supporting-text">基于当前收录的 {providers.length} 家机场官方套餐资料，按价格、流量、线路与使用需求快速筛选。</p>
+            <div class="product-label">更新于 <time datetime={UPDATED_ISO}>{UPDATED_LABEL}</time></div>
+            <h1>机场推荐 2026：{n} 家机场价格、线路与流量对比</h1>
+            <p class="supporting-text">不知道选哪家机场？我们整理了 {n} 家机场的 {planCount} 个套餐，按月付价格、IPLC/IEPL 专线、每月流量和不限时套餐做成对比表。本月首推 <a href={`/airport/${first.slug}/`}>{first.name}</a>：¥{first.entryPrice}/月 150GB，全 IEPL 专线。</p>
+            <div class="hero-cta">
+              <a class="cta-primary" href="#top8">看本月 Top 8 机场推荐</a>
+              <a class="cta-ghost" href="#filter">按需求筛选机场</a>
+            </div>
             <div class="trust-tags">
               <span class="trust-tag">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                 {providers.length} 家机场
               </span>
               <span class="trust-tag">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                 {planCount} 个套餐
               </span>
               <span class="trust-tag">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                20 个品牌 Logo
+                <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                全部 IPLC/IEPL/BGP 线路标注
               </span>
               <span class="trust-tag">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
                 持续更新
               </span>
             </div>
@@ -50,12 +109,12 @@ const description = '收录22家机场的套餐价格、流量与线路资料，
             <div class="data-panel">
               <div class="dp-header">
                 数据库摘要 
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bar-chart-icon"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bar-chart-icon"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
               </div>
               <div class="dp-grid">
                 <div class="dp-grid-item">
                   <div class="dp-icon-wrapper">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.2-1.1.6L3 8l6 5.8L7.5 15.3 4 14.5 2 16l6 6 1.5-2-1.8-3.5 1.5-1.5 5.8 6 1.2-.7c.4-.2.7-.6.6-1.1z"/></svg>
+                    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.2-1.1.6L3 8l6 5.8L7.5 15.3 4 14.5 2 16l6 6 1.5-2-1.8-3.5 1.5-1.5 5.8 6 1.2-.7c.4-.2.7-.6.6-1.1z"/></svg>
                   </div>
                   <div class="dp-info">
                     <span class="dp-value">{providers.length}</span>
@@ -65,7 +124,7 @@ const description = '收录22家机场的套餐价格、流量与线路资料，
                 
                 <div class="dp-grid-item">
                   <div class="dp-icon-wrapper">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
                   </div>
                   <div class="dp-info">
                     <span class="dp-value">{planCount}</span>
@@ -75,17 +134,17 @@ const description = '收录22家机场的套餐价格、流量与线路资料，
                 
                 <div class="dp-grid-item">
                   <div class="dp-icon-wrapper">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+                    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
                   </div>
                   <div class="dp-info">
-                    <span class="dp-value">20</span>
-                    <span class="dp-label">品牌 Logo</span>
+                    <span class="dp-value">{top8.length}</span>
+                    <span class="dp-label">本月精选</span>
                   </div>
                 </div>
                 
                 <div class="dp-grid-item">
                   <div class="dp-icon-wrapper">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7"/><line x1="6" y1="9" x2="6" y2="21"/></svg>
+                    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7"/><line x1="6" y1="9" x2="6" y2="21"/></svg>
                   </div>
                   <div class="dp-info">
                     <span class="dp-value">3</span>
@@ -97,14 +156,14 @@ const description = '收录22家机场的套餐价格、流量与线路资料，
             
             <div class="abstract-graphic">
               <!-- Animated connection lines background -->
-              <svg viewBox="0 0 300 300" class="ag-bg-lines">
+              <svg aria-hidden="true" focusable="false" viewBox="0 0 300 300" class="ag-bg-lines">
                 <path d="M-50 150 Q 150 -50 350 150" stroke="currentColor" fill="none" stroke-width="1.5" stroke-dasharray="8 12" />
                 <path d="M-50 250 Q 150 50 350 250" stroke="currentColor" fill="none" stroke-width="1.5" stroke-dasharray="8 12" />
               </svg>
               <div class="ag-halo">
                 <div class="ag-dashed-ring"></div>
                 <div class="ag-center-node">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="plane-icon"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.2-1.1.6L3 8l6 5.8L7.5 15.3 4 14.5 2 16l6 6 1.5-2-1.8-3.5 1.5-1.5 5.8 6 1.2-.7c.4-.2.7-.6.6-1.1z"/></svg>
+                  <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="plane-icon"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.2-1.1.6L3 8l6 5.8L7.5 15.3 4 14.5 2 16l6 6 1.5-2-1.8-3.5 1.5-1.5 5.8 6 1.2-.7c.4-.2.7-.6.6-1.1z"/></svg>
                 </div>
               </div>
               <div class="ag-card ag-card-1">
@@ -119,17 +178,75 @@ const description = '收录22家机场的套餐价格、流量与线路资料，
       </div>
     </div>
 
-    <main class="container main-content">
-      <div class="filter-wrapper">
-        <ProviderFilter />
-      </div>
-      
-      <ProviderGrid providers={providers} featuredSlug="sogo-yun" />
-      
+    <main id="main" class="container main-content">
+      <section id="top8" class="home-section top8-section">
+        <h2>{UPDATED_MONTH}机场推荐 Top 8</h2>
+        <p class="section-lead">从 {n} 家机场中按专线质量、价格、流量性价比和套餐灵活度选出的 8 家，点击名称查看详细评测。完整理由见 <a href="/recommend/">Top 8 机场排行榜</a>。</p>
+        <div class="table-wrap">
+          <table class="home-table">
+            <thead><tr><th scope="col">排名</th><th scope="col">机场</th><th scope="col">月付起步</th><th scope="col">线路</th><th scope="col">每月流量</th><th scope="col">不限时</th><th scope="col">优惠码</th><th scope="col"></th></tr></thead>
+            <tbody>
+              {top8.map((p, i) => (
+                <tr class={i === 0 ? 'is-first' : ''}>
+                  <td class="rank">#{i + 1}</td>
+                  <td><a class="brand" href={`/airport/${p.slug}/`}><ProviderLogo name={p.name} logo={p.logo} size="sm" /><span>{p.name}</span></a></td>
+                  <td class="tabular-nums">¥{p.entryPrice}/月</td>
+                  <td>{lineLabel(p)}</td>
+                  <td class="tabular-nums">{fmtGB(p.trafficMin)}–{fmtGB(p.trafficMax)}</td>
+                  <td>{p.hasNoExpiry ? '有' : '无'}</td>
+                  <td><code>{p.promoCode ?? '—'}</code></td>
+                  <td>{p.affiliateUrl && <a class="go" href={p.affiliateUrl} target="_blank" rel="nofollow sponsored noopener">官网</a>}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="home-section">
+        <h2>按需求快速推荐机场</h2>
+        <div class="pick-grid">
+          {quickPicks.map((q) => (
+            <a class="pick-card" href={`/airport/${q.slug}/`}>
+              <span class="pick-tag">{q.tag}</span>
+              <strong>{q.name}</strong>
+              <span class="pick-text">{q.text}</span>
+            </a>
+          ))}
+        </div>
+        <p class="section-lead">更多场景：<a href="/scenario/cheap/">便宜机场推荐</a> · <a href="/scenario/iplc-iepl/">IPLC/IEPL 专线机场</a> · <a href="/scenario/ai-chatgpt/">ChatGPT 机场</a> · <a href="/scenario/streaming/">Netflix 流媒体机场</a> · <a href="/scenario/high-traffic/">大流量机场</a> · <a href="/scenario/no-expiry/">不限时机场</a> · <a href="/scenario/value/">高性价比机场</a></p>
+      </section>
+
+      <section id="filter" class="home-section">
+        <h2>全部 {n} 家机场对比筛选</h2>
+        <div class="filter-wrapper">
+          <ProviderFilter />
+        </div>
+        <ProviderGrid providers={providers} featuredSlug="sogo-yun" />
+      </section>
+
       <section class="seo-prose">
-        <h2>关于机场数据库</h2>
-        <p>本站长期追踪并收录超过 20 家主流与新兴机场的套餐、价格、线路与特征数据，为用户提供客观、清晰的对比工具。所有的价格与流量数据均不定期进行更新，以呈现最接近当前的准确信息。</p>
-        <p>如果您需要查看经过编辑精选的排名列表，请访问我们的 <a href="/recommend/">2026机场推荐</a> 排行榜。</p>
+        <h2>机场推荐：新手怎么挑选机场？</h2>
+        <p>“机场”是国内用户对代理订阅服务的俗称。挑机场不用看花哨的宣传，抓住下面四个标准，基本不会踩坑：</p>
+        <h3>1. 线路：优先选 IPLC / IEPL 专线</h3>
+        <p>普通中转线路走公网国际出口，晚上 8–11 点容易拥堵掉速。<a href="/compare/iplc-vs-iepl/">IPLC 和 IEPL</a> 是跨境专线，延迟低、晚高峰稳定。本站 Top 8 推荐全部是专线机场。</p>
+        <h3>2. 价格：分清“月付价”和“年付折合价”</h3>
+        <p>首页写“¥8 起”的，通常是年付总价除以 12，而且流量只有 40–60GB/月。真正的月付价格多在 ¥15–¥27 之间。第一次用某家机场，建议先买一个月试用，稳定了再年付，很多机场年付能打 8 折、三年付能打 6 折。详见 <a href="/compare/monthly-vs-no-expiry/">月付、年付和不限时怎么选</a>。</p>
+        <h3>3. 流量：按实际用量买，不要一步到位</h3>
+        <p>只查资料、用 ChatGPT：每月 50GB 足够；每天看 1–2 小时 YouTube：约 150GB；经常追 4K 剧：300GB 以上；全家多设备共用：600GB 以上。还要留意“倍率”，本站推荐的机场都是全节点 1 倍率，不会多扣流量。</p>
+        <h3>4. 解锁：用 AI 和流媒体要看官网说明</h3>
+        <p>如果你主要用 ChatGPT、Claude，或者看 Netflix、Disney+，优先选官网写明“原生 IP”“解锁 ChatGPT/Netflix”的机场，可以直接看 <a href="/scenario/ai-chatgpt/">AI 机场推荐</a> 和 <a href="/scenario/streaming/">流媒体机场推荐</a>。</p>
+        <p>按这四点看下来，大多数人直接选 Top 8 里的任意一家都不会错：想省心选 <a href={`/airport/${first.slug}/`}>{first.name}</a>，想省钱选 <a href={`/airport/${cheapestMonthly.p.slug}/`}>{cheapestMonthly.p.name}</a>，流量大选 <a href={`/airport/${bigValue.p.slug}/`}>{bigValue.p.name}</a>。</p>
+      </section>
+
+      <section class="home-section faq-section">
+        <h2>机场推荐常见问题</h2>
+        {faqItems.map((f) => (
+          <div class="faq-item">
+            <h3>{f.q}</h3>
+            <p>{f.a}</p>
+          </div>
+        ))}
       </section>
     </main>
     <SiteFooter />
@@ -157,9 +274,6 @@ const description = '收录22家机场的套餐价格、流量与线路资料，
       radial-gradient(circle at 50% 100%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
     z-index: 0;
     pointer-events: none;
-  }
-  .hero-bg-glow {
-    display: none;
   }
   .hero-section {
     position: relative;
@@ -352,8 +466,8 @@ const description = '收录22家机场的套餐价格、流量与线路资料，
     z-index: 4;
   }
   .plane-icon {
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     stroke-width: 1.5;
   }
   .ag-card {
@@ -391,30 +505,47 @@ const description = '收录22家机场的套餐价格、流量与线路资料，
     border: 1px dashed rgba(76, 195, 255, 0.3);
     animation: spin 15s linear infinite;
   }
-  .plane-icon {
-    width: 32px;
-    height: 32px;
-  }
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
 
   .main-content {
     margin-top: -32px;
     position: relative;
     z-index: 10;
   }
+  .supporting-text a { color: var(--color-primary); text-decoration: underline; }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 var(--spacing-6); }
+  .cta-primary, .cta-ghost { padding: 12px 22px; border-radius: var(--radius-full); font-weight: 700; font-size: var(--text-sm); }
+  .cta-primary { background: var(--color-primary); color: #0E1E3A; }
+  .cta-ghost { border: 1px solid var(--color-border); color: var(--color-text-main); }
+  .home-section { margin: var(--spacing-12) 0; }
+  .home-section > h2 { font-size: var(--text-2xl); margin-bottom: var(--spacing-3); color: var(--color-text-main); }
+  .section-lead { color: var(--color-text-secondary); line-height: 1.8; margin-bottom: var(--spacing-4); }
+  .section-lead a { color: var(--color-primary); }
+  .table-wrap { overflow-x: auto; border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-surface); }
+  .home-table { width: 100%; border-collapse: collapse; min-width: 720px; font-size: var(--text-sm); }
+  .home-table th, .home-table td { padding: 12px 14px; border-bottom: 1px solid var(--color-border); text-align: left; color: var(--color-text-secondary); vertical-align: middle; }
+  .home-table th { color: var(--color-text-muted); font-weight: 600; }
+  .home-table tr:last-child td { border-bottom: none; }
+  .home-table tr.is-first td { background: var(--color-primary-soft); }
+  .home-table .rank { font-weight: 800; color: var(--color-primary); }
+  .home-table .brand { display: flex; align-items: center; gap: 10px; color: var(--color-text-main); font-weight: 700; }
+  .home-table code { color: var(--color-primary); }
+  .home-table .go { color: var(--color-primary); font-weight: 700; white-space: nowrap; }
+  .pick-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: var(--spacing-4); margin-bottom: var(--spacing-4); }
+  .pick-card { display: flex; flex-direction: column; gap: 6px; padding: var(--spacing-5); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); color: var(--color-text-main); transition: border-color var(--transition-fast); }
+  .pick-card:hover { border-color: var(--color-primary); }
+  .pick-tag { font-size: var(--text-xs); color: var(--color-primary); font-weight: 700; }
+  .pick-text { font-size: var(--text-sm); color: var(--color-text-secondary); line-height: 1.6; }
+  .seo-prose h3 { font-size: var(--text-lg); margin: var(--spacing-5) 0 var(--spacing-2); color: var(--color-text-main); }
+  .seo-prose a { color: var(--color-primary); text-decoration: underline; }
+  .faq-section .faq-item { margin-bottom: var(--spacing-5); }
+  .faq-section h3 { font-size: var(--text-lg); color: var(--color-text-main); margin-bottom: var(--spacing-2); }
+  .faq-section p { color: var(--color-text-secondary); line-height: 1.8; }
   .filter-wrapper {
     margin-bottom: var(--spacing-8);
   }
 
   .seo-prose {
-    margin-top: var(--spacing-16);
+    margin-top: var(--spacing-12);
     margin-bottom: var(--spacing-16);
     padding: var(--spacing-8);
     background: var(--color-surface);

@@ -5,6 +5,7 @@ import SiteFooter from '../../../components/SiteFooter.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import AffiliateDisclosure from '../../../components/AffiliateDisclosure.astro';
 import { providers } from '../../../data/providers';
+import { validityLabel } from '../../../data/analysis';
 import '../../../styles/global.css';
 
 const title = "不限时机场套餐推荐 - 一次性购买按流量计费候选";
@@ -59,7 +60,7 @@ validPlans.sort((a, b) => a.price - b.price);
   </head>
   <body>
     <SiteHeader />
-    <main class="container">
+    <main id="main" class="container">
       <Breadcrumbs paths={[
         { label: '机场选购场景', url: '/scenario/' },
         { label: '不限时机场套餐', url: '/scenario/no-expiry/' }
@@ -89,17 +90,17 @@ validPlans.sort((a, b) => a.price - b.price);
 
       <section class="section">
         <h2>一、已确认不限时候选套餐</h2>
-        <p>以下为官方资料明确提供，且价格无严重冲突的不限时候选（共 {validPlans.length} 个）：</p>
+        <p>以下是各机场官网提供的不限时流量包（共 {validPlans.length} 个），一次购买、流量不过期：</p>
         
         <div class="table-container">
           <table class="data-table">
             <thead>
               <tr>
-                <th>品牌与套餐</th>
-                <th>一次性价格</th>
-                <th>总流量</th>
-                <th>官方有效期规则</th>
-                <th>详情入口</th>
+                <th scope="col">品牌与套餐</th>
+                <th scope="col">一次性价格</th>
+                <th scope="col">总流量</th>
+                <th scope="col">官方有效期规则</th>
+                <th scope="col">详情入口</th>
               </tr>
             </thead>
             <tbody>
@@ -108,7 +109,7 @@ validPlans.sort((a, b) => a.price - b.price);
                   <td><strong>{plan.providerName}</strong> - {plan.planName}</td>
                   <td><span style="color:var(--color-primary); font-weight:bold;">¥{plan.price}</span></td>
                   <td>{plan.trafficDisplay}</td>
-                  <td>{plan.validity}</td>
+                  <td>{validityLabel(plan.validity)}</td>
                   <td><a href={`/airport/${plan.providerSlug}/`} class="btn btn-small">查看资料</a></td>
                 </tr>
               )) : <tr><td colspan="5" style="text-align:center;">暂无符合条件的套餐</td></tr>}
@@ -125,10 +126,10 @@ validPlans.sort((a, b) => a.price - b.price);
             <table class="data-table" style="background-color: var(--color-surface); opacity: 0.9;">
               <thead>
                 <tr>
-                  <th>品牌与套餐</th>
-                  <th>冲突标价</th>
-                  <th>冲突说明</th>
-                  <th>详情入口</th>
+                  <th scope="col">品牌与套餐</th>
+                  <th scope="col">冲突标价</th>
+                  <th scope="col">冲突说明</th>
+                  <th scope="col">详情入口</th>
                 </tr>
               </thead>
               <tbody>

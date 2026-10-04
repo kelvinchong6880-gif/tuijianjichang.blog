@@ -14,10 +14,11 @@ const sizeMap = {
   lg: '64px'
 };
 const dimension = sizeMap[size];
+const px = parseInt(dimension, 10);
 ---
 <div class={`provider-logo logo-${size}`}>
   {logo ? (
-    <img src={logo} alt={`${name} Logo`} loading="lazy" />
+    <img src={logo} alt={`${name} 机场 Logo`} width={px} height={px} loading="lazy" decoding="async" />
   ) : (
     <div class="fallback-logo" aria-label={`${name} Logo`}>
       <span aria-hidden="true">{fallbackChar}</span>

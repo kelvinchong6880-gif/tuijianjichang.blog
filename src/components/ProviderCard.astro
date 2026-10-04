@@ -3,6 +3,7 @@ import ProviderLogo from './ProviderLogo.astro';
 import PromoCode from './PromoCode.astro';
 import Button from './Button.astro';
 import type { Provider } from '../data/schema';
+import { trafficRange, fmtGB } from '../data/analysis';
 
 export interface Props {
   provider: Provider;
@@ -10,17 +11,7 @@ export interface Props {
 const { provider } = Astro.props;
 
 const validPlans = provider.plans.filter(p => p.traffic !== null);
-let trafficText = provider.trafficDisplay;
-if (validPlans.length > 0) {
-  const formatT = (v: number) => v >= 1000 ? `${(v/1000).toFixed(1).replace(/\.0$/, '')}TB` : `${v}GB`;
-  let minT = Math.min(...validPlans.map(p => p.traffic!));
-  let maxT = Math.max(...validPlans.map(p => p.traffic!));
-  if (minT === maxT) {
-    trafficText = formatT(minT);
-  } else {
-    trafficText = `${formatT(minT)}–${formatT(maxT)}`;
-  }
-}
+const trafficText = trafficRange(provider);
 
 const highlights: string[] = [];
 if (provider.hasNoExpiry) highlights.push('提供不限时套餐');
@@ -29,8 +20,7 @@ if (provider.aiClaim === true) highlights.push('支持 AI');
 if (validPlans.length > 0) {
   const maxT = Math.max(...validPlans.map(p => p.traffic!));
   if (maxT > 0) {
-    const maxFormat = maxT >= 1000 ? `${(maxT/1000).toFixed(1).replace(/\.0$/, '')}TB` : `${maxT}GB`;
-    highlights.push(`最高套餐流量 ${maxFormat}`);
+    highlights.push(`最高套餐流量 ${fmtGB(maxT)}`);
   }
 }
 const hasOneTime = provider.plans.some(p => p.billingType === 'One-Time');
@@ -78,7 +68,7 @@ const finalHighlights = highlights.slice(0, 3);
         <ul class="highlights-list">
           {finalHighlights.map(hl => (
             <li>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="highlight-icon"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="highlight-icon"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
               <span>{hl}</span>
             </li>
           ))}

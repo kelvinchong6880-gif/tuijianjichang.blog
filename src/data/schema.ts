@@ -1,43 +1,52 @@
-
 export interface SourceRecord {
   type: 'official' | 'user' | 'third_party';
+  /** 网址，或资料名称（如“XX官网套餐页”） */
   urlOrFile: string;
   sourceDate: string | null;
   recordedDate: string | null;
   verifiedDate: string | null;
   supportedFacts: string[];
 }
+
+export type BillingType = 'Monthly' | 'Quarterly' | 'Yearly' | 'One-Time' | 'Other';
+
 export interface Plan {
   name: string;
   price: number;
-  priceConflict?: boolean; // explicitly marks price as conflicting/unverified
-  paymentCycleConflict?: boolean; // explicitly marks payment cycle as conflicting or unverified
+  /** 标价与官网正文不一致时标记，页面会显示“待核实”并排除出价格排序 */
+  priceConflict?: boolean;
+  /** 付款周期不明确时标记 */
+  paymentCycleConflict?: boolean;
   currency: string;
-  billingType: 'Monthly' | 'Quarterly' | 'Yearly' | 'One-Time' | 'Other';
-  validity: string;
-  traffic: number | null; // in GB, null if unspecified
+  billingType: BillingType;
+  /** Subscription = 周期订阅；Permanent = 不限时（流量永久有效） */
+  validity: 'Subscription' | 'Permanent' | string;
+  /** 每月流量（GB）；不限时套餐为总流量；未知为 null */
+  traffic: number | null;
   trafficDisplay: string;
-  deviceLimit: string | null;
-  speedLimit: string | null;
+  deviceLimit?: string | null;
+  /** 官方标称速率，如 “2.5Gbps (峰值)” */
+  speedLimit?: string | null;
+  nodes?: string | null;
   lineType: string | null;
-  nodes: string | null;
   streaming: boolean | null;
   ai: boolean | null;
-  features: string[];
-  sourceNotes: string | null;
+  features?: string[];
+  sourceNotes?: string | null;
 }
 
 export interface Provider {
   id: string;
   name: string;
-  canonicalName: string;
-  aliases: string[];
+  aliases?: string[];
   slug: string;
   logo: string | null;
   promoCode?: string | null;
+  /** 编辑推荐排名（1–8），不在榜单为 null */
   editorialRank: number | null;
   editorialPick: boolean;
 
+  /** 最低月付价格（不含定制套餐） */
   entryPrice: number;
   monthlyEntryPrice: number;
   currency: string;
@@ -51,13 +60,9 @@ export interface Provider {
   hasNoExpiry: boolean;
   streamingClaim: boolean | null;
   aiClaim: boolean | null;
+  nodeRegions?: string;
 
   affiliateUrl: string | null;
-  affiliateCode: string | null;
-  affiliateUrlStatus: 'ok' | 'source-missing-protocol' | 'protocol-normalized-verified' | 'error';
-
-  sourceFile: string;
-  affiliateSourceFile: string;
   lastVerified: string;
   sourceNotes?: string | null;
 

@@ -6,7 +6,6 @@ import BaseHead from '../../components/BaseHead.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import ProviderSpecs from '../../components/ProviderSpecs.astro';
 import PlanTable from '../../components/PlanTable.astro';
-import EditorialNotes from '../../components/EditorialNotes.astro';
 import AffiliateDisclosure from '../../components/AffiliateDisclosure.astro';
 import DataProvenance from '../../components/DataProvenance.astro';
 import SourceRecords from '../../components/SourceRecords.astro';
@@ -16,6 +15,9 @@ import ProviderLogo from '../../components/ProviderLogo.astro';
 import PromoCode from '../../components/PromoCode.astro';
 import Button from '../../components/Button.astro';
 import { customContent } from '../../data/customContent';
+import BrandReview from '../../components/BrandReview.astro';
+import { monthlyPlans, consumerPlans, fmtGB, lineLabel, faqFor, faqSchema } from '../../data/analysis';
+import { UPDATED_ISO, UPDATED_LABEL, UPDATED_MONTH, EDITOR, SITE_NAME, SITE_URL } from '../../data/site';
 import '../../styles/global.css';
 
 export async function getStaticPaths() {
@@ -26,21 +28,39 @@ export async function getStaticPaths() {
 }
 
 const { provider } = Astro.props;
-const custom = customContent[provider.slug];
-const title = custom ? custom.title : `${provider.name}怎么样？2026套餐价格、流量与线路资料`;
-const description = custom ? custom.desc : `${provider.name}机场资料库。官方最低价格 ¥${provider.entryPrice}，提供 ${provider.plans.length} 个套餐，包含线路类型、不限时、流媒体及AI解锁官方声明。`;
-const h1Text = custom ? custom.h1 : provider.name;
+const custom = customContent[provider.slug] ?? {};
+const mon = monthlyPlans(provider);
+const startPrice = mon.length ? `¥${mon[0].price}/月起` : `¥${provider.entryPrice}起`;
+const title = custom.title ?? `${provider.name}怎么样？2026 ${provider.name}机场评测：套餐价格与优惠码`;
+const description = custom.desc ?? `${provider.name}机场评测（${UPDATED_MONTH}更新）：${startPrice}，${consumerPlans(provider).length}个套餐，流量${fmtGB(provider.trafficMin)}–${fmtGB(provider.trafficMax)}，${lineLabel(provider)}线路${provider.hasNoExpiry ? '，有不限时流量包' : ''}${provider.promoCode ? `，优惠码${provider.promoCode}` : ''}。附选购建议、优缺点与同价位对比。`;
+const h1Text = custom.h1 ?? `${provider.name}怎么样？${provider.name}机场评测与套餐选购指南`;
+const faqs = faqFor(provider);
+const jsonLd = [
+  faqSchema(faqs),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: h1Text,
+    description,
+    inLanguage: 'zh-CN',
+    datePublished: '2026-09-15',
+    dateModified: UPDATED_ISO,
+    author: { '@type': 'Organization', name: EDITOR, url: `${SITE_URL}/methodology/` },
+    publisher: { '@type': 'Organization', name: SITE_NAME, url: `${SITE_URL}/` },
+    mainEntityOfPage: `${SITE_URL}/airport/${provider.slug}/`,
+  },
+];
 ---
 
 <html lang="zh-CN">
   <head>
-    <BaseHead title={title} description={description} canonicalPath={`/airport/${provider.slug}/`} />
+    <BaseHead title={title} description={description} canonicalPath={`/airport/${provider.slug}/`} jsonLd={jsonLd} ogType="article" />
   </head>
   <body>
     <SiteHeader />
-    <main class="container">
+    <main id="main" class="container">
       <Breadcrumbs paths={[
-        { label: '机场数据库', url: '/airports/' },
+        { label: '机场大全', url: '/airports/' },
         { label: provider.name, url: `/airport/${provider.slug}/` }
       ]} />
       
@@ -51,7 +71,8 @@ const h1Text = custom ? custom.h1 : provider.name;
             <h1>{h1Text}</h1>
             <div class="badges">
               {provider.editorialPick && <span class="badge pick">编辑推荐 #{provider.editorialRank}</span>}
-              <EvidenceBadge type="source" label="官方数据源" />
+              <EvidenceBadge type="source" label="官网数据" />
+              <span class="updated">更新于 <time datetime={UPDATED_ISO}>{UPDATED_LABEL}</time></span>
             </div>
           </div>
         </div>
@@ -72,26 +93,23 @@ const h1Text = custom ? custom.h1 : provider.name;
 
       <ProviderSpecs provider={provider} />
       
-      {custom && custom.html_top && (
-        <div class="reading-container custom-content-top" set:html={custom.html_top} />
+      {custom.intro && (
+        <div class="reading-container custom-content-top" set:html={custom.intro} />
       )}
 
       <section class="section section-plans">
-        <h2>套餐结构与价格</h2>
+        <h2>{provider.name}套餐价格表（{UPDATED_MONTH}）</h2>
         <PlanTable plans={provider.plans} />
       </section>
 
       <div class="reading-container">
-        {custom ? (
-          <div class="custom-content-wrapper" set:html={custom.html} />
-        ) : (
-          <EditorialNotes provider={provider} />
-        )}
-        
+        {custom.extra && <div class="custom-content-wrapper" set:html={custom.extra} />}
+        <BrandReview provider={provider} showIntro={!custom.intro} />
+
         {provider.affiliateUrl && (
           <div class="bottom-cta">
             <Button variant="primary" href={provider.affiliateUrl} target="_blank" rel="nofollow sponsored noopener" class="btn-large">
-              前往 {provider.name} 官网查看详情
+              前往 {provider.name} 官网{provider.promoCode ? `（优惠码 ${provider.promoCode}）` : ''}
             </Button>
           </div>
         )}
@@ -132,7 +150,13 @@ const h1Text = custom ? custom.h1 : provider.name;
   }
   .badges {
     display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     gap: var(--spacing-3);
+  }
+  .updated {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
   }
   .badge.pick {
     background-color: var(--color-primary-soft);
@@ -193,6 +217,21 @@ const h1Text = custom ? custom.h1 : provider.name;
     font-size: var(--text-base);
     line-height: var(--line-height-loose);
     margin-bottom: var(--spacing-5);
+  }
+  :global(.custom-editorial ul) {
+    padding-left: 1.3em;
+    margin-bottom: var(--spacing-5);
+  }
+  :global(.custom-editorial li) {
+    color: var(--color-text-secondary);
+    line-height: 1.8;
+    margin-bottom: var(--spacing-2);
+  }
+  :global(.custom-editorial code) {
+    background: var(--color-surface);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--color-primary);
   }
   :global(.custom-editorial a) {
     color: var(--color-primary);

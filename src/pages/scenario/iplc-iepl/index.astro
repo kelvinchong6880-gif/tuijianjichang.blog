@@ -19,7 +19,7 @@ const iplcProviders = providers.filter(p => p.lineClaims && p.lineClaims.some(l 
   </head>
   <body>
     <SiteHeader />
-    <main class="container">
+    <main id="main" class="container">
       <Breadcrumbs paths={[
         { label: '机场选购场景', url: '/scenario/' },
         { label: 'IPLC / IEPL 专线', url: '/scenario/iplc-iepl/' }
@@ -38,10 +38,10 @@ const iplcProviders = providers.filter(p => p.lineClaims && p.lineClaims.some(l 
           <table class="data-table">
             <thead>
               <tr>
-                <th>品牌名称</th>
-                <th>官方线路宣称</th>
-                <th>性能实测验证</th>
-                <th>详情入口</th>
+                <th scope="col">品牌名称</th>
+                <th scope="col">官方线路宣称</th>
+                <th scope="col">性能实测验证</th>
+                <th scope="col">详情入口</th>
               </tr>
             </thead>
             <tbody>

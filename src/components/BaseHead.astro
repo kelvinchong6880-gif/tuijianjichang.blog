@@ -1,20 +1,46 @@
 ---
+import { SITE_NAME, SITE_URL, UPDATED_ISO } from '../data/site';
+
 export interface Props {
   title: string;
   description: string;
   canonicalPath?: string;
   noCanonical?: boolean;
+  /** Extra JSON-LD objects for this page (FAQPage, ItemList, Article…) */
+  jsonLd?: Record<string, unknown>[];
+  ogType?: 'website' | 'article';
 }
 
-const { title, description, canonicalPath, noCanonical = false } = Astro.props;
-const canonicalURL = canonicalPath ? `https://tuijianjichang.blog${canonicalPath}` : 'https://tuijianjichang.blog/';
+const { title, description, canonicalPath, noCanonical = false, jsonLd = [], ogType = 'website' } = Astro.props;
+const canonicalURL = canonicalPath ? `${SITE_URL}${canonicalPath}` : `${SITE_URL}/`;
+
+const baseGraph = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: SITE_NAME,
+    alternateName: ['机场推荐', 'tuijianjichang.blog'],
+    url: `${SITE_URL}/`,
+    inLanguage: 'zh-CN',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: SITE_NAME,
+    url: `${SITE_URL}/`,
+    logo: `${SITE_URL}/favicon.svg`,
+  },
+];
 ---
 
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" href="/favicon.ico" sizes="any" />
 <meta name="generator" content={Astro.generator} />
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1" />
+<meta name="theme-color" content="#081226" />
 
 <!-- Canonical URL -->
 {!noCanonical && <link rel="canonical" href={canonicalURL} />}
@@ -23,19 +49,22 @@ const canonicalURL = canonicalPath ? `https://tuijianjichang.blog${canonicalPath
 <title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
+<meta http-equiv="last-modified" content={UPDATED_ISO} />
 
-<!-- Open Graph / Facebook -->
-<meta property="og:type" content="website" />
+<!-- Open Graph -->
+<meta property="og:type" content={ogType} />
+<meta property="og:locale" content="zh_CN" />
 <meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:site_name" content="推荐机场数据库" />
-<!-- Structured Data (Minimal) -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "推荐机场数据库",
-  "url": "https://tuijianjichang.blog/"
-}
-</script>
+<meta property="og:site_name" content={SITE_NAME} />
+<meta property="og:updated_time" content={UPDATED_ISO} />
+{ogType === 'article' && <meta property="article:modified_time" content={UPDATED_ISO} />}
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+
+<!-- Structured Data -->
+{[...baseGraph, ...jsonLd].map((obj) => (
+  <script type="application/ld+json" set:html={JSON.stringify(obj)} />
+))}

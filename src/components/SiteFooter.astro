@@ -4,20 +4,20 @@
   <div class="container footer-inner">
     <div class="footer-col brand-col">
       <div class="brand">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
           <rect width="24" height="24" rx="6" fill="var(--color-primary)"/>
           <path d="M7 14L12 9L17 14" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-        <span>推荐机场数据库</span>
+        <span>机场推荐数据库</span>
       </div>
-      <p>本站致力于提供客观的机场数据查询。所有的流量、价格、线路标签均直接提取自对应服务商官网公开信息。本站未进行任何未经证实的“测速”背书。</p>
+      <p>机场推荐数据库长期整理国内用户常用机场的套餐价格、流量、线路与优惠码，每月按官网资料更新，帮你用最短时间选到合适的机场。</p>
     </div>
     
     <div class="footer-col links">
       <h4>数据库</h4>
-      <a href="/">条件筛选</a>
+      <a href="/">机场推荐</a>
       <a href="/airports/">全部机场</a>
-      <a href="/recommend/">编辑精选</a>
+      <a href="/recommend/">Top 8 机场排行榜</a>
     </div>
     
     <div class="footer-col links">
@@ -37,21 +37,54 @@
   <div class="container">
     <div class="friends-links">
       <span class="friends-title">友情链接：</span>
-      <a href="https://clash-vpn.org/" target="_blank" rel="noopener noreferrer">clash-vpn.org</a>
-      <a href="https://clashjiedian.org/" target="_blank" rel="noopener noreferrer">clashjiedian.org</a>
-      <a href="https://findjichang.com/" target="_blank" rel="noopener noreferrer">findjichang.com</a>
-      <a href="https://haoyongjichang.com/" target="_blank" rel="noopener noreferrer">haoyongjichang.com</a>
-      <a href="https://jichangtuijian.pro/" target="_blank" rel="noopener noreferrer">jichangtuijian.pro</a>
-      <a href="https://ainavbase.com/" target="_blank" rel="noopener noreferrer">ainavbase.com</a>
+      <a href="https://clashwiki.blog/" target="_blank" rel="noopener">clashwiki.blog</a>
+      <a href="https://jichangblog.net/" target="_blank" rel="noopener">jichangblog.net</a>
+      <a href="https://vpn-clash.net/" target="_blank" rel="noopener">vpn-clash.net</a>
+      <a href="https://jichangmao.com/" target="_blank" rel="noopener">jichangmao.com</a>
+      <a href="https://bestjichang.com/" target="_blank" rel="noopener">bestjichang.com</a>
     </div>
   </div>
 
   <div class="container">
     <div class="footer-bottom">
-      <p>&copy; 2026 推荐机场数据库 (tuijianjichang.blog). All rights reserved.</p>
+      <p>&copy; 2026 机场推荐数据库 (tuijianjichang.blog). All rights reserved.</p>
     </div>
   </div>
 </footer>
+<p class="sr-only" aria-live="polite" id="copy-status"></p>
+
+<script>
+  // 全站唯一的“复制优惠码”脚本：所有 .promo-copy 按钮共用
+  const status = document.getElementById('copy-status');
+  document.addEventListener('click', async (event) => {
+    const btn = (event.target as HTMLElement).closest<HTMLButtonElement>('.promo-copy');
+    const code = btn?.dataset.code;
+    if (!btn || !code) return;
+    const label = btn.querySelector('.copy-text') ?? btn;
+    if (btn.classList.contains('copied')) return;
+    try {
+      await navigator.clipboard.writeText(code);
+    } catch {
+      // 剪贴板不可用时，选中优惠码文本方便手动复制
+      const codeEl = btn.parentElement?.querySelector('code');
+      if (codeEl) {
+        const range = document.createRange();
+        range.selectNodeContents(codeEl);
+        const sel = window.getSelection();
+        sel?.removeAllRanges();
+        sel?.addRange(range);
+      }
+    }
+    const original = label.textContent;
+    label.textContent = '已复制';
+    btn.classList.add('copied');
+    if (status) status.textContent = `已复制优惠码 ${code}`;
+    window.setTimeout(() => {
+      label.textContent = original;
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+</script>
 
 <style>
   .site-footer {

@@ -5,6 +5,7 @@ import SiteFooter from '../../../components/SiteFooter.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import AffiliateDisclosure from '../../../components/AffiliateDisclosure.astro';
 import { providers } from '../../../data/providers';
+import { validityLabel } from '../../../data/analysis';
 import '../../../styles/global.css';
 
 const title = "备用机场推荐 - 低首付与不限时候选";
@@ -64,7 +65,7 @@ const noExpiry = backupPlans.filter(p => p.type === 'No-Expiry').sort((a, b) => 
   </head>
   <body>
     <SiteHeader />
-    <main class="container">
+    <main id="main" class="container">
       <Breadcrumbs paths={[
         { label: '机场选购场景', url: '/scenario/' },
         { label: '备用机场', url: '/scenario/backup/' }
@@ -93,10 +94,10 @@ const noExpiry = backupPlans.filter(p => p.type === 'No-Expiry').sort((a, b) => 
           <table class="data-table">
             <thead>
               <tr>
-                <th>品牌与套餐</th>
-                <th>月付价格</th>
-                <th>标称流量 (每月刷新)</th>
-                <th>详情入口</th>
+                <th scope="col">品牌与套餐</th>
+                <th scope="col">月付价格</th>
+                <th scope="col">标称流量 (每月刷新)</th>
+                <th scope="col">详情入口</th>
               </tr>
             </thead>
             <tbody>
@@ -120,11 +121,11 @@ const noExpiry = backupPlans.filter(p => p.type === 'No-Expiry').sort((a, b) => 
           <table class="data-table">
             <thead>
               <tr>
-                <th>品牌与套餐</th>
-                <th>一次性价格</th>
-                <th>总流量</th>
-                <th>有效期规则</th>
-                <th>详情入口</th>
+                <th scope="col">品牌与套餐</th>
+                <th scope="col">一次性价格</th>
+                <th scope="col">总流量</th>
+                <th scope="col">有效期规则</th>
+                <th scope="col">详情入口</th>
               </tr>
             </thead>
             <tbody>
@@ -133,7 +134,7 @@ const noExpiry = backupPlans.filter(p => p.type === 'No-Expiry').sort((a, b) => 
                   <td><strong>{plan.providerName}</strong> - {plan.planName}</td>
                   <td>¥{plan.price}</td>
                   <td>{plan.trafficDisplay}</td>
-                  <td>{plan.validity}</td>
+                  <td>{validityLabel(plan.validity)}</td>
                   <td><a href={`/airport/${plan.providerSlug}/`} class="btn btn-small">查看资料</a></td>
                 </tr>
               )) : <tr><td colspan="5" style="text-align:center;">暂无符合条件的套餐</td></tr>}

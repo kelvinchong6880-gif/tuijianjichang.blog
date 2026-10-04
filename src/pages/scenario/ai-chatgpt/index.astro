@@ -19,7 +19,7 @@ const aiProviders = providers.filter(p => p.aiClaim);
   </head>
   <body>
     <SiteHeader />
-    <main class="container">
+    <main id="main" class="container">
       <Breadcrumbs paths={[
         { label: '机场选购场景', url: '/scenario/' },
         { label: 'AI 服务解锁', url: '/scenario/ai-chatgpt/' }
@@ -49,11 +49,11 @@ const aiProviders = providers.filter(p => p.aiClaim);
           <table class="data-table">
             <thead>
               <tr>
-                <th>品牌名称</th>
-                <th>起步价格</th>
-                <th>官方解锁声明</th>
-                <th>实测验证状态</th>
-                <th>详情入口</th>
+                <th scope="col">品牌名称</th>
+                <th scope="col">起步价格</th>
+                <th scope="col">官方解锁声明</th>
+                <th scope="col">实测验证状态</th>
+                <th scope="col">详情入口</th>
               </tr>
             </thead>
             <tbody>

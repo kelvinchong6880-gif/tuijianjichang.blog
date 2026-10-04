@@ -9,10 +9,11 @@ import BaseHead from '../../components/BaseHead.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import DataProvenance from '../../components/DataProvenance.astro';
 import '../../styles/global.css';
+import { UPDATED_MONTH } from '../../data/site';
 
-const title = '2026机场大全：22家机场套餐价格与线路参数数据库';
 const planCount = providers.reduce((acc, p) => acc + p.plans.length, 0);
-const description = `收录22家机场与${planCount}个套餐资料，可查看价格、流量、IPLC、IEPL、不限时套餐、流媒体与AI相关官方声明，并进入各机场数据详情页。`;
+const title = `2026机场大全：${providers.length}家机场套餐价格、线路与优惠码汇总`;
+const description = `机场大全（${UPDATED_MONTH}更新）：收录${providers.length}家机场${planCount}个套餐，可按价格、流量、IPLC/IEPL专线、不限时套餐、流媒体与ChatGPT解锁筛选，点击进入每家机场的详细评测。`;
 ---
 
 <html lang="zh-CN">
@@ -21,19 +22,19 @@ const description = `收录22家机场与${planCount}个套餐资料，可查看
   </head>
   <body>
     <SiteHeader />
-    <main class="container">
-      <Breadcrumbs paths={[{ label: '机场数据库', url: '/airports/' }]} />
+    <main id="main" class="container">
+      <Breadcrumbs paths={[{ label: '机场大全', url: '/airports/' }]} />
       
       <header class="page-header">
-        <h1>22家机场资料与套餐数据库</h1>
-        <p>提供基于官方客观资料的筛选，全站不包含虚构测速或跑分。</p>
+        <h1>机场大全：{providers.length} 家机场套餐与评测汇总</h1>
+        <p>按价格、流量、线路和解锁需求筛选全部机场。不想自己比？直接看 <a href="/">机场推荐</a> 或 <a href="/recommend/">Top 8 机场排行榜</a>。</p>
       </header>
 
       <DataSummary 
         providerCount={providers.length} 
         planCount={planCount} 
         pickCount={providers.filter(p => p.editorialPick).length} 
-        lastVerified="2026年9月"
+        lastVerified={UPDATED_MONTH}
       />
       <ProviderFilter />
       <ProviderGrid providers={providers} featuredSlug="sogo-yun" />

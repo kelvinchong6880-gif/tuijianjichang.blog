@@ -15,7 +15,7 @@ const description = "如何选择月付订阅和不限时流量包？通过概�
   </head>
   <body>
     <SiteHeader />
-    <main class="container">
+    <main id="main" class="container">
       <Breadcrumbs paths={[
         { label: '决策指南', url: '/compare/' },
         { label: '月付 vs 不限时', url: '/compare/monthly-vs-no-expiry/' }
@@ -36,11 +36,11 @@ const description = "如何选择月付订阅和不限时流量包？通过概�
           <table class="data-table">
             <thead>
               <tr>
-                <th>计费/套餐类型</th>
-                <th>付款周期</th>
-                <th>套餐有效期</th>
-                <th>总流量容量</th>
-                <th>流量刷新周期</th>
+                <th scope="col">计费/套餐类型</th>
+                <th scope="col">付款周期</th>
+                <th scope="col">套餐有效期</th>
+                <th scope="col">总流量容量</th>
+                <th scope="col">流量刷新周期</th>
               </tr>
             </thead>
             <tbody>

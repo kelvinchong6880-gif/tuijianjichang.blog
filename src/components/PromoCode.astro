@@ -6,7 +6,7 @@ const { code } = Astro.props;
 ---
 {code && (
   <div class="promo-container">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="promo-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+    <svg aria-hidden="true" focusable="false" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="promo-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
     <code class="promo-code tabular-nums" title={code}>{code}</code>
     <button type="button" class="promo-copy" data-code={code} aria-label={`复制优惠码 ${code}`}>
       <span class="copy-text">复制</span>
@@ -60,28 +60,3 @@ const { code } = Astro.props;
   }
 </style>
 
-<script>
-  document.querySelectorAll('.promo-copy').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const code = btn.getAttribute('data-code');
-      if (!code) return;
-      try {
-        await navigator.clipboard.writeText(code);
-        const textSpan = btn.querySelector('.copy-text');
-        if (textSpan) {
-          const original = textSpan.textContent;
-          textSpan.textContent = '已复制';
-          btn.classList.add('copied');
-          setTimeout(() => {
-            if (textSpan.textContent === '已复制') {
-              textSpan.textContent = original;
-              btn.classList.remove('copied');
-            }
-          }, 2000);
-        }
-      } catch (err) {
-        console.error('Failed to copy', err);
-      }
-    });
-  });
-</script>

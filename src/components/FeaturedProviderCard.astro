@@ -1,27 +1,15 @@
 ---
 import ProviderLogo from './ProviderLogo.astro';
-import PromoCode from './PromoCode.astro';
 import Button from './Button.astro';
 import type { Provider } from '../data/schema';
-import { customContent } from '../data/customContent';
+import { trafficRange } from '../data/analysis';
 
 export interface Props {
   provider: Provider;
 }
 const { provider } = Astro.props;
 
-const validPlans = provider.plans.filter(p => p.traffic !== null);
-let trafficText = provider.trafficDisplay;
-if (validPlans.length > 0) {
-  const formatT = (v: number) => v >= 1000 ? `${(v/1000).toFixed(1).replace(/\.0$/, '')}TB` : `${v}GB`;
-  let minT = Math.min(...validPlans.map(p => p.traffic!));
-  let maxT = Math.max(...validPlans.map(p => p.traffic!));
-  if (minT === maxT) {
-    trafficText = formatT(minT);
-  } else {
-    trafficText = `${formatT(minT)}–${formatT(maxT)}`;
-  }
-}
+const trafficText = trafficRange(provider);
 const planCount = provider.plans.length;
 ---
 <div class={`provider-card featured-card`} data-price={provider.entryPrice} data-lines={provider.lineClaims.join(',')} data-no-expiry={provider.hasNoExpiry ? 'yes' : 'no'} data-streaming={provider.streamingClaim ? 'yes' : 'no'} data-ai={provider.aiClaim ? 'yes' : 'no'} data-name={provider.name.toLowerCase()}>
@@ -29,7 +17,7 @@ const planCount = provider.plans.length;
   <div class="featured-accent-line"></div>
   
   <div class="featured-ribbon">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="crown-icon"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="crown-icon"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
     <span>#01 编辑推荐</span>
   </div>
 
@@ -46,7 +34,7 @@ const planCount = provider.plans.length;
             </h3>
             <div class="badge-group">
               <span class="verified-badge">官方资料</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="verified-icon"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="verified-icon"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
             </div>
           </div>
           <p class="brand-desc">
@@ -55,19 +43,19 @@ const planCount = provider.plans.length;
           <div class="brand-features">
             {provider.hasNoExpiry && (
               <span class="feature-tag">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tag-icon"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tag-icon"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                 不限时套餐
               </span>
             )}
             {provider.streamingClaim && (
               <span class="feature-tag">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tag-icon"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tag-icon"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 支持流媒体
               </span>
             )}
             {provider.aiClaim && (
               <span class="feature-tag">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tag-icon"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 12 2.1 7.1"/><path d="M12 12l9.9 4.9"/></svg>
+                <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tag-icon"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 12 2.1 7.1"/><path d="M12 12l9.9 4.9"/></svg>
                 支持 AI
               </span>
             )}
@@ -103,7 +91,7 @@ const planCount = provider.plans.length;
           {provider.promoCode ? (
             <div class="promo-combo-pill">
               <span class="promo-label">优惠码 <strong>{provider.promoCode}</strong></span>
-              <button class="promo-combo-btn promo-copy" data-code={provider.promoCode} aria-label={`复制优惠码 ${provider.promoCode}`}>复制</button>
+              <button type="button" class="promo-combo-btn promo-copy" data-code={provider.promoCode} aria-label={`复制优惠码 ${provider.promoCode}`}><span class="copy-text">复制</span></button>
             </div>
           ) : (
             <div class="no-promo">暂无优惠码</div>
@@ -475,23 +463,3 @@ const planCount = provider.plans.length;
   }
 </style>
 
-<script>
-  document.querySelectorAll('.promo-copy').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const code = btn.getAttribute('data-code');
-      if (!code) return;
-      try {
-        await navigator.clipboard.writeText(code);
-        const original = btn.textContent;
-        btn.textContent = '已复制';
-        setTimeout(() => {
-          if (btn.textContent === '已复制') {
-            btn.textContent = original;
-          }
-        }, 2000);
-      } catch (err) {
-        console.error('Failed to copy', err);
-      }
-    });
-  });
-</script>

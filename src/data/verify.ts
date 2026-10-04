@@ -1,28 +1,43 @@
-import { providers } from './providers';
+import type { Provider } from './schema';
 
-let providerCount = providers.length;
-let planCount = providers.reduce((acc, p) => acc + p.plans.length, 0);
+/**
+ * 构建时的数据检查（由首页在构建时调用）。
+ * 任何一条不通过，`npm run build` 都会直接失败并指出是哪家机场、哪个套餐出了问题，
+ * 避免把错误价格、重复排名或坏链接发布上线。
+ */
+export function verifyProviders(list: Provider[]): void {
+  const errors: string[] = [];
+  const slugs = new Set<string>();
+  const ranks = new Map<number, string>();
+  const billing = new Set(['Monthly', 'Quarterly', 'Yearly', 'One-Time', 'Other']);
 
-if (providerCount !== 22) throw new Error(`Expected 22 providers, found ${providerCount}`);
-if (planCount < 155) throw new Error(`Expected at least 155 plans, found ${planCount}`);
+  for (const p of list) {
+    const where = `${p.name}（${p.slug}）`;
+    if (!/^[a-z0-9-]+$/.test(p.slug)) errors.push(`${where}: slug 只能包含小写字母、数字和横线`);
+    if (slugs.has(p.slug)) errors.push(`${where}: slug 重复`);
+    slugs.add(p.slug);
 
-let editorialCount = providers.filter(p => p.editorialPick).length;
-if (editorialCount !== 8) throw new Error(`Expected 8 editorial picks, found ${editorialCount}`);
+    if (p.editorialPick) {
+      if (!p.editorialRank) errors.push(`${where}: 编辑推荐必须有 editorialRank`);
+      else if (ranks.has(p.editorialRank)) errors.push(`${where}: 排名 #${p.editorialRank} 与 ${ranks.get(p.editorialRank)} 重复`);
+      else ranks.set(p.editorialRank, p.name);
+    }
+    if (p.affiliateUrl && !/^https:\/\//.test(p.affiliateUrl)) errors.push(`${where}: 推广链接必须以 https:// 开头`);
+    if (!p.plans.length) errors.push(`${where}: 没有任何套餐`);
 
-const exactTop8 = ['sogo-yun', 'weifeng', 'feimaoyun', 'wuyou', 'firefly', 'kuajieyun', 'shanyue', 'lingmao'];
-const sortedPicks = providers.filter(p => p.editorialPick).sort((a, b) => (a.editorialRank || 0) - (b.editorialRank || 0));
+    for (const pl of p.plans) {
+      const at = `${where} / ${pl.name}`;
+      if (!(pl.price > 0)) errors.push(`${at}: 价格必须大于 0`);
+      if (!billing.has(pl.billingType)) errors.push(`${at}: 计费周期 ${pl.billingType} 无效`);
+      if (pl.traffic !== null && !(pl.traffic > 0)) errors.push(`${at}: 流量必须大于 0 或为 null`);
+      if (pl.billingType === 'One-Time' && pl.validity !== 'Permanent') errors.push(`${at}: 一次性套餐的 validity 应为 Permanent`);
+    }
+  }
 
-sortedPicks.forEach((p, i) => {
-    if (p.slug !== exactTop8[i]) throw new Error(`Top 8 mismatch at rank ${i+1}: expected ${exactTop8[i]}, got ${p.slug}`);
-});
+  const picks = [...ranks.keys()].sort((a, b) => a - b);
+  if (picks.some((r, i) => r !== i + 1)) errors.push(`编辑推荐排名必须从 1 开始连续：当前为 ${picks.join(', ')}`);
 
-let missingAffUrl = providers.filter(p => p.affiliateUrlStatus !== 'source-missing-protocol' && !p.affiliateUrl);
-if (missingAffUrl.length > 0) throw new Error('Missing affiliate URL for non-missing protocol provider');
-
-const invalidClaims = providers.filter(p => typeof p.streamingClaim === 'undefined' || typeof p.aiClaim === 'undefined');
-if (invalidClaims.length > 0) throw new Error('Invalid claim format detected');
-
-const slugs = providers.map(p => p.slug);
-if (new Set(slugs).size !== 22) throw new Error('Duplicate slugs found');
-
-console.log('Build validation passed!');
+  if (errors.length) {
+    throw new Error(`providers.ts 数据检查未通过：\n- ${errors.join('\n- ')}`);
+  }
+}

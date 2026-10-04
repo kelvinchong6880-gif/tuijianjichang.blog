@@ -2,10 +2,10 @@
 export interface Props {
   providerCount: number;
   planCount: number;
-  pickCount: number;
+  pickCount?: number;
   lastVerified: string;
 }
-const { providerCount, planCount, pickCount, lastVerified } = Astro.props;
+const { providerCount, planCount, lastVerified } = Astro.props;
 ---
 <div class="data-summary">
   <div class="summary-item">

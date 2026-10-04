@@ -1,0 +1,217 @@
+---
+import type { Provider } from '../data/schema';
+import {
+  fmtGB, fmtPrice, monthlyPlans, yearlyPlans, oneTimePlans, quarterlyPlans, consumerPlans,
+  pickForNeed, bestValuePlan, perGB, monthlyEquivalent, lineLabel, billingLabel,
+  prosCons, competitors, USAGE_TIERS, faqFor,
+} from '../data/analysis';
+import { UPDATED_LABEL } from '../data/site';
+
+export interface Props {
+  provider: Provider;
+  /** 是否输出“简介 + 一句话结论”（SOGO 等有自定义导语的品牌可关闭） */
+  showIntro?: boolean;
+}
+const { provider: p, showIntro = true } = Astro.props;
+
+const mon = monthlyPlans(p);
+const yr = yearlyPlans(p);
+const qt = quarterlyPlans(p);
+const ot = oneTimePlans(p);
+const all = consumerPlans(p);
+const best = bestValuePlan(p);
+const { pros, cons } = prosCons(p);
+const rivals = competitors(p, 3);
+const faqs = faqFor(p);
+const minYr = yr[0];
+const cheapest = [...all].sort((a, b) => a.price - b.price)[0];
+
+const tierRows = USAGE_TIERS.map((t) => ({ ...t, plan: pickForNeed(p, t.need) }));
+
+const fitText = (() => {
+  const parts: string[] = [];
+  if (mon.length && mon[0].price <= 20) parts.push('预算有限、想用最低成本长期翻墙的学生和上班族');
+  if (minYr) parts.push(`每月只用几十 GB、想一年只付一次钱的轻度用户（${fmtPrice(minYr.price)}/年）`);
+  if (p.trafficMax >= 1000) parts.push(`需要 ${fmtGB(p.trafficMax)} 以上大流量的重度用户或家庭共用`);
+  if (ot.length) parts.push('想准备一个“流量不过期”的备用机场的用户');
+  if (p.aiClaim) parts.push('主要用 ChatGPT、Claude 等 AI 工具办公学习的用户');
+  return parts.length ? parts : ['需要稳定翻墙、预算适中的普通用户'];
+})();
+
+const introText = `${p.name}是一家${p.lineClaims.length ? `主打 ${lineLabel(p)} 线路的` : ''}机场（代理订阅服务），目前在官网提供 ${all.length} 个面向个人用户的套餐，${
+  mon.length ? `月付 ${fmtPrice(mon[0].price)} 起` : `最低 ${fmtPrice(cheapest.price)} 起`
+}，每月流量从 ${fmtGB(p.trafficMin)} 到 ${fmtGB(p.trafficMax)}${ot.length ? `，另有 ${ot.length} 款不限时流量包` : ''}。${
+  p.nodeRegions ? `节点覆盖${p.nodeRegions.replace(/^覆盖/, '')}。` : ''
+}`;
+---
+
+{showIntro && (
+  <section class="br-section br-verdict">
+    <h2>{p.name}怎么样？一句话结论</h2>
+    <p>{introText}</p>
+    <div class="verdict-grid">
+      <div><span class="v-label">起步价</span><span class="v-val">{mon.length ? `${fmtPrice(mon[0].price)}/月` : fmtPrice(cheapest.price)}</span></div>
+      <div><span class="v-label">最低年付</span><span class="v-val">{minYr ? `${fmtPrice(minYr.price)}/年` : '无'}</span></div>
+      <div><span class="v-label">线路</span><span class="v-val">{lineLabel(p)}</span></div>
+      <div><span class="v-label">流量范围</span><span class="v-val">{fmtGB(p.trafficMin)}–{fmtGB(p.trafficMax)}</span></div>
+      <div><span class="v-label">不限时套餐</span><span class="v-val">{ot.length ? `有（${ot.length} 款）` : '无'}</span></div>
+      <div><span class="v-label">优惠码</span><span class="v-val">{p.promoCode ?? '暂无'}</span></div>
+    </div>
+    <p class="v-fit"><strong>最适合：</strong>{fitText.join('；')}。</p>
+  </section>
+)}
+
+<section class="br-section">
+  <h2>{p.name}优缺点</h2>
+  <div class="pc-grid">
+    <div class="pc pros">
+      <h3>优点</h3>
+      <ul>{pros.map((x) => <li>{x}</li>)}</ul>
+    </div>
+    <div class="pc cons">
+      <h3>需要注意</h3>
+      <ul>{cons.length ? cons.map((x) => <li>{x}</li>) : <li>暂无明显短板，建议先买月付确认本地网络下的体验。</li>}</ul>
+    </div>
+  </div>
+</section>
+
+<section class="br-section">
+  <h2>{p.name}套餐怎么选？按用量直接对号入座</h2>
+  <p>机场套餐最容易踩的坑是“买大了浪费、买小了不够用”。下面按常见用量，帮你从 {p.name} 的 {all.length} 个套餐里挑出最省钱的一档（按折合每月价格计算）：</p>
+  <div class="table-wrap">
+    <table class="br-table">
+      <thead><tr><th scope="col">你的情况</th><th scope="col">每月大约需要</th><th scope="col">推荐套餐</th><th scope="col">价格</th></tr></thead>
+      <tbody>
+        {tierRows.map((t) => (
+          <tr>
+            <td><strong>{t.label}</strong><br /><span class="muted">{t.desc}</span></td>
+            <td class="tabular-nums">{t.need}GB+</td>
+            <td>{t.plan ? `${t.plan.name}（${fmtGB(t.plan.traffic)}/月）` : '无合适档位'}</td>
+            <td class="tabular-nums">{t.plan ? `${fmtPrice(t.plan.price)}/${billingLabel(t.plan).replace('付', '')}${t.plan.billingType !== 'Monthly' ? `（约 ${fmtPrice(monthlyEquivalent(t.plan)!)}/月）` : ''}` : '—'}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  {best && (
+    <p>按每 GB 成本算，{p.name}最划算的周期套餐是 <strong>{best.name}</strong>：{fmtPrice(best.price)}/{billingLabel(best).replace('付', '')}、每月 {fmtGB(best.traffic)}，约 <strong>{fmtPrice(perGB(best)!)}/GB</strong>。流量越大的档位单价通常越低，但只有你真的用得完才划算。</p>
+  )}
+</section>
+
+<section class="br-section">
+  <h2>月付、年付还是不限时？</h2>
+  <ul class="br-list">
+    {mon.length > 0 && (
+      <li><strong>月付（{mon.length} 档）</strong>：{mon.map((x) => `${fmtPrice(x.price)}/${fmtGB(x.traffic)}`).join('、')}。第一次用 {p.name} 建议先买最低一档月付，确认晚高峰速度和常用网站都没问题后再升级或续费。</li>
+    )}
+    {qt.length > 0 && (
+      <li><strong>季付（{qt.length} 档）</strong>：{qt.map((x) => `${fmtPrice(x.price)}/季 ${fmtGB(x.traffic)}/月`).join('、')}。需要一次付 3 个月，折合每月更便宜一些。</li>
+    )}
+    {yr.length > 0 && (
+      <li><strong>年付（{yr.length} 档）</strong>：{yr.map((x) => `${fmtPrice(x.price)}/年 ${fmtGB(x.traffic)}/月（约 ${fmtPrice(x.price / 12)}/月）`).join('、')}。年付小包是“低用量+低价格”的组合，适合只用来查资料、用 AI 的用户；注意年付需要一次付清。</li>
+    )}
+    {ot.length > 0 ? (
+      <li><strong>不限时流量包（{ot.length} 档）</strong>：{ot.map((x) => `${fmtGB(x.traffic)} ${fmtPrice(x.price)}`).join('、')}。一次购买、流量永久有效，用完为止，不会每月清零。如果你一个月只用几次，或者想给主力机场配一个备用，不限时包比月付更省心。</li>
+    ) : (
+      <li><strong>不限时</strong>：{p.name}目前没有不限时流量包。需要备用机场的话，可以看本站的 <a href="/scenario/no-expiry/">不限时机场推荐</a>。</li>
+    )}
+  </ul>
+</section>
+
+<section class="br-section">
+  <h2>{p.name}注册购买与优惠码使用步骤</h2>
+  <ol class="br-steps">
+    <li>点击本页的“访问官网”按钮，进入 {p.name} 官网，用邮箱注册账号。</li>
+    <li>进入“购买订阅/商店”，按上面的用量表选好套餐和付款周期。</li>
+    {p.promoCode
+      ? <li>在结算页的优惠码输入框填入 <code>{p.promoCode}</code>，点击验证，确认价格已减少后再付款。</li>
+      : <li>结算前留意官网公告里的限时折扣，确认金额后再付款。</li>}
+    <li>付款完成后，在用户中心复制“订阅链接”，导入 Clash Verge、Shadowrocket、v2rayN 等客户端即可使用。</li>
+    <li>首次使用建议在晚上 8–11 点（晚高峰）测一次常用网站，确认速度满足需求。</li>
+  </ol>
+</section>
+
+<section class="br-section">
+  <h2>{p.name}和同价位机场对比</h2>
+  <div class="table-wrap">
+    <table class="br-table">
+      <thead><tr><th scope="col">机场</th><th scope="col">月付起步</th><th scope="col">线路</th><th scope="col">流量范围</th><th scope="col">不限时</th><th scope="col">AI/流媒体</th></tr></thead>
+      <tbody>
+        {[p, ...rivals].map((x) => (
+          <tr class={x.slug === p.slug ? 'is-self' : ''}>
+            <td>{x.slug === p.slug ? <strong>{x.name}</strong> : <a href={`/airport/${x.slug}/`}>{x.name}</a>}</td>
+            <td class="tabular-nums">{fmtPrice(x.entryPrice)}</td>
+            <td>{lineLabel(x)}</td>
+            <td class="tabular-nums">{fmtGB(x.trafficMin)}–{fmtGB(x.trafficMax)}</td>
+            <td>{x.hasNoExpiry ? '有' : '无'}</td>
+            <td>{x.aiClaim && x.streamingClaim ? '都支持' : x.streamingClaim ? '流媒体' : x.aiClaim ? 'AI' : '未说明'}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <p>想看更多候选？可以直接去 <a href="/">机场推荐首页</a> 按价格、线路和流量筛选全部机场，或者查看编辑整理的 <a href="/recommend/">Top 8 机场排行榜</a>。</p>
+</section>
+
+<section class="br-section br-faq">
+  <h2>{p.name}常见问题</h2>
+  {faqs.map((f) => (
+    <div class="faq-item">
+      <h3>{f.q}</h3>
+      <p>{f.a}</p>
+    </div>
+  ))}
+  <p class="muted">以上信息核对于 {UPDATED_LABEL}。</p>
+</section>
+
+<style>
+  .br-section { margin: var(--spacing-12) 0; }
+  .br-section h2 { font-size: var(--text-2xl); margin-bottom: var(--spacing-4); color: var(--color-text-main); }
+  .br-section h3 { font-size: var(--text-lg); margin-bottom: var(--spacing-2); color: var(--color-text-main); }
+  .br-section p, .br-section li { color: var(--color-text-secondary); line-height: 1.8; }
+  .br-section a { color: var(--color-primary); text-decoration: underline; }
+  .br-verdict {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-left: 4px solid var(--color-primary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-6);
+  }
+  .verdict-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--spacing-3);
+    margin: var(--spacing-4) 0;
+  }
+  .verdict-grid > div {
+    background: var(--color-base);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-3);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .v-label { font-size: var(--text-xs); color: var(--color-text-muted); }
+  .v-val { font-weight: var(--font-weight-bold); color: var(--color-text-main); }
+  .pc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-4); }
+  .pc { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--spacing-5); }
+  .pc ul { padding-left: 1.2em; margin: 0; }
+  .pros { border-top: 3px solid #34d399; }
+  .cons { border-top: 3px solid #fbbf24; }
+  .table-wrap { overflow-x: auto; margin: var(--spacing-4) 0; }
+  .br-table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); min-width: 560px; }
+  .br-table th, .br-table td { border-bottom: 1px solid var(--color-border); padding: 10px 12px; text-align: left; vertical-align: top; }
+  .br-table th { color: var(--color-text-muted); font-weight: var(--font-weight-semibold); background: var(--color-surface); }
+  .br-table td { color: var(--color-text-secondary); }
+  .br-table tr.is-self td { background: var(--color-primary-soft); }
+  .muted { color: var(--color-text-muted) !important; font-size: var(--text-sm); }
+  .br-list, .br-steps { padding-left: 1.3em; }
+  .br-list li, .br-steps li { margin-bottom: var(--spacing-3); }
+  .br-faq .faq-item { margin-bottom: var(--spacing-5); }
+  code { background: var(--color-surface); padding: 2px 6px; border-radius: 4px; color: var(--color-primary); }
+  @media (max-width: 700px) {
+    .verdict-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .pc-grid { grid-template-columns: 1fr; }
+  }
+</style>

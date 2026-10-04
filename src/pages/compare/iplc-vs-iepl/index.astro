@@ -15,7 +15,7 @@ const description = "如何看待机场标注的 IPLC 与 IEPL 专线？剥离�
   </head>
   <body>
     <SiteHeader />
-    <main class="container">
+    <main id="main" class="container">
       <Breadcrumbs paths={[
         { label: '决策指南', url: '/compare/' },
         { label: '专线解析', url: '/compare/iplc-vs-iepl/' }
@@ -38,8 +38,8 @@ const description = "如何看待机场标注的 IPLC 与 IEPL 专线？剥离�
         <p><strong>注意：</strong>以上仅是通信名词的理论定义。当一个机场在官网上标注“包含 IPLC / IEPL”时，仅仅意味着它声称租用了该类型线路，<strong>并不保证这根线路没有被数百倍超卖，也不代表晚高峰时期一定稳如磐石。</strong></p>
 
         <div class="note-box">
-          <h3>SOGO 云声明实例</h3>
-          <p>以本站商业主推的 <a href="/airport/sogo-yun/">SOGO 云</a> 为例，其官方资料声明包含 IPLC / IEPL 线路，并标注了 2.5Gbps 的单节点峰值。这是其资料上的宣称，也是其定位于中端价格区间的原因之一，但您不能仅仅因为这行字就把它当成全网性能冠军。</p>
+          <h3>实例：SOGO云 的专线配置</h3>
+          <p>以本站首推的 <a href="/airport/sogo-yun/">SOGO云</a> 为例：它的月付套餐（¥25 起）全部走 IEPL 专线，年付小包和不限时流量包走 IPLC 专线，官方标称单节点峰值 2.5Gbps、晚高峰不降速。买之前仍建议用下面的方法在你自己的网络下测一测。</p>
         </div>
 
         <h2>二、如何用实际指标检验一条线路？</h2>

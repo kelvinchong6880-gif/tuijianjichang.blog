@@ -82,7 +82,7 @@ yearlyPlans.sort((a, b) => a.price - b.price);
   </head>
   <body>
     <SiteHeader />
-    <main class="container">
+    <main id="main" class="container">
       <Breadcrumbs paths={[
         { label: '机场选购场景', url: '/scenario/' },
         { label: '便宜机场推荐', url: '/scenario/cheap/' }
@@ -111,16 +111,16 @@ yearlyPlans.sort((a, b) => a.price - b.price);
 
       <section class="section">
         <h2>一、已确认月付候选（¥20/月及以内）</h2>
-        <p>以下套餐已确认可以按单月周期购买。价格及付款周期待核实的套餐已被剔除，实际候选 {monthlyPlans.length} 个。</p>
+        <p>以下套餐都可以按月购买、随时停用，共 {monthlyPlans.length} 个，按价格从低到高排列。</p>
         
         <div class="table-container">
           <table class="data-table">
             <thead>
               <tr>
-                <th>品牌与套餐</th>
-                <th>实际月付</th>
-                <th>套餐流量</th>
-                <th>详情入口</th>
+                <th scope="col">品牌与套餐</th>
+                <th scope="col">实际月付</th>
+                <th scope="col">套餐流量</th>
+                <th scope="col">详情入口</th>
               </tr>
             </thead>
             <tbody>
@@ -145,11 +145,11 @@ yearlyPlans.sort((a, b) => a.price - b.price);
           <table class="data-table">
             <thead>
               <tr>
-                <th>品牌与套餐</th>
-                <th>年付总额 (需一次支付)</th>
-                <th>折合月均价</th>
-                <th>每期流量说明</th>
-                <th>详情入口</th>
+                <th scope="col">品牌与套餐</th>
+                <th scope="col">年付总额 (需一次支付)</th>
+                <th scope="col">折合月均价</th>
+                <th scope="col">每期流量说明</th>
+                <th scope="col">详情入口</th>
               </tr>
             </thead>
             <tbody>
@@ -175,9 +175,9 @@ yearlyPlans.sort((a, b) => a.price - b.price);
             <table class="data-table" style="background-color: var(--color-surface); opacity: 0.9;">
               <thead>
                 <tr>
-                  <th>品牌与套餐</th>
-                  <th>字面标价</th>
-                  <th>冲突或核实原因</th>
+                  <th scope="col">品牌与套餐</th>
+                  <th scope="col">字面标价</th>
+                  <th scope="col">冲突或核实原因</th>
                 </tr>
               </thead>
               <tbody>

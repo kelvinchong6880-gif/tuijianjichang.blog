@@ -1,0 +1,97 @@
+{
+  "htmlPages": 40,
+  "indexableCandidates": 39,
+  "broken": [],
+  "resources": [],
+  "metadataIssues": [],
+  "duplicateTitles": [],
+  "duplicateDescriptions": [],
+  "sitemapUrls": 39,
+  "sitemapMissing": [],
+  "orphanPages": [],
+  "unreachable": [],
+  "contentOrphans": [],
+  "keyPages": [
+    {
+      "url": "/recommend/",
+      "depth": 1,
+      "inbound": 39,
+      "contentInbound": [
+        "/airport/sogo-yun/",
+        "/compare/monthly-vs-no-expiry/",
+        "/",
+        "/scenario/ai-chatgpt/",
+        "/scenario/cheap/",
+        "/scenario/high-traffic/",
+        "/scenario/value/"
+      ]
+    },
+    {
+      "url": "/airport/sogo-yun/",
+      "depth": 1,
+      "inbound": 17,
+      "contentInbound": [
+        "/airport/edgenova/",
+        "/airport/guangnianti/",
+        "/airport/guangsuyun/",
+        "/airport/jilianyun/",
+        "/airport/weifeng/",
+        "/airport/wuyou/",
+        "/airports/",
+        "/compare/iplc-vs-iepl/",
+        "/",
+        "/recommend/",
+        "/scenario/ai-chatgpt/",
+        "/scenario/cheap/",
+        "/scenario/high-traffic/",
+        "/scenario/iplc-iepl/",
+        "/scenario/no-expiry/",
+        "/scenario/streaming/",
+        "/scenario/value/"
+      ]
+    },
+    {
+      "url": "/scenario/value/",
+      "depth": 2,
+      "inbound": 4,
+      "contentInbound": [
+        "/airport/sogo-yun/",
+        "/compare/monthly-vs-no-expiry/",
+        "/recommend/",
+        "/scenario/cheap/"
+      ]
+    }
+  ],
+  "externalUrls": [
+    "https://clash-vpn.org/",
+    "https://clashjiedian.org/",
+    "https://findjichang.com/",
+    "https://haoyongjichang.com/",
+    "https://jichangtuijian.pro/",
+    "https://ainavbase.com/",
+    "https://work.edgenovaaff.cc/#/?code=k7VCKPvN",
+    "https://wzjc.sogoyunaff.cc/#/?code=BC2BL855",
+    "https://vip02.fireflyaff.com/#/?code=8nDg6OEY",
+    "https://pkdj7.vipaff.cc/#/?code=YUCKdFlR",
+    "https://work.kosingaff.com/#/?code=k7T1sOyG",
+    "https://wzjc.2maoyunaff.cc/#/?code=bvsFDmSt",
+    "https://vip02.kuajieaff.com/#/?code=hh3QezsW",
+    "https://varnexa.twilightaff.com/#/?code=2ILQOoYB",
+    "https://fast.v2yunvipaff.com/#/?code=nbBJVFQP",
+    "https://flycat1.flycatvipaff.cc/#/?code=w5lO9fqB",
+    "https://edp01.breezenetaff.com/#/?code=hM8APccJ",
+    "https://kfccbb.xingdaomeng.com/#/?code=0YcwWgSw",
+    "https://vv3dbvb.guangnianertt1.homes/#/?code=mv41lVsv",
+    "https://varnexa.lingdongaff.com/#/?code=HDiWuF7L",
+    "https://varnexa.flyvaff.com/#/?code=XsiIuDgj",
+    "https://wep01.worryfreeaff.com/#/?code=s1kH64A8",
+    "https://mdlky.gsyaff.com/#/?code=5PLKd4WN",
+    "https://reuire23oure.jilianat.homes/#/?code=b2OTDcAo",
+    "https://edp01.civetaff.com/#/?code=CYg7QSJo",
+    "https://wzjc.1flyunaff.cc/#/?code=0tH3Mmch",
+    "https://work.kuailicloud.cc/#/?code=azB6yNBW",
+    "https://wep01.flashleapaff.com/#/?code=cs0ekCMG",
+    "https://www.haiwailab.com/reviews/sogoyun/",
+    "https://rocketnode.org/reviews/sogoyun/"
+  ]
+}

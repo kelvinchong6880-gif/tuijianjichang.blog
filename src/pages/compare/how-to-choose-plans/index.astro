@@ -21,7 +21,7 @@ const sogoTraffic = sogoMonthlyPlan ? sogoMonthlyPlan.trafficDisplay : '150GB';
   </head>
   <body>
     <SiteHeader />
-    <main class="container">
+    <main id="main" class="container">
       <Breadcrumbs paths={[
         { label: '决策指南', url: '/compare/' },
         { label: '机场套餐怎么选', url: '/compare/how-to-choose-plans/' }
@@ -53,12 +53,12 @@ const sogoTraffic = sogoMonthlyPlan ? sogoMonthlyPlan.trafficDisplay : '150GB';
         <p>许多商家会宣称“支持流媒体解锁”或“支持 ChatGPT”。但这仅仅代表商家尝试提供了这些服务，不代表其稳定性。解锁服务很容易受到官方封控的打击而失效。<br/>
         此外，官方声明支持，并不等同于商家愿意为此投入高昂的专属路由优化。若您对此有强需求，建议购买极短周期套餐亲自测试，并在购买前确认该商家对流媒体失效的售后态度。</p>
 
-        <h2>6. 警惕“未说明”与“数据冲突”的坑</h2>
+        <h2>6. 警惕“标价陷阱”</h2>
         <p>购买前请仔细阅读商家的购买细则。部分商家的套餐标题标价极低，但当你点进购买页面时，可能会发现该价格仅限季度或年度付款。如果您在挑选时遇到了价格和文字描述存在矛盾的商家，请务必以其最终结算界面的数字为准。</p>
         
         <div class="note-box">
-          <p><strong>以本站商业主推的 SOGO 云为例：</strong><br/>
-          作为本站利益相关的推广合作方，SOGO 云目前被我们列为主推候选。其已确认的起步月付套餐资料为：标价 ¥{sogoPrice}/月，提供 {sogoTraffic} 流量，每30天刷新。但在其顶配及不限时套餐中，曾出现正文标价与标题冲突的情况。在进行对比时，请坚持阅读本站的数据报告，剔除待核实项，并在购买前亲自确认购物车金额。</p>
+          <p><strong>以本站首推的 SOGO云 为例：</strong><br/>
+          基础版月付 ¥{sogoPrice}/月，每月 {sogoTraffic} 流量（每 30 天刷新），全 IEPL 专线；年付可打 8 折、三年付 6 折；另有 ¥98/年 的 60GB 小包和 4 款不限时流量包。新用户建议先买一个月基础版，确认稳定后再改年付。<a href="/airport/sogo-yun/">查看 SOGO云 详细评测</a>。</p>
         </div>
 
         <h2>7. 可执行的购买前试用策略</h2>

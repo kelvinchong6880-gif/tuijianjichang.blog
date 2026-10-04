@@ -10,97 +10,134 @@ import ProviderLogo from '../../components/ProviderLogo.astro';
 import PromoCode from '../../components/PromoCode.astro';
 import Button from '../../components/Button.astro';
 import '../../styles/global.css';
+import { faqSchema, trafficRange } from '../../data/analysis';
+import { UPDATED_ISO, UPDATED_LABEL, UPDATED_MONTH, UPDATED_MONTH_SHORT, EDITOR, SITE_NAME, SITE_URL } from '../../data/site';
 
 const totalCount = providers.length;
-const title = `2026机场推荐：Top 8 编辑精选与${totalCount}家候选指南`;
-const description = `整理${totalCount}家机场的价格、流量与套餐资料。提供2026年Top 8编辑推荐，包含SOGO云等商业主推。按预算、流量和使用需求快速对比，附带避坑FAQ。`;
+const title = `2026机场排行榜：Top 8 机场评测与对比（${UPDATED_MONTH_SHORT}更新）`;
+const description = `${UPDATED_MONTH}机场排行榜：从${totalCount}家机场中选出 Top 8，逐一对比月付价格、年付折扣、IPLC/IEPL 线路、流量与不限时套餐，附优惠码与选购 FAQ。第一名 SOGO云 月付¥25起150GB全IEPL专线。`;
 
 const top8 = providers.filter(p => p.editorialPick).sort((a, b) => a.editorialRank! - b.editorialRank!);
 
 const editorialReviews: Record<string, { strength: string, limitation: string, fit: string, unfit: string }> = {
   'sogo-yun': {
-    strength: '根据官方资料，提供 IPLC/IEPL 线路与 2.5Gbps 标称峰值，且日本/美国线路在第三方历史快照中曾表现出较强带宽。支持按月付（150GB-550GB）与年付小包，具备高度灵活性。',
-    limitation: '最高档位（顶配版及不限时大流量版）的价格与流量官方资料存在矛盾，已从系统单价排序中剔除。该历史测试中，香港节点平均下载速度约44–61MB/s；结果仅适用于该次测试条件。',
-    fit: '预算在 ¥25/月起（150GB）、¥45/月（350GB）、¥80/月（550GB），且主要需要日区/美区高带宽（如视频、下载）的中重度用户；或仅需年付 ¥98 (60GB/每30天) 的低频长尾用户。',
-    unfit: '极度追求极限低价的用户。'
-  },
-  'feimaoyun': {
-    strength: '官方提供了起步价低至 ¥84/年 (折合约 ¥7/月) 的学生版套餐，且标价¥25/月（实际购买周期与扣款待核实）的套餐直接标称为 IPLC 线路，支持流媒体及 AI。提供 ¥680 的不限时大包。',
-    limitation: '最低门槛套餐（¥84/年）的月流量仅为 50GB。当前未能找到明确的第三方公开测速报告以支持其全线 IPLC 满载率。',
-    fit: '年付预算在 ¥100 以内且月流量需求不高于 50GB 的轻度文字查阅用户，或需要 ¥680 一次性买断 1TB 流量的用户。',
-    unfit: '需要长期大流量环境且不愿年付的重度视频用户。'
-  },
-  'kuajieyun': {
-    strength: '提供了 ¥20/月 (120GB) 到 ¥130/月 (1.8TB) 等多档位梯度，均宣称为 IPLC 线路。包含 ¥96/年的小流量备用包（60GB）。',
-    limitation: '暂时缺少本站关联的明确第三方测速数据报告以证实其线路的峰值速度。本站未收录其不限时套餐。',
-    fit: '希望以 ¥20 起步价获取百 GB 以上流量，且对流媒体和 ChatGPT 有基础需求的用户。',
-    unfit: '期望购买按量计费不限时套餐作为备用池的用户。'
-  },
-  'shanyue': {
-    strength: '提供 ¥24/月 档位。官方资料宣称支持流媒体与 AI，并且在常规地区（港新日）保持覆盖。',
-    limitation: '本站未收录其不限时套餐，且当前缺少直接的第三方性能测试参考以证实其实际带宽。',
-    fit: '预算在 ¥24/月，愿意根据其套餐说明直接按月购买测试其实际网络状况的用户。',
-    unfit: '要求本站提供详细第三方历史跑分数据才能做决策的用户。'
-  },
-  'wuyou': {
-    strength: '提供 ¥19/月 起的月付套餐，在低于 ¥20 的价格线上提供了订阅选项，同时包含每年约 ¥120 的年付配置。',
-    limitation: '由于本站缺少该品牌晚高峰的具体测速数据及用户数样本，无法确认其长期带宽保障水平。本站未收录其不限时套餐。',
-    fit: '月预算严格控制在 ¥20 以下，仅需要满足基础查阅需求的用户。',
-    unfit: '高频次下载大文件或在晚高峰重度观看 4K 流媒体的用户。'
-  },
-  'lingmao': {
-    strength: '提供 ¥25/月 基础订阅，以及约 ¥168 的年付选择，宣称为支持流媒体及 AI 的常规配置。',
-    limitation: '当前未收录关于其具体线路（如是否含明确专线声明）及可用性的第三方验证材料。',
-    fit: '每月可支配 ¥25 左右用于代理，且对冷门节点要求不高的常规用户。',
-    unfit: '对线路类型（如强制要求 IEPL）有明确硬性限制或需要实测证明的用户。'
-  },
-  'firefly': {
-    strength: '提供 ¥25/月起步选项，且提供 ¥240/年 (折合 ¥20/月) 的梯度供选择。宣称支持流媒体及 AI。',
-    limitation: '在目前的资料池中，未收录第三方实测证明其带宽容量及线路抗拥堵能力。',
-    fit: '偏好按月或按季度试用常规海外社媒代理体验的用户。',
-    unfit: '对于测速数据缺失容忍度低、要求极客级别自定义的用户。'
+    strength: '月付套餐全部走 IEPL 专线，¥25/月 150GB 起；官方标称单节点峰值 2.5Gbps、所有节点 1 倍率、晚高峰不降速，原生 IP 解锁 Netflix、Disney+、ChatGPT。节点覆盖香港×20、日本×10、新加坡×10、美国×10 等 10 多个地区。月付支持年付 8 折、两年 7 折、三年 6 折，另有 4 款不限时流量包。',
+    limitation: '¥25 的月付起步价不是全站最低（无忧 ¥19、极连云 ¥18 更便宜）；不限时流量包不参与长期付费折扣。',
+    fit: '想“一次选对、不再折腾”的用户：日常 150GB 选基础版 ¥25/月，追剧选优选版 ¥45/月 350GB，全家共用选顶配版 ¥150/月 1050GB；轻度用户可选 ¥98/年 的 60GB 小包。',
+    unfit: '只追求最低价、每月预算 ¥20 以下的用户，可以看无忧或跨界。'
   },
   'weifeng': {
-    strength: '在 ¥27/月的价位区间提供了月付起步套餐，并提供约 ¥260 的年付方案。',
-    limitation: '本站未获得其确切的线路类型声明（IPLC/IEPL 缺失）、倍率说明及网络稳定性跑分，无法提供具体的性能背书。',
-    fit: '对价格敏感度适中，愿意自行实测其 ¥27 月付套餐在本地运营商下表现的用户。',
-    unfit: '寻找极致低价（¥15以下）或要求本站提供实测背书的用户。'
+    strength: '全 IPLC 专线、不限速、不限设备。乘风 ¥27/月 就有 200GB，破风 ¥57/月 500GB，在同价位里流量给得比较足；另有清风 ¥137/年（每月 100GB）和两款不限时包（270GB ¥200、570GB ¥370）。',
+    limitation: '官网没有单独写明流媒体与 AI 解锁情况；月付起步价 ¥27 在 Top 8 里偏高。',
+    fit: '每月用 150–500GB、看重专线稳定性的用户；优惠码 weifeng90。',
+    unfit: '每月只用几十 GB 的轻度用户，选年付小包更划算的机场会更省。'
+  },
+  'feimaoyun': {
+    strength: '全 IPLC 专线、单节点最高 2.5Gbps、原生 IP 解锁 Netflix 与 ChatGPT。学生版 ¥84/年（每月 50GB，折合约 ¥7/月）是 Top 8 里最便宜的年付入门款；星耀版 ¥25/月 150GB。节点覆盖香港×20、台湾×10、日本×10、新加坡×10、美国×10、韩国×3 等。',
+    limitation: '不限时只有一款 1TB/¥680 的大包，门槛较高；周期套餐的长期折扣需年付才能享受。',
+    fit: '学生党和轻度用户（¥84/年），或每月 150–600GB 的常规用户；优惠码 flycat888。',
+    unfit: '想买小额不限时备用流量的用户。'
+  },
+  'wuyou': {
+    strength: '舒心链接 ¥19/月 100GB，是 Top 8 里月付门槛最低的；全 IPLC 专线、1 倍率，官网写明支持 ChatGPT、Gemini 与 4K Netflix/Disney+。另有 MINI 年付 ¥79/年 和 100GB ¥108、300GB ¥298 两款不限时包。',
+    limitation: '年付 MINI 每月只有 40GB；最高档 1TB 需 ¥117/月。',
+    fit: '预算每月 ¥20 左右、主要用 AI 和看视频的学生与上班族；优惠码 wuyou。',
+    unfit: '每月需要 1TB 以上流量的重度用户。'
+  },
+  'firefly': {
+    strength: '全 IPLC 专线、不限速、不限设备。Firefly Lite ¥25/月 150GB，Plus ¥45/月 300GB，Nova ¥150/月 1TB，套餐梯度清晰；年付版 ¥96/年（每月 60GB），还有 100GB ¥100 的不限时包。',
+    limitation: '官网没有写明流媒体与 AI 解锁情况，如果这是主要需求，建议先问客服。',
+    fit: '想要专线、套餐简单好选的常规用户；优惠码 firefly。',
+    unfit: '对 Netflix、ChatGPT 解锁有硬性要求、又不想自己测试的用户。'
+  },
+  'kuajieyun': {
+    strength: '轻云 Lite ¥20/月 120GB 起，全 IPLC、1 倍率、不限速；无界 1.8TB 只要 ¥130/月（约 ¥0.07/GB），是 Top 8 里大流量单价最低的。年付 8 折、两年 7 折、三年 6 折，且优惠码可以叠加。官网写明支持 ChatGPT、Gemini、Claude 和主流流媒体。',
+    limitation: '没有不限时流量包。',
+    fit: '流量大、想压低每 GB 成本的重度用户和家庭；优惠码 kuajie。',
+    unfit: '只想买一次性备用流量的用户。'
+  },
+  'shanyue': {
+    strength: '闪动 ¥24/月 150GB，全 IPLC 专线、所有节点 1 倍率、晚高峰不限速，原生 IP 解锁流媒体、ChatGPT 与 TikTok。年付版 ¥96/年（每月 60GB），最高跃迁 1TB ¥134/月。',
+    limitation: '没有不限时流量包；套餐只有 5 档，选择相对少。',
+    fit: '每月 150–300GB、需要 TikTok 或 ChatGPT 的用户；优惠码 shanyue。',
+    unfit: '每月流量超过 1TB 的用户。'
+  },
+  'lingmao': {
+    strength: '月付 Small ¥25/月 150GB，全 IPLC 专线、最高 1000Mbps 带宽、不限客户端，原生 IP 解锁 Netflix、ChatGPT、Gemini、TikTok，客服全天在线。年付 Small ¥195/年（每月 150GB，折合约 ¥16/月）性价比不错。',
+    limitation: '最高档只有 300GB/月，没有不限时套餐。',
+    fit: '每月 150–300GB、愿意年付换更低单价的用户；优惠码 lingmao。',
+    unfit: '每月需要 500GB 以上流量的重度用户。'
   }
 };
 
-function getTrafficDisplay(p: any) {
-  const validPlans = p.plans.filter((x: any) => x.traffic !== null);
-  if (validPlans.length === 0) return p.trafficDisplay || '未说明';
-  let maxT = Math.max(...validPlans.map((x: any) => x.traffic));
-  // if p.trafficDisplay has (已确认) string, just return that
-  if (p.trafficDisplay && p.trafficDisplay.includes('已确认')) return p.trafficDisplay;
-  return maxT >= 1000 ? `${(maxT/1000).toFixed(1).replace(/\.0$/, '')}TB` : `${maxT}GB`;
-}
+const faqItems = [
+  { q: '2026 年机场推荐哪家？', a: `综合线路、价格和流量，${UPDATED_MONTH}本站排名第一的是 SOGO云：月付 ¥25 起 150GB，全 IEPL 专线、晚高峰不降速。预算更低可以选无忧（¥19/月 100GB）或跨界（¥20/月 120GB）；只想年付的轻度用户可以选飞猫云学生版（¥84/年）。` },
+  { q: '我应该怎么选出适合自己的套餐？', a: '第一看预算，确定每月愿意花多少钱；第二看流量，偶尔查资料、用 AI 每月 50GB 以内就够，天天看视频需要 150GB 以上，追 4K 剧或全家共用要 300–600GB；第三看付款周期，第一次用某家机场建议先买月付，满意后再年付。' },
+  { q: '月付和年付有什么区别？“¥8 起”是月付价吗？', a: '不是。很多机场首页写的“¥8 起”是年付总价平摊到每月的价格，需要一次付清一年费用，而且年付小包的流量通常只有 40–60GB/月。真正按月付款的套餐一般在 ¥18–¥27 之间。选购时请分清“月付实际价格”和“年付折合月价”。' },
+  { q: 'IPLC 和 IEPL 专线机场有什么好处？', a: 'IPLC/IEPL 是跨境专线，不经过公网拥堵的国际出口，晚高峰掉速、断流的概率比普通中转线路小，延迟也更稳定。本榜 Top 8 全部是 IPLC 或 IEPL 专线机场。' },
+  { q: '为什么 SOGO云 排第一？', a: 'SOGO云 的月付套餐全部是 IEPL 专线，¥25 就有 150GB，节点覆盖 10 多个地区，并且有年付 8 折到三年 6 折的长期折扣和 4 款不限时流量包，能覆盖从轻度到重度的大部分需求。SOGO云 也是本站的合作品牌，我们会通过推广链接获得佣金，但你支付的价格不变。' },
+];
+
+const jsonLd = [
+  faqSchema(faqItems),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: title,
+    itemListOrder: 'https://schema.org/ItemListOrderAscending',
+    numberOfItems: top8.length,
+    itemListElement: top8.map((p, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: p.name,
+      url: `${SITE_URL}/airport/${p.slug}/`,
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: title,
+    description,
+    inLanguage: 'zh-CN',
+    datePublished: '2026-09-15',
+    dateModified: UPDATED_ISO,
+    author: { '@type': 'Organization', name: EDITOR, url: `${SITE_URL}/methodology/` },
+    publisher: { '@type': 'Organization', name: SITE_NAME, url: `${SITE_URL}/` },
+    mainEntityOfPage: `${SITE_URL}/recommend/`,
+  },
+];
+
 ---
 
 <html lang="zh-CN">
   <head>
-    <BaseHead title={title} description={description} canonicalPath="/recommend/" />
+    <BaseHead title={title} description={description} canonicalPath="/recommend/" jsonLd={jsonLd} ogType="article" />
   </head>
   <body>
     <SiteHeader />
-    <main class="container">
-      <Breadcrumbs paths={[{ label: '机场推荐', url: '/recommend/' }]} />
+    <main id="main" class="container">
+      <Breadcrumbs paths={[{ label: '机场排行榜', url: '/recommend/' }]} />
       
       <header class="page-header">
-        <div class="eyebrow">推荐榜单</div>
+        <div class="eyebrow">机场排行榜 · 更新于 <time datetime={UPDATED_ISO}>{UPDATED_LABEL}</time></div>
         <h1>{title}</h1>
-        </header>
+        <p class="lead">这份排行榜是 <a href="/">机场推荐</a> 的详细版：我们从 {totalCount} 家机场里挑出 8 家 IPLC/IEPL 专线机场，按线路质量、月付价格、流量性价比、年付折扣和不限时套餐综合排序。每家都写清楚了适合谁、不适合谁，直接对照自己的预算和用量选就行。</p>
+        <ol class="top-list">
+          {top8.map((p) => (
+            <li><a href={`/airport/${p.slug}/`}><strong>{p.name}</strong></a> — 月付 ¥{p.entryPrice} 起，{p.lineClaims.join('/')} 专线{p.promoCode ? `，优惠码 ${p.promoCode}` : ''}</li>
+          ))}
+        </ol>
+      </header>
 
-      <section class="toc-section" style="margin-bottom: 2rem; background: var(--color-surface); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--color-border);">
-        <h2 style="margin-top: 0; font-size: var(--text-lg); margin-bottom: 1rem;">快速导航目录</h2>
-        <ul style="list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 1rem;">
-          <li><a href="#quick-compare" style="color: var(--color-primary); font-weight: 500; text-decoration: none;">1. Top 8 快速参数对比</a></li>
-          <li><a href="#editorial-picks" style="color: var(--color-primary); font-weight: 500; text-decoration: none;">2. 编辑精选详情与推荐理由</a></li>
-          <li><a href="#scenario-selection" style="color: var(--color-primary); font-weight: 500; text-decoration: none;">3. 按需继续筛选机场</a></li>
-          <li><a href="#faq" style="color: var(--color-primary); font-weight: 500; text-decoration: none;">4. 机场推荐常见问题 (FAQ)</a></li>
+      <nav class="toc-section" aria-label="本页目录">
+        <h2>本页目录</h2>
+        <ul>
+          <li><a href="#quick-compare">1. Top 8 快速参数对比</a></li>
+          <li><a href="#editorial-picks">2. 逐家评测与推荐理由</a></li>
+          <li><a href="#scenario-selection">3. 按需继续筛选机场</a></li>
+          <li><a href="#faq">4. 机场排行榜常见问题</a></li>
         </ul>
-      </section>
+      </nav>
 
       <section id="quick-compare" class="matrix-section">
         <h2>Top 8 快速参数对比</h2>
@@ -108,7 +145,7 @@ function getTrafficDisplay(p: any) {
       </section>
 
       <section id="editorial-picks" class="ranking-rail">
-        <h2>编辑精选详情</h2>
+        <h2>Top 8 机场逐家评测</h2>
         <div class="rail-container">
           {top8.map(p => {
             const review = editorialReviews[p.id] || {
@@ -123,41 +160,41 @@ function getTrafficDisplay(p: any) {
                 <div class="identity">
                   <span class={`rank-number ${p.editorialRank && p.editorialRank <= 3 ? 'rank-number-top' : ''}`}>#0{p.editorialRank}</span>
                   <ProviderLogo name={p.name} logo={p.logo} size="md" />
-                  <h3 class="brand-name">{p.name}</h3>
+                  <h3 class="brand-name"><a href={`/airport/${p.slug}/`}>{p.name}</a></h3>
                 </div>
               </div>
               
               <div class="rail-body">
                 <div class="editorial-analysis">
-                  <h4>推荐理由与资料支持</h4>
+                  <h4>推荐理由</h4>
                   <p>{review.strength}</p>
                   
-                  <h4>限制与待核实项</h4>
+                  <h4>需要注意</h4>
                   <p>{review.limitation}</p>
 
                   <h4>适合谁</h4>
                   <p>{review.fit}</p>
                   
-                  <h4>哪些用户需要谨慎（不适合）</h4>
+                  <h4>不太适合</h4>
                   <p>{review.unfit}</p>
                 </div>
                 
                 <div class="quick-snapshot">
-                  <h4>套餐快照</h4>
+                  <h4>{p.name} 套餐速览</h4>
                   <div class="snapshot-metrics">
                     <div class="s-metric">
                       <span class="s-value tabular-nums">¥{p.entryPrice}</span>
-                      <span class="s-label">最低起步款</span>
+                      <span class="s-label">月付起步</span>
                     </div>
                     <div class="s-metric">
-                      <span class="s-value tabular-nums">{getTrafficDisplay(p)}</span>
-                      <span class="s-label">流量跨度</span>
+                      <span class="s-value tabular-nums">{trafficRange(p)}</span>
+                      <span class="s-label">每月流量</span>
                     </div>
                   </div>
                   
                   <div class="snapshot-features">
                     <div class="sf-row">
-                      <span class="sf-label">线路声明</span>
+                      <span class="sf-label">线路</span>
                       <span class="sf-val">{p.lineClaims.length ? p.lineClaims.join(', ') : '资料未说明'}</span>
                     </div>
                     <div class="sf-row">
@@ -173,7 +210,7 @@ function getTrafficDisplay(p: any) {
                   )}
                   
                   <div class="cta-group">
-                    <Button variant="secondary" href={`/airport/${p.slug}/`} class="full-w">查看完整品牌数据</Button>
+                    <Button variant="secondary" href={`/airport/${p.slug}/`} class="full-w">{p.name}详细评测</Button>
                     {p.affiliateUrl && (
                       <Button variant="primary" href={p.affiliateUrl} target="_blank" rel="nofollow sponsored noopener" class="full-w">访问官网</Button>
                     )}
@@ -199,35 +236,25 @@ function getTrafficDisplay(p: any) {
       </section>
 
       <section id="faq" class="faq-section">
-        <h2>机场推荐常见问题 (FAQ)</h2>
+        <h2>机场排行榜常见问题</h2>
         <div class="faq-list">
-          <div class="faq-item">
-            <h3>我应该怎么选出适合自己的套餐？</h3>
-            <p>第一看预算，确定你每个月愿意支付多少钱；第二看需求流量，是偶尔查阅资料（50GB以内），还是天天看视频（200GB以上）；第三看付款周期，初次使用切忌直接年付。建议先从低价月付开始试错。</p>
-          </div>
-          <div class="faq-item">
-            <h3>月付和年付的区别是什么？最低标价等于月付价吗？</h3>
-            <p>不等于！许多商家会在首页写着“¥8起”，但这往往是指**年付总额平摊下来的月均价**（且要求一次性支付年费）。真正的月付（Monthly）套餐往往价格更高。我们建议您在我们的对比表中，仔细区分“月付实际扣款”与“年付折合月均”，看清楚再下单。</p>
-          </div>
-          <div class="faq-item">
-            <h3>为什么本站把 SOGO云 作为首位主推？</h3>
-            <p>SOGO云是本站的商业合作伙伴，我们从其返佣计划中获得维持网站运转的收入。但同时，其 ¥25/150GB 以及 ¥98 年付小包的结构，确实能覆盖很广的用户需求区间；并且其在部分第三方历史测速样本中，展现出了在日美地区的真实带宽潜力。但请注意，本站不对其未来稳定性做任何保证，建议您按月付试用。</p>
-          </div>
-          <div class="faq-item">
-            <h3>官方宣称（如“2.5Gbps”和“全解锁”）和实际测试有区别吗？</h3>
-            <p>区别很大。官方宣称代表的是其服务器端口接入的理论上限，或者某个测试瞬间的结果。实际您用起来的速度，取决于您本地宽带运营商、物理距离、晚高峰拥塞程度以及目标网站的限速策略。这也是为什么我们要求读者不要轻信单一的“历史63节点样本”，一切以本地实测为准。</p>
-          </div>
+          {faqItems.map((f) => (
+            <div class="faq-item">
+              <h3>{f.q}</h3>
+              <p>{f.a}</p>
+            </div>
+          ))}
         </div>
       </section>
 
-      <div class="back-to-home" style="margin-top: 2rem; text-align: center;">
-        <p>需要查阅完整数据源？请前往 <a href="/">完整 {totalCount} 家机场数据库</a> 进行深入筛选。</p>
+      <div class="back-to-home">
+        <p>想看全部 {totalCount} 家机场？回到 <a href="/">机场推荐首页</a> 按价格、流量和线路筛选。</p>
       </div>
 
       <div class="ranking-disclaimer">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="disclaimer-icon"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+          <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="disclaimer-icon"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
           <div>
-            <strong>排名与推荐性质说明：</strong> 本页展示的 8 个候选品牌及其顺序纯属本站编辑的主观选择，并非基于统一测速的冠亚军排名，也不代表纯价格的绝对高低。其中，<strong>SOGO云为本站当前的核心商业主推品牌</strong>（包含推广合作关系）。本站仅基于官方资料、套餐结构及有限第三方公开引用提供信息，不对任何节点的持续可用性作刚性背书。
+            <strong>排名方法：</strong> 本榜按线路类型（IPLC/IEPL 优先）、月付起步价、每 GB 成本、长期付费折扣、不限时套餐和流媒体/AI 解锁情况综合排序，数据来自各机场官网，核对于 {UPDATED_LABEL}。SOGO云 为本站合作品牌。网络体验会受本地运营商影响，第一次购买建议先选月付。
           </div>
         </div>
       
@@ -241,6 +268,17 @@ function getTrafficDisplay(p: any) {
   .page-header {
     margin-bottom: var(--spacing-8);
   }
+  .toc-section {
+    margin-bottom: 2rem;
+    background: var(--color-surface);
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+  }
+  .toc-section h2 { margin: 0 0 1rem; font-size: var(--text-lg); }
+  .toc-section ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 1rem; }
+  .toc-section a { color: var(--color-primary); font-weight: 500; }
+  .back-to-home { margin-top: 2rem; text-align: center; }
   .eyebrow {
     font-size: var(--text-xs);
     font-weight: var(--font-weight-bold);
@@ -249,6 +287,9 @@ function getTrafficDisplay(p: any) {
     letter-spacing: 0.05em;
     margin-bottom: var(--spacing-2);
   }
+  .lead { color: var(--color-text-secondary); line-height: 1.8; margin-bottom: var(--spacing-4); }
+  .lead a, .top-list a, .brand-name a { color: var(--color-primary); }
+  .top-list { padding-left: 1.4em; color: var(--color-text-secondary); line-height: 1.9; }
   .page-header h1 {
     font-size: var(--text-3xl);
     font-weight: var(--font-weight-bold);

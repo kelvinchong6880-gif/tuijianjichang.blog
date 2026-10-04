@@ -1,29 +1,43 @@
 ---
 import Button from './Button.astro';
+const links = [
+  { href: '/', label: '机场推荐' },
+  { href: '/recommend/', label: 'Top 8 排行榜' },
+  { href: '/airports/', label: '全部机场' },
+  { href: '/scenario/', label: '选购场景' },
+  { href: '/compare/', label: '决策指南' },
+  { href: '/methodology/', label: '收录标准' },
+];
 ---
+<a class="skip-link" href="#main">跳到正文</a>
 <header class="site-header">
   <div class="container header-inner">
     <div class="logo">
-      <a href="/">
+      <a href="/" aria-label="机场推荐数据库首页">
         <div class="brand-symbol">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="24" height="24" rx="6" fill="var(--color-primary)"/>
             <path d="M7 14L12 9L17 14" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
-        <span>推荐机场数据库</span>
+        <span>机场推荐数据库</span>
       </a>
     </div>
-    <nav class="main-nav">
-      <a href="/airports/">机场数据库</a>
-      <a href="/recommend/">机场推荐</a>
-      <a href="/scenario/">选购场景</a>
-      <a href="/compare/">决策指南</a>
-      <a href="/methodology/">收录标准</a>
+    <nav class="main-nav" aria-label="主导航">
+      {links.map((l) => <a href={l.href}>{l.label}</a>)}
     </nav>
     <div class="header-actions">
-      <Button variant="primary" href="/">开始筛选</Button>
+      <Button variant="primary" href="/airport/sogo-yun/">本月首推</Button>
     </div>
+    <details class="mobile-nav">
+      <summary aria-label="打开菜单">
+        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+      </summary>
+      <nav class="mobile-panel" aria-label="移动端导航">
+        {links.map((l) => <a href={l.href}>{l.label}</a>)}
+        <a href="/airport/sogo-yun/" class="mobile-cta">本月首推：SOGO云</a>
+      </nav>
+    </details>
   </div>
 </header>
 
@@ -42,6 +56,7 @@ import Button from './Button.astro';
     justify-content: space-between;
     align-items: center;
     height: 72px;
+    position: relative;
   }
   .logo a {
     display: flex;
@@ -52,9 +67,7 @@ import Button from './Button.astro';
     color: var(--color-text-main);
     transition: opacity var(--transition-fast);
   }
-  .logo a:hover {
-    opacity: 0.8;
-  }
+  .logo a:hover { opacity: 0.8; }
   .brand-symbol {
     width: 28px;
     height: 28px;
@@ -72,18 +85,52 @@ import Button from './Button.astro';
     font-weight: var(--font-weight-medium);
     transition: color var(--transition-fast);
   }
-  .main-nav a:hover {
-    color: var(--color-primary);
-  }
-  .header-actions {
-    display: flex;
-  }
+  .main-nav a:hover { color: var(--color-primary); }
+  .header-actions { display: flex; }
+  .mobile-nav { display: none; }
+
   @media (max-width: 900px) {
-    .main-nav {
-      display: none;
+    .main-nav, .header-actions { display: none; }
+    .mobile-nav { display: block; }
+    .mobile-nav summary {
+      list-style: none;
+      cursor: pointer;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-main);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
     }
-    .header-actions {
-      display: none;
+    .mobile-nav summary::-webkit-details-marker { display: none; }
+    .mobile-nav summary svg { width: 22px; height: 22px; }
+    .mobile-panel {
+      position: absolute;
+      top: 72px;
+      left: 0;
+      right: 0;
+      background: rgba(8, 18, 38, 0.98);
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      flex-direction: column;
+      padding: var(--spacing-2) var(--spacing-4) var(--spacing-4);
+    }
+    .mobile-panel a {
+      padding: 14px 4px;
+      color: var(--color-text-main);
+      border-bottom: 1px solid var(--color-border);
+      font-size: var(--text-base);
+    }
+    .mobile-panel a.mobile-cta {
+      margin-top: var(--spacing-3);
+      border: none;
+      text-align: center;
+      border-radius: var(--radius-md);
+      background: var(--color-primary);
+      color: #0E1E3A;
+      font-weight: var(--font-weight-bold);
     }
   }
 </style>

@@ -1,13 +1,16 @@
 import type { Provider } from './schema';
 
+// 全部机场与套餐数据。改价格/流量/优惠码只需要改这里，首页、排行榜、评测页会自动同步。
+// 改完后运行 npm run build：src/data/verify.ts 会在构建时检查数据，发现问题会直接报错。
 export const providers: Provider[] = [
   {
     "id": "edgenova",
-    "name": "edgenova",
-    "canonicalName": "edgenova",
-    "aliases": [],
+    "name": "EdgeNova",
+    "aliases": [
+      "edgenova"
+    ],
     "slug": "edgenova",
-    "logo": "/images/providers/edgenova-logo.png",
+    "logo": "/images/providers/edgenova-logo.webp",
     "editorialRank": null,
     "editorialPick": false,
     "entryPrice": 15,
@@ -15,7 +18,7 @@ export const providers: Provider[] = [
     "currency": "CNY",
     "trafficMin": 45,
     "trafficMax": 1024,
-    "trafficDisplay": "Variable",
+    "trafficDisplay": "45GB–1TB",
     "lineClaims": [
       "IPLC"
     ],
@@ -23,127 +26,228 @@ export const providers: Provider[] = [
     "streamingClaim": true,
     "aiClaim": true,
     "affiliateUrl": "https://work.edgenovaaff.cc/#/?code=k7VCKPvN",
-    "affiliateCode": "abc",
-    "affiliateUrlStatus": "ok",
-    "sourceFile": "edgenova 套餐价格.txt",
-    "affiliateSourceFile": "邀请码邀请链接.md",
     "lastVerified": "2026-09-15",
-    "sourceNotes": null,
     "plans": [
       {
-        "name": "主推套餐",
+        "name": "EdgeNova 入门月付",
         "price": 15,
         "currency": "CNY",
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 50,
-        "trafficDisplay": "50GB",
-        "deviceLimit": "Unlimited",
-        "speedLimit": null,
+        "trafficDisplay": "50GB / 30天",
+        "deviceLimit": "不限",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
         "ai": true,
-        "features": [],
         "sourceNotes": "Parsed"
       },
       {
-        "name": "精选方案",
+        "name": "EdgeNova 45GB 年付",
         "price": 108,
         "currency": "CNY",
         "billingType": "Yearly",
         "validity": "Subscription",
         "traffic": 45,
-        "trafficDisplay": "45GB",
-        "deviceLimit": "Unlimited",
-        "speedLimit": null,
+        "trafficDisplay": "45GB / 30天",
+        "deviceLimit": "不限",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
         "ai": true,
-        "features": [],
         "sourceNotes": "Parsed"
       },
       {
-        "name": "精选方案",
+        "name": "EdgeNova 120GB 月付",
         "price": 25,
         "currency": "CNY",
-        "billingType": "Quarterly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 120,
-        "trafficDisplay": "120GB",
-        "deviceLimit": "Unlimited",
-        "speedLimit": null,
+        "trafficDisplay": "120GB / 30天",
+        "deviceLimit": "不限",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
         "ai": true,
-        "features": [],
         "sourceNotes": "Parsed"
       },
       {
-        "name": "精选方案",
+        "name": "EdgeNova 250GB 月付",
         "price": 50,
         "currency": "CNY",
-        "billingType": "Quarterly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 250,
-        "trafficDisplay": "250GB",
-        "deviceLimit": "Unlimited",
-        "speedLimit": null,
+        "trafficDisplay": "250GB / 30天",
+        "deviceLimit": "不限",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
         "ai": true,
-        "features": [],
         "sourceNotes": "Parsed"
       },
       {
-        "name": "精选方案",
+        "name": "EdgeNova 499GB 月付",
         "price": 100,
         "currency": "CNY",
-        "billingType": "Quarterly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 499,
-        "trafficDisplay": "499GB",
-        "deviceLimit": "Unlimited",
-        "speedLimit": null,
+        "trafficDisplay": "499GB / 30天",
+        "deviceLimit": "不限",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
         "ai": true,
-        "features": [],
         "sourceNotes": "Parsed"
       },
       {
-        "name": "精选方案",
+        "name": "EdgeNova 1TB 月付",
         "price": 200,
         "currency": "CNY",
-        "billingType": "Quarterly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 1024,
-        "trafficDisplay": "1TB",
-        "deviceLimit": "Unlimited",
-        "speedLimit": null,
+        "trafficDisplay": "1TB / 30天",
+        "deviceLimit": "不限",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
         "ai": true,
-        "features": [],
         "sourceNotes": "Parsed"
+      }
+    ],
+    "sources": [
+      {
+        "type": "official",
+        "urlOrFile": "EdgeNova官网套餐页",
+        "sourceDate": null,
+        "recordedDate": "2026-09-15",
+        "verifiedDate": "2026-09-15",
+        "supportedFacts": [
+          "价格",
+          "流量额度",
+          "计费周期",
+          "线路类型"
+        ]
       }
     ]
   },
   {
     "id": "firefly",
+    "name": "Firefly",
+    "aliases": [
+      "firefly"
+    ],
+    "slug": "firefly",
+    "logo": "/images/providers/firefly-logo.webp",
+    "promoCode": "firefly",
+    "editorialRank": 5,
+    "editorialPick": true,
+    "entryPrice": 25,
+    "monthlyEntryPrice": 25,
+    "currency": "CNY",
+    "trafficMin": 60,
+    "trafficMax": 1000,
+    "trafficDisplay": "60GB–1TB",
+    "lineClaims": [
+      "IPLC"
+    ],
+    "hasNoExpiry": true,
+    "streamingClaim": null,
+    "aiClaim": null,
+    "nodeRegions": "香港、台湾、美国、新加坡、马来西亚、日本等",
+    "affiliateUrl": "https://vip02.fireflyaff.com/#/?code=8nDg6OEY",
+    "lastVerified": "2026-10-04",
+    "plans": [
+      {
+        "name": "Firefly年付版",
+        "price": 96,
+        "currency": "CNY",
+        "billingType": "Yearly",
+        "validity": "Subscription",
+        "traffic": 60,
+        "trafficDisplay": "60GB / 30天",
+        "speedLimit": "None",
+        "lineType": "IPLC",
+        "streaming": null,
+        "ai": null
+      },
+      {
+        "name": "Firefly Lite",
+        "price": 25,
+        "currency": "CNY",
+        "billingType": "Monthly",
+        "validity": "Subscription",
+        "traffic": 150,
+        "trafficDisplay": "150GB / 30天",
+        "speedLimit": "None",
+        "lineType": "IPLC",
+        "streaming": null,
+        "ai": null
+      },
+      {
+        "name": "Firefly Plus",
+        "price": 45,
+        "currency": "CNY",
+        "billingType": "Monthly",
+        "validity": "Subscription",
+        "traffic": 300,
+        "trafficDisplay": "300GB / 30天",
+        "speedLimit": "None",
+        "lineType": "IPLC",
+        "streaming": null,
+        "ai": null
+      },
+      {
+        "name": "Firefly Blaze",
+        "price": 85,
+        "currency": "CNY",
+        "billingType": "Monthly",
+        "validity": "Subscription",
+        "traffic": 600,
+        "trafficDisplay": "600GB / 30天",
+        "speedLimit": "None",
+        "lineType": "IPLC",
+        "streaming": null,
+        "ai": null
+      },
+      {
+        "name": "Firefly Nova",
+        "price": 150,
+        "currency": "CNY",
+        "billingType": "Monthly",
+        "validity": "Subscription",
+        "traffic": 1000,
+        "trafficDisplay": "1TB / 30天",
+        "speedLimit": "None",
+        "lineType": "IPLC",
+        "streaming": null,
+        "ai": null
+      },
+      {
+        "name": "Firefly不限时",
+        "price": 100,
+        "currency": "CNY",
+        "billingType": "One-Time",
+        "validity": "Permanent",
+        "traffic": 100,
+        "trafficDisplay": "100GB（永久有效）",
+        "speedLimit": "None",
+        "lineType": "IPLC",
+        "streaming": null,
+        "ai": null
+      }
+    ],
     "sources": [
       {
         "type": "official",
         "urlOrFile": "萤火虫套餐价格.txt",
         "sourceDate": null,
         "recordedDate": "2026-09-18",
-        "verifiedDate": "2026-09-18",
-        "supportedFacts": ["价格", "流量", "线路宣称", "计费周期"]
+        "verifiedDate": "2026-10-04",
+        "supportedFacts": [
+          "价格",
+          "流量",
+          "线路宣称",
+          "计费周期"
+        ]
       },
       {
         "type": "third_party",
@@ -153,188 +257,25 @@ export const providers: Provider[] = [
         "verifiedDate": null,
         "supportedFacts": []
       }
-    ],
-    "name": "firefly",
-    "canonicalName": "firefly",
-    "aliases": [],
-    "slug": "firefly",
-    "logo": "/images/providers/firefly-logo.png",
-    "editorialRank": 5,
-    "editorialPick": true,
-    "entryPrice": 25,
-    "monthlyEntryPrice": 25,
-    "currency": "CNY",
-    "trafficMin": 60,
-    "trafficMax": 1000,
-    "trafficDisplay": "Variable",
-    "lineClaims": [
-      "IPLC"
-    ],
-    "hasNoExpiry": true,
-    "streamingClaim": null,
-    "aiClaim": null,
-    "affiliateUrl": "https://vip02.fireflyaff.com/#/?code=8nDg6OEY",
-    "affiliateCode": "abc",
-    "affiliateUrlStatus": "ok",
-    "sourceFile": "firefly 套餐价格.txt",
-    "affiliateSourceFile": "邀请码邀请链接.md",
-    "lastVerified": "2026-09-15",
-    "sourceNotes": null,
-    "plans": [
-      {
-        "name": "Firefly年付版",
-        "price": 96,
-        "currency": "CNY",
-        "billingType": "Yearly",
-        "validity": "Subscription",
-        "traffic": 60,
-        "trafficDisplay": "60GB",
-        "deviceLimit": null,
-        "speedLimit": "None",
-        "lineType": "IPLC",
-        "nodes": null,
-        "streaming": null,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
-      },
-      {
-        "name": "Firefly Lite",
-        "price": 25,
-        "currency": "CNY",
-        "billingType": "Monthly",
-        "validity": "Subscription",
-        "traffic": 150,
-        "trafficDisplay": "150GB",
-        "deviceLimit": null,
-        "speedLimit": "None",
-        "lineType": "IPLC",
-        "nodes": null,
-        "streaming": null,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
-      },
-      {
-        "name": "Firefly Plus",
-        "price": 45,
-        "currency": "CNY",
-        "billingType": "Monthly",
-        "validity": "Subscription",
-        "traffic": 300,
-        "trafficDisplay": "300GB",
-        "deviceLimit": null,
-        "speedLimit": "None",
-        "lineType": "IPLC",
-        "nodes": null,
-        "streaming": null,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
-      },
-      {
-        "name": "Firefly Blaze",
-        "price": 85,
-        "currency": "CNY",
-        "billingType": "Monthly",
-        "validity": "Subscription",
-        "traffic": 600,
-        "trafficDisplay": "600GB",
-        "deviceLimit": null,
-        "speedLimit": "None",
-        "lineType": "IPLC",
-        "nodes": null,
-        "streaming": null,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
-      },
-      {
-        "name": "Firefly Nova",
-        "price": 150,
-        "currency": "CNY",
-        "billingType": "Monthly",
-        "validity": "Subscription",
-        "traffic": 1000,
-        "trafficDisplay": "1000GB",
-        "deviceLimit": null,
-        "speedLimit": "None",
-        "lineType": "IPLC",
-        "nodes": null,
-        "streaming": null,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
-      },
-      {
-        "name": "Firefly不限时",
-        "price": 100,
-        "currency": "CNY",
-        "billingType": "One-Time",
-        "validity": "Permanent",
-        "traffic": 100,
-        "trafficDisplay": "100GB",
-        "deviceLimit": null,
-        "speedLimit": "None",
-        "lineType": "IPLC",
-        "nodes": null,
-        "streaming": null,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
-      }
     ]
   },
   {
     "id": "sogo-yun",
-    "sources": [
-      {
-        "type": "official",
-        "urlOrFile": "sogo 云套餐价格.txt",
-        "sourceDate": null,
-        "recordedDate": "2026-09-18",
-        "verifiedDate": "2026-09-18",
-        "supportedFacts": ["价格", "流量额度", "不限时套餐声明"]
-      },
-      {
-        "type": "third_party",
-        "urlOrFile": "https://www.haiwailab.com/reviews/sogoyun/",
-        "sourceDate": null,
-        "recordedDate": "2026-09-18",
-        "verifiedDate": null,
-        "supportedFacts": ["63 节点快照", "该历史测试中的香港节点下载速度"]
-      },
-      {
-        "type": "third_party",
-        "urlOrFile": "https://rocketnode.org/reviews/sogoyun/",
-        "sourceDate": null,
-        "recordedDate": "2026-09-18",
-        "verifiedDate": null,
-        "supportedFacts": ["63 节点快照的另一页面披露的高度重合数据"]
-      },
-      {
-        "type": "user",
-        "urlOrFile": "用户后台截图",
-        "sourceDate": null,
-        "recordedDate": "2026-09-18",
-        "verifiedDate": null,
-        "supportedFacts": ["86 条记录"]
-      }
+    "name": "SOGO云",
+    "aliases": [
+      "sogo 云"
     ],
-    "name": "sogo 云",
-    "canonicalName": "sogo-yun",
-    "aliases": [],
     "slug": "sogo-yun",
     "logo": "/images/providers/sogo-yun-logo.webp",
-      "promoCode": "sogo1000",
+    "promoCode": "sogo10000",
     "editorialRank": 1,
     "editorialPick": true,
     "entryPrice": 25,
     "monthlyEntryPrice": 25,
     "currency": "CNY",
     "trafficMin": 60,
-    "trafficMax": 550,
-    "trafficDisplay": "60GB-550GB(已确认) / 更高档期待核实",
+    "trafficMax": 1050,
+    "trafficDisplay": "60GB–1.05TB",
     "lineClaims": [
       "IPLC",
       "IEPL"
@@ -342,30 +283,28 @@ export const providers: Provider[] = [
     "hasNoExpiry": true,
     "streamingClaim": true,
     "aiClaim": true,
+    "nodeRegions": "香港×20、台湾×5、日本×10、新加坡×10、美国×10、马来西亚×2、英国、法国、德国、土耳其、泰国、巴西等",
     "affiliateUrl": "https://wzjc.sogoyunaff.cc/#/?code=BC2BL855",
-    "affiliateCode": "abc",
-    "affiliateUrlStatus": "ok",
-    "sourceFile": "sogo 云套餐价格.txt",
-    "affiliateSourceFile": "邀请码邀请链接.md",
-    "lastVerified": "2026-09-15",
-    "sourceNotes": null,
+    "lastVerified": "2026-10-04",
     "plans": [
       {
         "name": "小包-年付版",
         "price": 98,
         "currency": "CNY",
         "billingType": "Yearly",
-        "validity": "1 Year",
+        "validity": "Subscription",
         "traffic": 60,
         "trafficDisplay": "60GB / 30天",
-        "deviceLimit": "不限 (官方标记)",
+        "deviceLimit": "不限",
         "speedLimit": "2.5Gbps (峰值)",
         "lineType": "IPLC",
-        "nodes": "86 (用户提供截图汇总，日期待补)",
         "streaming": true,
         "ai": true,
-        "features": ["原生IP", "需一次性支付¥98年费", "折合月价约¥8.17，每30天刷新"],
-        "sourceNotes": null
+        "features": [
+          "原生IP",
+          "需一次性支付¥98年费",
+          "折合月价约¥8.17，每30天刷新"
+        ]
       },
       {
         "name": "基础版",
@@ -375,14 +314,15 @@ export const providers: Provider[] = [
         "validity": "Subscription",
         "traffic": 150,
         "trafficDisplay": "150GB / 30天",
-        "deviceLimit": "不限 (官方标记)",
+        "deviceLimit": "不限",
         "speedLimit": "2.5Gbps (峰值)",
         "lineType": "IEPL",
-        "nodes": "86 (用户提供截图汇总，日期待补)",
         "streaming": true,
         "ai": true,
-        "features": ["原生IP", "智能路由"],
-        "sourceNotes": null
+        "features": [
+          "原生IP",
+          "智能路由"
+        ]
       },
       {
         "name": "优选版",
@@ -392,14 +332,15 @@ export const providers: Provider[] = [
         "validity": "Subscription",
         "traffic": 350,
         "trafficDisplay": "350GB / 30天",
-        "deviceLimit": "不限 (官方标记)",
+        "deviceLimit": "不限",
         "speedLimit": "2.5Gbps (峰值)",
         "lineType": "IEPL",
-        "nodes": "86 (用户提供截图汇总，日期待补)",
         "streaming": true,
         "ai": true,
-        "features": ["原生IP", "智能路由"],
-        "sourceNotes": null
+        "features": [
+          "原生IP",
+          "智能路由"
+        ]
       },
       {
         "name": "强化版",
@@ -409,14 +350,15 @@ export const providers: Provider[] = [
         "validity": "Subscription",
         "traffic": 550,
         "trafficDisplay": "550GB / 30天",
-        "deviceLimit": "不限 (官方标记)",
+        "deviceLimit": "不限",
         "speedLimit": "2.5Gbps (峰值)",
         "lineType": "IEPL",
-        "nodes": "86 (用户提供截图汇总，日期待补)",
         "streaming": true,
         "ai": true,
-        "features": ["原生IP", "智能路由"],
-        "sourceNotes": null
+        "features": [
+          "原生IP",
+          "智能路由"
+        ]
       },
       {
         "name": "顶配版",
@@ -424,98 +366,135 @@ export const providers: Provider[] = [
         "currency": "CNY",
         "billingType": "Monthly",
         "validity": "Subscription",
-        "traffic": null,
-        "trafficDisplay": "1050GB或1.1TB(待核实)",
-        "deviceLimit": "不限 (官方标记)",
+        "traffic": 1050,
+        "trafficDisplay": "1.05TB / 30天",
+        "deviceLimit": "不限",
         "speedLimit": "2.5Gbps (峰值)",
         "lineType": "IEPL",
-        "nodes": "86 (用户提供截图汇总，日期待补)",
         "streaming": true,
         "ai": true,
-        "features": ["原生IP", "流量数据存在冲突"],
+        "features": [
+          "原生IP"
+        ],
         "sourceNotes": "顶配同时出现1050GB与1.1TB，暂不参与¥/GB排序"
       },
       {
         "name": "SOGO基础餐不限时版",
         "price": 120,
-        "priceConflict": true,
         "currency": "CNY",
         "billingType": "One-Time",
         "validity": "Permanent",
         "traffic": 120,
-        "trafficDisplay": "120GB",
-        "deviceLimit": "不限 (官方标记)",
+        "trafficDisplay": "120GB（永久有效）",
+        "deviceLimit": "不限",
         "speedLimit": "2.5Gbps (峰值)",
         "lineType": "IPLC",
-        "nodes": "86 (用户提供截图汇总，日期待补)",
         "streaming": true,
         "ai": true,
-        "features": ["原生IP", "不自动重置"],
-        "sourceNotes": "标题标价¥120，正文写售价¥100，存在冲突待核实，不参与单价排序"
+        "features": [
+          "原生IP",
+          "不自动重置"
+        ]
       },
       {
         "name": "SOGO优选餐不限时版",
         "price": 220,
-        "priceConflict": true,
         "currency": "CNY",
         "billingType": "One-Time",
         "validity": "Permanent",
         "traffic": 250,
-        "trafficDisplay": "250GB",
-        "deviceLimit": "不限 (官方标记)",
+        "trafficDisplay": "250GB（永久有效）",
+        "deviceLimit": "不限",
         "speedLimit": "2.5Gbps (峰值)",
         "lineType": "IPLC",
-        "nodes": "86 (用户提供截图汇总，日期待补)",
         "streaming": true,
         "ai": true,
-        "features": ["原生IP", "不自动重置"],
-        "sourceNotes": "标题标价¥220，正文写售价¥100，存在冲突待核实，不参与单价排序"
+        "features": [
+          "原生IP",
+          "不自动重置"
+        ]
       },
       {
         "name": "SOGO强化餐不限时版",
         "price": 450,
-        "priceConflict": true,
         "currency": "CNY",
         "billingType": "One-Time",
         "validity": "Permanent",
         "traffic": 500,
-        "trafficDisplay": "500GB",
-        "deviceLimit": "不限 (官方标记)",
+        "trafficDisplay": "500GB（永久有效）",
+        "deviceLimit": "不限",
         "speedLimit": "2.5Gbps (峰值)",
         "lineType": "IPLC",
-        "nodes": "86 (用户提供截图汇总，日期待补)",
         "streaming": true,
         "ai": true,
-        "features": ["原生IP", "不自动重置"],
-        "sourceNotes": "标题标价¥450，正文写售价¥100，存在冲突待核实，不参与单价排序"
+        "features": [
+          "原生IP",
+          "不自动重置"
+        ]
       },
       {
         "name": "SOGO至尊餐不限时版",
         "price": 850,
-        "priceConflict": true,
         "currency": "CNY",
         "billingType": "One-Time",
         "validity": "Permanent",
-        "traffic": null,
-        "trafficDisplay": "1000GB或1.0TB(待核实)",
-        "deviceLimit": "不限 (官方标记)",
+        "traffic": 1000,
+        "trafficDisplay": "1TB（永久有效）",
+        "deviceLimit": "不限",
         "speedLimit": "2.5Gbps (峰值)",
         "lineType": "IPLC",
-        "nodes": "86 (用户提供截图汇总，日期待补)",
         "streaming": true,
         "ai": true,
-        "features": ["原生IP", "不自动重置"],
-        "sourceNotes": "流量数据(1000GB与1.0TB)及价格均冲突待核实，暂不参与单价排序"
+        "features": [
+          "原生IP",
+          "不自动重置"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "type": "official",
+        "urlOrFile": "SOGO云官网套餐页",
+        "sourceDate": null,
+        "recordedDate": "2026-10-04",
+        "verifiedDate": "2026-10-04",
+        "supportedFacts": [
+          "价格",
+          "流量额度",
+          "计费周期",
+          "不限时套餐",
+          "节点分布"
+        ]
+      },
+      {
+        "type": "third_party",
+        "urlOrFile": "https://www.haiwailab.com/reviews/sogoyun/",
+        "sourceDate": null,
+        "recordedDate": "2026-09-18",
+        "verifiedDate": null,
+        "supportedFacts": [
+          "63 节点快照",
+          "该历史测试中的香港节点下载速度"
+        ]
+      },
+      {
+        "type": "third_party",
+        "urlOrFile": "https://rocketnode.org/reviews/sogoyun/",
+        "sourceDate": null,
+        "recordedDate": "2026-09-18",
+        "verifiedDate": null,
+        "supportedFacts": [
+          "63 节点快照的另一页面披露的高度重合数据"
+        ]
       }
     ]
   },
   {
     "id": "u1s1",
     "name": "u1s1",
-    "canonicalName": "u1s1",
-    "aliases": [],
     "slug": "u1s1",
     "logo": null,
+    "promoCode": "U1S1-80",
     "editorialRank": null,
     "editorialPick": false,
     "entryPrice": 20,
@@ -523,7 +502,7 @@ export const providers: Provider[] = [
     "currency": "CNY",
     "trafficMin": 60,
     "trafficMax": 1500,
-    "trafficDisplay": "Variable",
+    "trafficDisplay": "60GB–1.5TB",
     "lineClaims": [
       "IEPL"
     ],
@@ -531,12 +510,7 @@ export const providers: Provider[] = [
     "streamingClaim": true,
     "aiClaim": true,
     "affiliateUrl": "https://pkdj7.vipaff.cc/#/?code=YUCKdFlR",
-    "affiliateCode": "abc",
-    "affiliateUrlStatus": "ok",
-    "sourceFile": "u1s1 套餐价格.txt",
-    "affiliateSourceFile": "邀请码邀请链接.md",
-    "lastVerified": "2026-09-15",
-    "sourceNotes": null,
+    "lastVerified": "2026-10-04",
     "plans": [
       {
         "name": "u1s1 · 就是好用包",
@@ -545,15 +519,11 @@ export const providers: Provider[] = [
         "billingType": "Yearly",
         "validity": "Subscription",
         "traffic": 60,
-        "trafficDisplay": "60GB",
-        "deviceLimit": null,
+        "trafficDisplay": "60GB / 30天",
         "speedLimit": "None",
         "lineType": "IEPL",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "u1s1 · 普通人真够了包",
@@ -562,15 +532,11 @@ export const providers: Provider[] = [
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 120,
-        "trafficDisplay": "120GB",
-        "deviceLimit": null,
+        "trafficDisplay": "120GB / 30天",
         "speedLimit": "None",
         "lineType": "IEPL",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "u1s1 · 你以为用不到包",
@@ -579,15 +545,11 @@ export const providers: Provider[] = [
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 300,
-        "trafficDisplay": "300GB",
-        "deviceLimit": null,
+        "trafficDisplay": "300GB / 30天",
         "speedLimit": "None",
         "lineType": "IEPL",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "u1s1 · 瘾大就拉满包",
@@ -596,15 +558,11 @@ export const providers: Provider[] = [
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 700,
-        "trafficDisplay": "700GB",
-        "deviceLimit": null,
+        "trafficDisplay": "700GB / 30天",
         "speedLimit": "None",
         "lineType": "IEPL",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "u1s1 · 我全都要包",
@@ -613,15 +571,11 @@ export const providers: Provider[] = [
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 1500,
-        "trafficDisplay": "1.46484375TB",
-        "deviceLimit": null,
+        "trafficDisplay": "1.5TB / 30天",
         "speedLimit": "None",
         "lineType": "IEPL",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "u1s1 · 定制包",
@@ -630,114 +584,102 @@ export const providers: Provider[] = [
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": null,
-        "trafficDisplay": "Unspecified",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "trafficDisplay": "未说明 / 30天",
         "lineType": null,
-        "nodes": null,
         "streaming": null,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
+      }
+    ],
+    "sources": [
+      {
+        "type": "official",
+        "urlOrFile": "u1s1官网套餐页",
+        "sourceDate": null,
+        "recordedDate": "2026-09-15",
+        "verifiedDate": "2026-10-04",
+        "supportedFacts": [
+          "价格",
+          "流量额度",
+          "计费周期",
+          "线路类型"
+        ]
       }
     ]
   },
   {
     "id": "yifanyun",
     "name": "一翻云",
-    "canonicalName": "yifanyun",
-    "aliases": [],
     "slug": "yifanyun",
-    "logo": "/images/providers/yifanyun-logo.png",
+    "logo": "/images/providers/yifanyun-logo.webp",
+    "promoCode": "1FLYYUN",
     "editorialRank": null,
     "editorialPick": false,
     "entryPrice": 20,
     "monthlyEntryPrice": 20,
     "currency": "CNY",
     "trafficMin": 60,
-    "trafficMax": 1228.8,
-    "trafficDisplay": "Variable",
+    "trafficMax": 1200,
+    "trafficDisplay": "60GB–1.2TB",
     "lineClaims": [
       "IEPL"
     ],
     "hasNoExpiry": true,
     "streamingClaim": true,
     "aiClaim": true,
+    "nodeRegions": "港/台/新/日/美等（60+ 专线节点）",
     "affiliateUrl": "https://wzjc.1flyunaff.cc/#/?code=0tH3Mmch",
-    "affiliateCode": "abc",
-    "affiliateUrlStatus": "ok",
-    "sourceFile": "一翻云套餐价格.txt",
-    "affiliateSourceFile": "邀请码邀请链接.md",
-    "lastVerified": "2026-09-15",
-    "sourceNotes": null,
+    "lastVerified": "2026-10-04",
     "plans": [
       {
-        "name": "主推套餐",
+        "name": "轻享版",
         "price": 20,
         "currency": "CNY",
-        "billingType": "Quarterly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 150,
-        "trafficDisplay": "150GB",
-        "deviceLimit": "Unlimited",
-        "speedLimit": null,
+        "trafficDisplay": "150GB / 30天",
+        "deviceLimit": "不限",
         "lineType": "IEPL",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "舒享版",
         "price": 35,
         "currency": "CNY",
-        "billingType": "Quarterly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 350,
-        "trafficDisplay": "350GB",
-        "deviceLimit": "Unlimited",
-        "speedLimit": null,
+        "trafficDisplay": "350GB / 30天",
+        "deviceLimit": "不限",
         "lineType": "IEPL",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "尊享版",
         "price": 55,
         "currency": "CNY",
-        "billingType": "Quarterly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 600,
-        "trafficDisplay": "600GB",
-        "deviceLimit": "Unlimited",
-        "speedLimit": null,
+        "trafficDisplay": "600GB / 30天",
+        "deviceLimit": "不限",
         "lineType": null,
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "极致版",
         "price": 95,
         "currency": "CNY",
-        "billingType": "Quarterly",
+        "billingType": "Monthly",
         "validity": "Subscription",
-        "traffic": 1228.8,
-        "trafficDisplay": "1.2TB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "traffic": 1200,
+        "trafficDisplay": "1.2TB / 30天",
         "lineType": null,
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "98¥ · 年付小包",
@@ -746,15 +688,11 @@ export const providers: Provider[] = [
         "billingType": "Yearly",
         "validity": "Subscription",
         "traffic": 60,
-        "trafficDisplay": "60GB",
-        "deviceLimit": null,
+        "trafficDisplay": "60GB / 30天",
         "speedLimit": "None",
         "lineType": null,
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "轻享版 · 不限时包",
@@ -763,15 +701,12 @@ export const providers: Provider[] = [
         "billingType": "One-Time",
         "validity": "Permanent",
         "traffic": 100,
-        "trafficDisplay": "100GB",
-        "deviceLimit": "Unlimited",
+        "trafficDisplay": "100GB（永久有效）",
+        "deviceLimit": "不限",
         "speedLimit": "None",
         "lineType": null,
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "舒享版 · 不限时包",
@@ -780,15 +715,12 @@ export const providers: Provider[] = [
         "billingType": "One-Time",
         "validity": "Permanent",
         "traffic": 250,
-        "trafficDisplay": "250GB",
-        "deviceLimit": "Unlimited",
+        "trafficDisplay": "250GB（永久有效）",
+        "deviceLimit": "不限",
         "speedLimit": "None",
         "lineType": null,
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "尊享版 · 不限时包",
@@ -797,25 +729,36 @@ export const providers: Provider[] = [
         "billingType": "One-Time",
         "validity": "Permanent",
         "traffic": 500,
-        "trafficDisplay": "500GB",
-        "deviceLimit": "Unlimited",
+        "trafficDisplay": "500GB（永久有效）",
+        "deviceLimit": "不限",
         "speedLimit": "None",
         "lineType": null,
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
+      }
+    ],
+    "sources": [
+      {
+        "type": "official",
+        "urlOrFile": "一翻云官网套餐页",
+        "sourceDate": null,
+        "recordedDate": "2026-09-15",
+        "verifiedDate": "2026-10-04",
+        "supportedFacts": [
+          "价格",
+          "流量额度",
+          "计费周期",
+          "线路类型"
+        ]
       }
     ]
   },
   {
     "id": "ermaoyun",
     "name": "二猫云",
-    "canonicalName": "ermaoyun",
-    "aliases": [],
     "slug": "ermaoyun",
-    "logo": "/images/providers/ermaoyun-logo.png",
+    "logo": "/images/providers/ermaoyun-logo.webp",
+    "promoCode": "ermao888",
     "editorialRank": null,
     "editorialPick": false,
     "entryPrice": 20,
@@ -823,37 +766,29 @@ export const providers: Provider[] = [
     "currency": "CNY",
     "trafficMin": 60,
     "trafficMax": 850,
-    "trafficDisplay": "Variable",
+    "trafficDisplay": "60GB–850GB",
     "lineClaims": [
       "IEPL"
     ],
     "hasNoExpiry": true,
     "streamingClaim": true,
     "aiClaim": true,
+    "nodeRegions": "港/台/新/日/美/德等地区（60+ 节点）",
     "affiliateUrl": "https://wzjc.2maoyunaff.cc/#/?code=bvsFDmSt",
-    "affiliateCode": "abc",
-    "affiliateUrlStatus": "ok",
-    "sourceFile": "二猫云套餐价格.txt",
-    "affiliateSourceFile": "邀请码邀请链接.md",
-    "lastVerified": "2026-09-15",
-    "sourceNotes": null,
+    "lastVerified": "2026-10-04",
     "plans": [
       {
-        "name": "主推套餐",
+        "name": "二猫云 · 100G不限时",
         "price": 99,
         "currency": "CNY",
         "billingType": "One-Time",
         "validity": "Permanent",
         "traffic": 100,
-        "trafficDisplay": "100GB",
-        "deviceLimit": null,
+        "trafficDisplay": "100GB（永久有效）",
         "speedLimit": "None",
         "lineType": "IEPL",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "二猫年付小包",
@@ -862,91 +797,84 @@ export const providers: Provider[] = [
         "billingType": "Yearly",
         "validity": "Subscription",
         "traffic": 60,
-        "trafficDisplay": "60GB",
-        "deviceLimit": null,
+        "trafficDisplay": "60GB / 30天",
         "speedLimit": "None",
         "lineType": "IEPL",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "二猫云 · 白猫套餐",
         "price": 20,
         "currency": "CNY",
-        "billingType": "Quarterly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 130,
-        "trafficDisplay": "130GB",
-        "deviceLimit": null,
+        "trafficDisplay": "130GB / 30天",
         "speedLimit": "None",
         "lineType": "IEPL",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
-      },
-      {
-        "name": "二猫云 · 橘猫畅玩版",
-        "price": 20,
-        "currency": "CNY",
-        "billingType": "Quarterly",
-        "validity": "Subscription",
-        "traffic": 230,
-        "trafficDisplay": "230GB",
-        "deviceLimit": null,
-        "speedLimit": "None",
-        "lineType": "IEPL",
-        "nodes": null,
-        "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
-      },
-      {
-        "name": "二猫云 · 牛奶猫尊享版",
-        "price": 20,
-        "currency": "CNY",
-        "billingType": "Quarterly",
-        "validity": "Subscription",
-        "traffic": 430,
-        "trafficDisplay": "430GB",
-        "deviceLimit": null,
-        "speedLimit": "None",
-        "lineType": "IEPL",
-        "nodes": null,
-        "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "二猫云 · 黑猫重度用户版",
         "price": 160,
         "currency": "CNY",
-        "billingType": "Quarterly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 850,
-        "trafficDisplay": "850GB",
-        "deviceLimit": null,
+        "trafficDisplay": "850GB / 30天",
         "speedLimit": "None",
         "lineType": "IEPL",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
+      },
+      {
+        "name": "二猫云 · 橘猫畅玩版",
+        "price": 40,
+        "currency": "CNY",
+        "billingType": "Monthly",
+        "validity": "Subscription",
+        "traffic": 230,
+        "trafficDisplay": "230GB / 30天",
+        "deviceLimit": "不限",
+        "lineType": "IEPL",
+        "streaming": true,
+        "ai": true
+      },
+      {
+        "name": "二猫云 · 牛奶猫尊享版",
+        "price": 80,
+        "currency": "CNY",
+        "billingType": "Monthly",
+        "validity": "Subscription",
+        "traffic": 430,
+        "trafficDisplay": "430GB / 30天",
+        "deviceLimit": "不限",
+        "lineType": "IEPL",
+        "streaming": true,
+        "ai": true
+      }
+    ],
+    "sources": [
+      {
+        "type": "official",
+        "urlOrFile": "二猫云官网套餐页",
+        "sourceDate": null,
+        "recordedDate": "2026-09-15",
+        "verifiedDate": "2026-10-04",
+        "supportedFacts": [
+          "价格",
+          "流量额度",
+          "计费周期",
+          "线路类型"
+        ]
       }
     ]
   },
   {
     "id": "guangnianti",
     "name": "光年梯",
-    "canonicalName": "guangnianti",
-    "aliases": [],
     "slug": "guangnianti",
     "logo": null,
     "editorialRank": null,
@@ -956,7 +884,7 @@ export const providers: Provider[] = [
     "currency": "CNY",
     "trafficMin": 50,
     "trafficMax": 900,
-    "trafficDisplay": "Variable",
+    "trafficDisplay": "50GB–900GB",
     "lineClaims": [
       "IPLC",
       "IEPL"
@@ -965,12 +893,7 @@ export const providers: Provider[] = [
     "streamingClaim": true,
     "aiClaim": true,
     "affiliateUrl": "https://vv3dbvb.guangnianertt1.homes/#/?code=mv41lVsv",
-    "affiliateCode": "abc",
-    "affiliateUrlStatus": "ok",
-    "sourceFile": "光年梯套餐价格.txt",
-    "affiliateSourceFile": "邀请码邀请链接.md",
     "lastVerified": "2026-09-15",
-    "sourceNotes": null,
     "plans": [
       {
         "name": "年付限时套餐",
@@ -979,82 +902,67 @@ export const providers: Provider[] = [
         "billingType": "Yearly",
         "validity": "Subscription",
         "traffic": 50,
-        "trafficDisplay": "50GB",
-        "deviceLimit": null,
+        "trafficDisplay": "50GB / 30天",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
         "ai": true,
-        "features": [],
         "sourceNotes": "Parsed"
       },
       {
         "name": "光年梯 入门版",
         "price": 18,
         "currency": "CNY",
-        "billingType": "Quarterly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 110,
-        "trafficDisplay": "110GB",
-        "deviceLimit": null,
+        "trafficDisplay": "110GB / 30天",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
         "ai": true,
-        "features": [],
         "sourceNotes": "Parsed"
       },
       {
         "name": "光年梯 晋级版",
         "price": 34,
         "currency": "CNY",
-        "billingType": "Quarterly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 220,
-        "trafficDisplay": "220GB",
-        "deviceLimit": null,
+        "trafficDisplay": "220GB / 30天",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
         "ai": true,
-        "features": [],
         "sourceNotes": "Parsed"
       },
       {
         "name": "光年梯 专业版",
         "price": 68,
         "currency": "CNY",
-        "billingType": "Quarterly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 450,
-        "trafficDisplay": "450GB",
-        "deviceLimit": null,
+        "trafficDisplay": "450GB / 30天",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
         "ai": true,
-        "features": [],
         "sourceNotes": "Parsed"
       },
       {
         "name": "光年梯 至尊版",
         "price": 130,
         "currency": "CNY",
-        "billingType": "Quarterly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 900,
-        "trafficDisplay": "900GB",
-        "deviceLimit": null,
+        "trafficDisplay": "900GB / 30天",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
         "ai": true,
-        "features": [],
         "sourceNotes": "Parsed"
       },
       {
@@ -1064,25 +972,35 @@ export const providers: Provider[] = [
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 500,
-        "trafficDisplay": "500GB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "trafficDisplay": "500GB / 30天",
         "lineType": "IEPL",
-        "nodes": null,
         "streaming": true,
         "ai": true,
-        "features": [],
         "sourceNotes": "Parsed"
+      }
+    ],
+    "sources": [
+      {
+        "type": "official",
+        "urlOrFile": "光年梯官网套餐页",
+        "sourceDate": null,
+        "recordedDate": "2026-09-15",
+        "verifiedDate": "2026-09-15",
+        "supportedFacts": [
+          "价格",
+          "流量额度",
+          "计费周期",
+          "线路类型"
+        ]
       }
     ]
   },
   {
     "id": "guangsuyun",
     "name": "光速云",
-    "canonicalName": "guangsuyun",
-    "aliases": [],
     "slug": "guangsuyun",
-    "logo": "/images/providers/guangsuyun-logo.png",
+    "logo": "/images/providers/guangsuyun-logo.webp",
+    "promoCode": "AMM",
     "editorialRank": null,
     "editorialPick": false,
     "entryPrice": 23,
@@ -1090,20 +1008,16 @@ export const providers: Provider[] = [
     "currency": "CNY",
     "trafficMin": 59,
     "trafficMax": 1000,
-    "trafficDisplay": "Variable",
+    "trafficDisplay": "59GB–1TB",
     "lineClaims": [
       "IPLC"
     ],
     "hasNoExpiry": true,
     "streamingClaim": true,
     "aiClaim": true,
+    "nodeRegions": "港、台、日、新、马、美、德、法、英、土、越等",
     "affiliateUrl": "https://mdlky.gsyaff.com/#/?code=5PLKd4WN",
-    "affiliateCode": "abc",
-    "affiliateUrlStatus": "ok",
-    "sourceFile": "光速云套餐价格.txt",
-    "affiliateSourceFile": "邀请码邀请链接.md",
-    "lastVerified": "2026-09-15",
-    "sourceNotes": null,
+    "lastVerified": "2026-10-04",
     "plans": [
       {
         "name": "光速云 · 轻量版",
@@ -1112,83 +1026,58 @@ export const providers: Provider[] = [
         "billingType": "Yearly",
         "validity": "Subscription",
         "traffic": 59,
-        "trafficDisplay": "59GB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "trafficDisplay": "59GB / 30天",
         "lineType": null,
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "光速云 · 极速版",
         "price": 23,
         "currency": "CNY",
-        "billingType": "Yearly",
+        "billingType": "Monthly",
         "validity": "Subscription",
-        "traffic": 148,
-        "trafficDisplay": "148GB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "traffic": 138,
+        "trafficDisplay": "138GB / 30天",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "光速云 · 流光版",
         "price": 34,
         "currency": "CNY",
-        "billingType": "Yearly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 238,
-        "trafficDisplay": "238GB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "trafficDisplay": "238GB / 30天",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "光速云 · 量子版",
         "price": 68,
         "currency": "CNY",
-        "billingType": "Yearly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 450,
-        "trafficDisplay": "450GB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "trafficDisplay": "450GB / 30天",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "光速云 · 无界版",
         "price": 130,
         "currency": "CNY",
-        "billingType": "Yearly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 900,
-        "trafficDisplay": "900GB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "trafficDisplay": "900GB / 30天",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "光速云 · 不限时套餐",
@@ -1197,15 +1086,10 @@ export const providers: Provider[] = [
         "billingType": "One-Time",
         "validity": "Permanent",
         "traffic": 1000,
-        "trafficDisplay": "1000GB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "trafficDisplay": "1TB（永久有效）",
         "lineType": null,
-        "nodes": null,
         "streaming": null,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
       },
       {
         "name": "光速云 · 定制套餐",
@@ -1214,25 +1098,34 @@ export const providers: Provider[] = [
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 500,
-        "trafficDisplay": "500GB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "trafficDisplay": "500GB / 30天",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": null,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
+      }
+    ],
+    "sources": [
+      {
+        "type": "official",
+        "urlOrFile": "光速云官网套餐页",
+        "sourceDate": null,
+        "recordedDate": "2026-09-15",
+        "verifiedDate": "2026-10-04",
+        "supportedFacts": [
+          "价格",
+          "流量额度",
+          "计费周期",
+          "线路类型"
+        ]
       }
     ]
   },
   {
     "id": "kexinyun",
     "name": "可信云",
-    "canonicalName": "kexinyun",
-    "aliases": [],
     "slug": "kexinyun",
-    "logo": "/images/providers/kexinyun-logo.png",
+    "logo": "/images/providers/kexinyun-logo.webp",
+    "promoCode": "kxy80",
     "editorialRank": null,
     "editorialPick": false,
     "entryPrice": 15,
@@ -1240,37 +1133,29 @@ export const providers: Provider[] = [
     "currency": "CNY",
     "trafficMin": 50,
     "trafficMax": 1200,
-    "trafficDisplay": "Variable",
+    "trafficDisplay": "50GB–1.2TB",
     "lineClaims": [
       "IEPL"
     ],
     "hasNoExpiry": true,
     "streamingClaim": true,
     "aiClaim": true,
+    "nodeRegions": "港/台/新/日/美等（60+ 专线节点）",
     "affiliateUrl": "https://work.kosingaff.com/#/?code=k7T1sOyG",
-    "affiliateCode": "abc",
-    "affiliateUrlStatus": "ok",
-    "sourceFile": "可信云套餐价格.txt",
-    "affiliateSourceFile": "邀请码邀请链接.md",
-    "lastVerified": "2026-09-15",
-    "sourceNotes": null,
+    "lastVerified": "2026-10-04",
     "plans": [
       {
-        "name": "主推套餐",
+        "name": "可信云年付小包",
         "price": 96,
         "currency": "CNY",
         "billingType": "Yearly",
         "validity": "Subscription",
         "traffic": 60,
-        "trafficDisplay": "60GB",
-        "deviceLimit": "Unlimited",
-        "speedLimit": null,
+        "trafficDisplay": "60GB / 30天",
+        "deviceLimit": "不限",
         "lineType": "IEPL",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "可信云月付小包",
@@ -1279,83 +1164,63 @@ export const providers: Provider[] = [
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 60,
-        "trafficDisplay": "60GB",
-        "deviceLimit": "Unlimited",
-        "speedLimit": null,
+        "trafficDisplay": "60GB / 30天",
+        "deviceLimit": "不限",
         "lineType": "IEPL",
-        "nodes": null,
         "streaming": true,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
       },
       {
         "name": "基础版（Basic）",
         "price": 25,
         "currency": "CNY",
-        "billingType": "Quarterly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 150,
-        "trafficDisplay": "150GB",
-        "deviceLimit": "Unlimited",
-        "speedLimit": null,
+        "trafficDisplay": "150GB / 30天",
+        "deviceLimit": "不限",
         "lineType": "IEPL",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "标准版（Standard）",
         "price": 50,
         "currency": "CNY",
-        "billingType": "Quarterly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 300,
-        "trafficDisplay": "300GB",
-        "deviceLimit": "Unlimited",
-        "speedLimit": null,
+        "trafficDisplay": "300GB / 30天",
+        "deviceLimit": "不限",
         "lineType": "IEPL",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "专业版（Pro）",
         "price": 100,
         "currency": "CNY",
-        "billingType": "Quarterly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 600,
-        "trafficDisplay": "600GB",
-        "deviceLimit": "Unlimited",
-        "speedLimit": null,
+        "trafficDisplay": "600GB / 30天",
+        "deviceLimit": "不限",
         "lineType": "IEPL",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "旗舰版（Ultimate）",
         "price": 200,
         "currency": "CNY",
-        "billingType": "Quarterly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 1200,
-        "trafficDisplay": "1.171875TB",
-        "deviceLimit": "Unlimited",
-        "speedLimit": null,
+        "trafficDisplay": "1.2TB / 30天",
+        "deviceLimit": "不限",
         "lineType": "IEPL",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "可信云轻量不限时",
@@ -1364,33 +1229,43 @@ export const providers: Provider[] = [
         "billingType": "One-Time",
         "validity": "Permanent",
         "traffic": 50,
-        "trafficDisplay": "50GB",
-        "deviceLimit": "Unlimited",
-        "speedLimit": null,
+        "trafficDisplay": "50GB（永久有效）",
+        "deviceLimit": "不限",
         "lineType": "IEPL",
-        "nodes": null,
         "streaming": true,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
+      }
+    ],
+    "sources": [
+      {
+        "type": "official",
+        "urlOrFile": "可信云官网套餐页",
+        "sourceDate": null,
+        "recordedDate": "2026-09-15",
+        "verifiedDate": "2026-10-04",
+        "supportedFacts": [
+          "价格",
+          "流量额度",
+          "计费周期",
+          "线路类型"
+        ]
       }
     ]
   },
   {
     "id": "weituyun",
     "name": "唯兔云",
-    "canonicalName": "weituyun",
-    "aliases": [],
     "slug": "weituyun",
-    "logo": "/images/providers/weituyun-logo.png",
+    "logo": "/images/providers/weituyun-logo.webp",
+    "promoCode": "rabbit",
     "editorialRank": null,
     "editorialPick": false,
     "entryPrice": 19.9,
     "monthlyEntryPrice": 19.9,
     "currency": "CNY",
     "trafficMin": 45,
-    "trafficMax": 1024,
-    "trafficDisplay": "Variable",
+    "trafficMax": 1000,
+    "trafficDisplay": "45GB–1TB",
     "lineClaims": [
       "IEPL",
       "IPLC"
@@ -1399,12 +1274,7 @@ export const providers: Provider[] = [
     "streamingClaim": true,
     "aiClaim": true,
     "affiliateUrl": "https://fast.v2yunvipaff.com/#/?code=nbBJVFQP",
-    "affiliateCode": "abc",
-    "affiliateUrlStatus": "ok",
-    "sourceFile": "唯兔云套餐价格.txt",
-    "affiliateSourceFile": "邀请码邀请链接.md",
-    "lastVerified": "2026-09-15",
-    "sourceNotes": null,
+    "lastVerified": "2026-10-04",
     "plans": [
       {
         "name": "唯兔云 · 年付加强专线",
@@ -1413,15 +1283,11 @@ export const providers: Provider[] = [
         "billingType": "Yearly",
         "validity": "Subscription",
         "traffic": 75,
-        "trafficDisplay": "75GB",
-        "deviceLimit": null,
+        "trafficDisplay": "75GB / 30天",
         "speedLimit": "None",
         "lineType": "IEPL",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "唯兔云 · 年付版限量款",
@@ -1430,200 +1296,143 @@ export const providers: Provider[] = [
         "billingType": "Yearly",
         "validity": "Subscription",
         "traffic": 45,
-        "trafficDisplay": "45GB",
-        "deviceLimit": null,
+        "trafficDisplay": "45GB / 30天",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
       },
       {
         "name": "唯兔云 · 普通版",
         "price": 19.9,
         "currency": "CNY",
-        "billingType": "Yearly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 150,
-        "trafficDisplay": "150GB",
-        "deviceLimit": null,
+        "trafficDisplay": "150GB / 30天",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
       },
       {
         "name": "唯兔云 · 进阶版",
         "price": 29.9,
         "currency": "CNY",
-        "billingType": "Yearly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 200,
-        "trafficDisplay": "200GB",
-        "deviceLimit": null,
+        "trafficDisplay": "200GB / 30天",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
       },
       {
         "name": "唯兔云 · 专业版",
         "price": 59.9,
         "currency": "CNY",
-        "billingType": "Yearly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 500,
-        "trafficDisplay": "500GB",
-        "deviceLimit": null,
+        "trafficDisplay": "500GB / 30天",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
       },
       {
         "name": "唯兔云 · 至尊版",
         "price": 119.9,
         "currency": "CNY",
-        "billingType": "Yearly",
+        "billingType": "Monthly",
         "validity": "Subscription",
-        "traffic": 1024,
-        "trafficDisplay": "1TB",
-        "deviceLimit": null,
+        "traffic": 1000,
+        "trafficDisplay": "1TB / 30天",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
       },
       {
-        "name": "唯兔云 · 永久不限时",
+        "name": "唯兔云 · 永久不限时 100GB",
         "price": 100,
         "currency": "CNY",
         "billingType": "One-Time",
         "validity": "Permanent",
         "traffic": 100,
-        "trafficDisplay": "100GB",
-        "deviceLimit": null,
+        "trafficDisplay": "100GB（永久有效）",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
       },
       {
-        "name": "唯兔云 · 永久不限时",
+        "name": "唯兔云 · 永久不限时 200GB",
         "price": 160,
         "currency": "CNY",
         "billingType": "One-Time",
         "validity": "Permanent",
         "traffic": 200,
-        "trafficDisplay": "200GB",
-        "deviceLimit": null,
+        "trafficDisplay": "200GB（永久有效）",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
       },
       {
-        "name": "唯兔云 · 永久不限时",
+        "name": "唯兔云 · 永久不限时 500GB",
         "price": 340,
         "currency": "CNY",
         "billingType": "One-Time",
         "validity": "Permanent",
         "traffic": 500,
-        "trafficDisplay": "500GB",
-        "deviceLimit": null,
+        "trafficDisplay": "500GB（永久有效）",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
-      },
+        "ai": null
+      }
+    ],
+    "sources": [
       {
-        "name": "Standard Plan (Fallback)",
-        "price": 19.9,
-        "currency": "CNY",
-        "billingType": "Monthly",
-        "validity": "Subscription",
-        "traffic": 100,
-        "trafficDisplay": "100GB",
-        "deviceLimit": null,
-        "speedLimit": null,
-        "lineType": "IPLC",
-        "nodes": null,
-        "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed fallback"
+        "type": "official",
+        "urlOrFile": "唯兔云官网套餐页",
+        "sourceDate": null,
+        "recordedDate": "2026-09-15",
+        "verifiedDate": "2026-10-04",
+        "supportedFacts": [
+          "价格",
+          "流量额度",
+          "计费周期",
+          "线路类型"
+        ]
       }
     ]
   },
   {
     "id": "weifeng",
-    "sources": [
-      {
-        "type": "official",
-        "urlOrFile": "微风套餐价格.txt",
-        "sourceDate": null,
-        "recordedDate": "2026-09-18",
-        "verifiedDate": "2026-09-18",
-        "supportedFacts": ["价格", "流量", "线路宣称", "计费周期"]
-      },
-      {
-        "type": "third_party",
-        "urlOrFile": "待补",
-        "sourceDate": null,
-        "recordedDate": "2026-09-18",
-        "verifiedDate": null,
-        "supportedFacts": []
-      }
-    ],
     "name": "微风",
-    "canonicalName": "weifeng",
-    "aliases": [],
     "slug": "weifeng",
-    "logo": "/images/providers/weifeng-logo.png",
+    "logo": "/images/providers/weifeng-logo.webp",
+    "promoCode": "weifeng90",
     "editorialRank": 2,
     "editorialPick": true,
     "entryPrice": 27,
     "monthlyEntryPrice": 27,
     "currency": "CNY",
     "trafficMin": 100,
-    "trafficMax": 1228.8,
-    "trafficDisplay": "Variable",
+    "trafficMax": 1200,
+    "trafficDisplay": "100GB–1.2TB",
     "lineClaims": [
       "IPLC"
     ],
     "hasNoExpiry": true,
     "streamingClaim": null,
     "aiClaim": null,
+    "nodeRegions": "香港、台湾、美国、新加坡、马来西亚、日本等",
     "affiliateUrl": "https://edp01.breezenetaff.com/#/?code=hM8APccJ",
-    "affiliateCode": "abc",
-    "affiliateUrlStatus": "ok",
-    "sourceFile": "微风价格表.txt",
-    "affiliateSourceFile": "邀请码邀请链接.md",
-    "lastVerified": "2026-09-15",
-    "sourceNotes": null,
+    "lastVerified": "2026-10-04",
     "plans": [
       {
         "name": "清风",
@@ -1632,15 +1441,12 @@ export const providers: Provider[] = [
         "billingType": "Yearly",
         "validity": "Subscription",
         "traffic": 100,
-        "trafficDisplay": "100GB",
-        "deviceLimit": "Unlimited",
+        "trafficDisplay": "100GB / 30天",
+        "deviceLimit": "不限",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": null,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
       },
       {
         "name": "乘风",
@@ -1649,15 +1455,12 @@ export const providers: Provider[] = [
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 200,
-        "trafficDisplay": "200GB",
-        "deviceLimit": "Unlimited",
+        "trafficDisplay": "200GB / 30天",
+        "deviceLimit": "不限",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": null,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
       },
       {
         "name": "破风",
@@ -1666,15 +1469,12 @@ export const providers: Provider[] = [
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 500,
-        "trafficDisplay": "500GB",
-        "deviceLimit": "Unlimited",
+        "trafficDisplay": "500GB / 30天",
+        "deviceLimit": "不限",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": null,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
       },
       {
         "name": "御风",
@@ -1682,16 +1482,13 @@ export const providers: Provider[] = [
         "currency": "CNY",
         "billingType": "Monthly",
         "validity": "Subscription",
-        "traffic": 1228.8,
-        "trafficDisplay": "1.2TB",
-        "deviceLimit": "Unlimited",
+        "traffic": 1200,
+        "trafficDisplay": "1.2TB / 30天",
+        "deviceLimit": "不限",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": null,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
       },
       {
         "name": "信风 ·不限时",
@@ -1700,15 +1497,12 @@ export const providers: Provider[] = [
         "billingType": "One-Time",
         "validity": "Permanent",
         "traffic": 270,
-        "trafficDisplay": "270GB",
-        "deviceLimit": "Unlimited",
+        "trafficDisplay": "270GB（永久有效）",
+        "deviceLimit": "不限",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": null,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
       },
       {
         "name": "长风·不限时",
@@ -1717,25 +1511,43 @@ export const providers: Provider[] = [
         "billingType": "One-Time",
         "validity": "Permanent",
         "traffic": 570,
-        "trafficDisplay": "570GB",
-        "deviceLimit": "Unlimited",
+        "trafficDisplay": "570GB（永久有效）",
+        "deviceLimit": "不限",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": null,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
+      }
+    ],
+    "sources": [
+      {
+        "type": "official",
+        "urlOrFile": "微风套餐价格.txt",
+        "sourceDate": null,
+        "recordedDate": "2026-09-18",
+        "verifiedDate": "2026-10-04",
+        "supportedFacts": [
+          "价格",
+          "流量",
+          "线路宣称",
+          "计费周期"
+        ]
+      },
+      {
+        "type": "third_party",
+        "urlOrFile": "待补",
+        "sourceDate": null,
+        "recordedDate": "2026-09-18",
+        "verifiedDate": null,
+        "supportedFacts": []
       }
     ]
   },
   {
     "id": "kuaili",
     "name": "快狸",
-    "canonicalName": "kuaili",
-    "aliases": [],
     "slug": "kuaili",
-    "logo": "/images/providers/kuaili-logo.png",
+    "logo": "/images/providers/kuaili-logo.webp",
     "editorialRank": null,
     "editorialPick": false,
     "entryPrice": 15,
@@ -1743,7 +1555,7 @@ export const providers: Provider[] = [
     "currency": "CNY",
     "trafficMin": 30,
     "trafficMax": 1024,
-    "trafficDisplay": "Variable",
+    "trafficDisplay": "30GB–1TB",
     "lineClaims": [
       "IEPL"
     ],
@@ -1751,12 +1563,7 @@ export const providers: Provider[] = [
     "streamingClaim": true,
     "aiClaim": true,
     "affiliateUrl": "https://work.kuailicloud.cc/#/?code=azB6yNBW",
-    "affiliateCode": "abc",
-    "affiliateUrlStatus": "ok",
-    "sourceFile": "快狸套餐价格.txt",
-    "affiliateSourceFile": "邀请码邀请链接.md",
     "lastVerified": "2026-09-15",
-    "sourceNotes": null,
     "plans": [
       {
         "name": "主推套餐",
@@ -1765,128 +1572,100 @@ export const providers: Provider[] = [
         "billingType": "Yearly",
         "validity": "Subscription",
         "traffic": 30,
-        "trafficDisplay": "30GB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "trafficDisplay": "30GB / 30天",
         "lineType": "IEPL",
-        "nodes": null,
         "streaming": true,
         "ai": true,
-        "features": [],
         "sourceNotes": "Parsed"
       },
       {
         "name": "月狸月付小套餐",
         "price": 15,
         "currency": "CNY",
-        "billingType": "Yearly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 50,
-        "trafficDisplay": "50GB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "trafficDisplay": "50GB / 30天",
         "lineType": "IEPL",
-        "nodes": null,
         "streaming": true,
         "ai": true,
-        "features": [],
         "sourceNotes": "Parsed"
       },
       {
         "name": "小狸基础版",
         "price": 22,
         "currency": "CNY",
-        "billingType": "Quarterly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 100,
-        "trafficDisplay": "100GB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "trafficDisplay": "100GB / 30天",
         "lineType": "IEPL",
-        "nodes": null,
         "streaming": true,
         "ai": true,
-        "features": [],
         "sourceNotes": "Parsed"
       },
       {
         "name": "灵狸标准版",
         "price": 35,
         "currency": "CNY",
-        "billingType": "Quarterly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 250,
-        "trafficDisplay": "250GB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "trafficDisplay": "250GB / 30天",
         "lineType": "IEPL",
-        "nodes": null,
         "streaming": true,
         "ai": true,
-        "features": [],
         "sourceNotes": "Parsed"
       },
       {
         "name": "夜狸强化版",
         "price": 95,
         "currency": "CNY",
-        "billingType": "Quarterly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 500,
-        "trafficDisplay": "500GB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "trafficDisplay": "500GB / 30天",
         "lineType": "IEPL",
-        "nodes": null,
         "streaming": true,
         "ai": true,
-        "features": [],
         "sourceNotes": "Parsed"
       },
       {
         "name": "天狸顶配版",
         "price": 180,
         "currency": "CNY",
-        "billingType": "Quarterly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 1024,
-        "trafficDisplay": "1TB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "trafficDisplay": "1TB / 30天",
         "lineType": "IEPL",
-        "nodes": null,
         "streaming": true,
         "ai": true,
-        "features": [],
         "sourceNotes": "Parsed"
+      }
+    ],
+    "sources": [
+      {
+        "type": "official",
+        "urlOrFile": "快狸官网套餐页",
+        "sourceDate": null,
+        "recordedDate": "2026-09-15",
+        "verifiedDate": "2026-09-15",
+        "supportedFacts": [
+          "价格",
+          "流量额度",
+          "计费周期",
+          "线路类型"
+        ]
       }
     ]
   },
   {
     "id": "wuyou",
-    "sources": [
-      {
-        "type": "official",
-        "urlOrFile": "无忧套餐价格.txt",
-        "sourceDate": null,
-        "recordedDate": "2026-09-18",
-        "verifiedDate": "2026-09-18",
-        "supportedFacts": ["价格", "流量", "线路宣称", "计费周期"]
-      },
-      {
-        "type": "third_party",
-        "urlOrFile": "待补",
-        "sourceDate": null,
-        "recordedDate": "2026-09-18",
-        "verifiedDate": null,
-        "supportedFacts": []
-      }
-    ],
     "name": "无忧",
-    "canonicalName": "wuyou",
-    "aliases": [],
     "slug": "wuyou",
-    "logo": "/images/providers/wuyou-logo.png",
+    "logo": "/images/providers/wuyou-logo.webp",
+    "promoCode": "wuyou",
     "editorialRank": 4,
     "editorialPick": true,
     "entryPrice": 19,
@@ -1894,20 +1673,16 @@ export const providers: Provider[] = [
     "currency": "CNY",
     "trafficMin": 40,
     "trafficMax": 1000,
-    "trafficDisplay": "Variable",
+    "trafficDisplay": "40GB–1TB",
     "lineClaims": [
       "IPLC"
     ],
     "hasNoExpiry": true,
     "streamingClaim": true,
     "aiClaim": true,
+    "nodeRegions": "香港、台湾、美国、新加坡、马来西亚、日本等",
     "affiliateUrl": "https://wep01.worryfreeaff.com/#/?code=s1kH64A8",
-    "affiliateCode": "abc",
-    "affiliateUrlStatus": "ok",
-    "sourceFile": "无忧套餐价格.txt",
-    "affiliateSourceFile": "邀请码邀请链接.md",
-    "lastVerified": "2026-09-15",
-    "sourceNotes": null,
+    "lastVerified": "2026-10-04",
     "plans": [
       {
         "name": "MINI链接",
@@ -1916,15 +1691,10 @@ export const providers: Provider[] = [
         "billingType": "Yearly",
         "validity": "Subscription",
         "traffic": 40,
-        "trafficDisplay": "40GB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "trafficDisplay": "40GB / 30天",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": null,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "舒心链接",
@@ -1933,15 +1703,10 @@ export const providers: Provider[] = [
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 100,
-        "trafficDisplay": "100GB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "trafficDisplay": "100GB / 30天",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": null,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "省心链接",
@@ -1950,15 +1715,10 @@ export const providers: Provider[] = [
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 200,
-        "trafficDisplay": "200GB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "trafficDisplay": "200GB / 30天",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": null,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "随心链接",
@@ -1967,15 +1727,10 @@ export const providers: Provider[] = [
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 500,
-        "trafficDisplay": "500GB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "trafficDisplay": "500GB / 30天",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": null,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "忘忧链接",
@@ -1984,15 +1739,10 @@ export const providers: Provider[] = [
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 1000,
-        "trafficDisplay": "1000GB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "trafficDisplay": "1TB / 30天",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": null,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "100G永久不限时 无忧链接",
@@ -2001,15 +1751,10 @@ export const providers: Provider[] = [
         "billingType": "One-Time",
         "validity": "Permanent",
         "traffic": 100,
-        "trafficDisplay": "100GB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "trafficDisplay": "100GB（永久有效）",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": null,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "300G永久不限时 无忧链接",
@@ -2018,33 +1763,50 @@ export const providers: Provider[] = [
         "billingType": "One-Time",
         "validity": "Permanent",
         "traffic": 300,
-        "trafficDisplay": "300GB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "trafficDisplay": "300GB（永久有效）",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": null,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
+      }
+    ],
+    "sources": [
+      {
+        "type": "official",
+        "urlOrFile": "无忧套餐价格.txt",
+        "sourceDate": null,
+        "recordedDate": "2026-09-18",
+        "verifiedDate": "2026-10-04",
+        "supportedFacts": [
+          "价格",
+          "流量",
+          "线路宣称",
+          "计费周期"
+        ]
+      },
+      {
+        "type": "third_party",
+        "urlOrFile": "待补",
+        "sourceDate": null,
+        "recordedDate": "2026-09-18",
+        "verifiedDate": null,
+        "supportedFacts": []
       }
     ]
   },
   {
     "id": "xingdaomeng",
     "name": "星岛梦",
-    "canonicalName": "xingdaomeng",
-    "aliases": [],
     "slug": "xingdaomeng",
-    "logo": "/images/providers/xingdaomeng-logo.png",
+    "logo": "/images/providers/xingdaomeng-logo.webp",
+    "promoCode": "nmw888",
     "editorialRank": null,
     "editorialPick": false,
     "entryPrice": 25,
     "monthlyEntryPrice": 25,
     "currency": "CNY",
     "trafficMin": 60,
-    "trafficMax": 1024,
-    "trafficDisplay": "Variable",
+    "trafficMax": 1000,
+    "trafficDisplay": "60GB–1TB",
     "lineClaims": [
       "IPLC",
       "IEPL"
@@ -2052,13 +1814,9 @@ export const providers: Provider[] = [
     "hasNoExpiry": true,
     "streamingClaim": true,
     "aiClaim": true,
+    "nodeRegions": "香港×20、台湾×10、日本×10、新加坡×10、美国×10、韩国×2、阿根廷×2、马来西亚、越南、菲律宾、泰国、印度、德国、法国、英国等",
     "affiliateUrl": "https://kfccbb.xingdaomeng.com/#/?code=0YcwWgSw",
-    "affiliateCode": "abc",
-    "affiliateUrlStatus": "ok",
-    "sourceFile": "星岛梦套餐价格.txt",
-    "affiliateSourceFile": "邀请码邀请链接.md",
-    "lastVerified": "2026-09-15",
-    "sourceNotes": null,
+    "lastVerified": "2026-10-04",
     "plans": [
       {
         "name": "星岛梦 · 贴心小包",
@@ -2067,83 +1825,59 @@ export const providers: Provider[] = [
         "billingType": "Yearly",
         "validity": "Subscription",
         "traffic": 60,
-        "trafficDisplay": "60GB",
-        "deviceLimit": null,
+        "trafficDisplay": "60GB / 30天",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "星岛梦 · 超量150G",
         "price": 25,
         "currency": "CNY",
-        "billingType": "Yearly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 150,
-        "trafficDisplay": "150GB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "trafficDisplay": "150GB / 30天",
         "lineType": "IEPL",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "星岛梦 · 进阶300G",
         "price": 50,
         "currency": "CNY",
-        "billingType": "Yearly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 300,
-        "trafficDisplay": "300GB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "trafficDisplay": "300GB / 30天",
         "lineType": "IEPL",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "星岛梦 · 闪光500G",
         "price": 70,
         "currency": "CNY",
-        "billingType": "Yearly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 500,
-        "trafficDisplay": "500GB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "trafficDisplay": "500GB / 30天",
         "lineType": "IEPL",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "星岛梦 · 旗舰1T版",
         "price": 130,
         "currency": "CNY",
-        "billingType": "Yearly",
+        "billingType": "Monthly",
         "validity": "Subscription",
-        "traffic": 1024,
-        "trafficDisplay": "1TB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "traffic": 1000,
+        "trafficDisplay": "1TB / 30天",
         "lineType": "IEPL",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "星岛梦 · 永久不限时100",
@@ -2152,15 +1886,11 @@ export const providers: Provider[] = [
         "billingType": "One-Time",
         "validity": "Permanent",
         "traffic": 100,
-        "trafficDisplay": "100GB",
-        "deviceLimit": null,
+        "trafficDisplay": "100GB（永久有效）",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "星岛梦 · 永久不限时300",
@@ -2169,15 +1899,11 @@ export const providers: Provider[] = [
         "billingType": "One-Time",
         "validity": "Permanent",
         "traffic": 300,
-        "trafficDisplay": "300GB",
-        "deviceLimit": null,
+        "trafficDisplay": "300GB（永久有效）",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "星岛梦 · 永久不限时1TB",
@@ -2185,16 +1911,12 @@ export const providers: Provider[] = [
         "currency": "CNY",
         "billingType": "One-Time",
         "validity": "Permanent",
-        "traffic": 1024,
-        "trafficDisplay": "1TB",
-        "deviceLimit": null,
+        "traffic": 1000,
+        "trafficDisplay": "1TB（永久有效）",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "星岛梦 · 定制套餐",
@@ -2203,25 +1925,34 @@ export const providers: Provider[] = [
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 500,
-        "trafficDisplay": "500GB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "trafficDisplay": "500GB / 30天",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": null,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
+      }
+    ],
+    "sources": [
+      {
+        "type": "official",
+        "urlOrFile": "星岛梦官网套餐页",
+        "sourceDate": null,
+        "recordedDate": "2026-09-15",
+        "verifiedDate": "2026-10-04",
+        "supportedFacts": [
+          "价格",
+          "流量额度",
+          "计费周期",
+          "线路类型"
+        ]
       }
     ]
   },
   {
     "id": "muguang",
     "name": "暮光",
-    "canonicalName": "muguang",
-    "aliases": [],
     "slug": "muguang",
-    "logo": "/images/providers/muguang-logo.png",
+    "logo": "/images/providers/muguang-logo.webp",
+    "promoCode": "mm88",
     "editorialRank": null,
     "editorialPick": false,
     "entryPrice": 20,
@@ -2229,7 +1960,7 @@ export const providers: Provider[] = [
     "currency": "CNY",
     "trafficMin": 70,
     "trafficMax": 1500,
-    "trafficDisplay": "Variable",
+    "trafficDisplay": "70GB–1.5TB",
     "lineClaims": [
       "BGP"
     ],
@@ -2237,148 +1968,108 @@ export const providers: Provider[] = [
     "streamingClaim": true,
     "aiClaim": true,
     "affiliateUrl": "https://varnexa.twilightaff.com/#/?code=2ILQOoYB",
-    "affiliateCode": "abc",
-    "affiliateUrlStatus": "protocol-normalized-verified",
-    "sourceFile": "暮光套餐价格.txt",
-    "affiliateSourceFile": "邀请码邀请链接.md",
-    "lastVerified": "2026-09-15",
+    "lastVerified": "2026-10-04",
     "sourceNotes": "Protocol was not present in source; HTTPS availability verified during data normalization.",
     "plans": [
       {
-        "name": "【暮光 · 基础版】",
+        "name": "暮光 · 基础版",
         "price": 20,
         "currency": "CNY",
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 120,
-        "trafficDisplay": "120GB",
-        "deviceLimit": null,
+        "trafficDisplay": "120GB / 30天",
         "speedLimit": "None",
         "lineType": "BGP",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
-        "name": "【暮光 · 标准版】",
+        "name": "暮光 · 标准版",
         "price": 40,
         "currency": "CNY",
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 240,
-        "trafficDisplay": "240GB",
-        "deviceLimit": null,
+        "trafficDisplay": "240GB / 30天",
         "speedLimit": "None",
         "lineType": "BGP",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
-        "name": "【暮光 · 旗舰版】",
+        "name": "暮光 · 旗舰版",
         "price": 100,
         "currency": "CNY",
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 700,
-        "trafficDisplay": "700GB",
-        "deviceLimit": "Unlimited",
-        "speedLimit": null,
+        "trafficDisplay": "700GB / 30天",
+        "deviceLimit": "不限",
         "lineType": "BGP",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
-        "name": "【暮光 · 至尊版】",
+        "name": "暮光 · 至尊版",
         "price": 180,
         "currency": "CNY",
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 1500,
-        "trafficDisplay": "1.46484375TB",
-        "deviceLimit": null,
+        "trafficDisplay": "1.5TB / 30天",
         "speedLimit": "None",
         "lineType": "BGP",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
-        "name": "【暮光 · 年付轻量版】",
+        "name": "暮光 · 年付轻量版",
         "price": 109,
         "currency": "CNY",
         "billingType": "Yearly",
         "validity": "Subscription",
         "traffic": 70,
-        "trafficDisplay": "70GB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "trafficDisplay": "70GB / 30天",
         "lineType": null,
-        "nodes": null,
         "streaming": null,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
       },
       {
-        "name": "【暮光 · 不限时轻量包】",
+        "name": "暮光 · 不限时轻量包",
         "price": 219,
         "currency": "CNY",
         "billingType": "One-Time",
         "validity": "Permanent",
         "traffic": 150,
-        "trafficDisplay": "150GB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "trafficDisplay": "150GB（永久有效）",
         "lineType": null,
-        "nodes": null,
         "streaming": null,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
-        "name": "【暮光 · 不限时标准包】",
+        "name": "暮光 · 不限时标准包",
         "price": 529,
         "currency": "CNY",
         "billingType": "One-Time",
         "validity": "Permanent",
         "traffic": 400,
-        "trafficDisplay": "400GB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "trafficDisplay": "400GB（永久有效）",
         "lineType": null,
-        "nodes": null,
         "streaming": null,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
-        "name": "【暮光 · 不限时大容量包】",
+        "name": "暮光 · 不限时大容量包",
         "price": 959,
         "currency": "CNY",
         "billingType": "One-Time",
         "validity": "Permanent",
         "traffic": 800,
-        "trafficDisplay": "800GB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "trafficDisplay": "800GB（永久有效）",
         "lineType": null,
-        "nodes": null,
         "streaming": null,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "独享私人定制节点",
@@ -2387,131 +2078,116 @@ export const providers: Provider[] = [
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 500,
-        "trafficDisplay": "500GB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "trafficDisplay": "500GB / 30天",
         "lineType": null,
-        "nodes": null,
         "streaming": null,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
+      }
+    ],
+    "sources": [
+      {
+        "type": "official",
+        "urlOrFile": "暮光官网套餐页",
+        "sourceDate": null,
+        "recordedDate": "2026-09-15",
+        "verifiedDate": "2026-10-04",
+        "supportedFacts": [
+          "价格",
+          "流量额度",
+          "计费周期",
+          "线路类型"
+        ]
       }
     ]
   },
   {
     "id": "jilianyun",
     "name": "极连云",
-    "canonicalName": "jilianyun",
-    "aliases": [],
     "slug": "jilianyun",
-    "logo": "/images/providers/jilianyun-logo.png",
+    "logo": "/images/providers/jilianyun-logo.webp",
+    "promoCode": "ji8888",
     "editorialRank": null,
     "editorialPick": false,
     "entryPrice": 18,
     "monthlyEntryPrice": 18,
     "currency": "CNY",
     "trafficMin": 60,
-    "trafficMax": 1024,
-    "trafficDisplay": "Variable",
+    "trafficMax": 1000,
+    "trafficDisplay": "60GB–1TB",
     "lineClaims": [
       "IPLC"
     ],
     "hasNoExpiry": true,
     "streamingClaim": true,
     "aiClaim": true,
-    "affiliateUrl": "https://reuire23oure.jilianat.homes/#/?code=b2OTDcAo",
-    "affiliateCode": "abc",
-    "affiliateUrlStatus": "ok",
-    "sourceFile": "极连云套餐价格.txt",
-    "affiliateSourceFile": "邀请码邀请链接.md",
-    "lastVerified": "2026-09-15",
-    "sourceNotes": null,
+    "nodeRegions": "香港 x20、台湾 x10、日本 x10、新加坡 x10、马来西亚、美国 x10、泰国 x1、德国 x1、法国 x1、英国 x1、土耳其x1、韩国",
+    "affiliateUrl": "https://reuire23oure.jilianat.homes/#/?code=N0n7rZyp",
+    "lastVerified": "2026-10-04",
     "plans": [
       {
         "name": "限时年付套餐体验",
         "price": 96,
         "currency": "CNY",
-        "billingType": "Quarterly",
+        "billingType": "Yearly",
         "validity": "Subscription",
         "traffic": 60,
-        "trafficDisplay": "60GB",
-        "deviceLimit": null,
+        "trafficDisplay": "60GB / 30天",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "极连云 · 基础套餐",
         "price": 18,
         "currency": "CNY",
-        "billingType": "Quarterly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 100,
-        "trafficDisplay": "100GB",
-        "deviceLimit": null,
+        "trafficDisplay": "100GB / 30天",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "极连云 · 进阶套餐",
         "price": 32,
         "currency": "CNY",
-        "billingType": "Quarterly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 200,
-        "trafficDisplay": "200GB",
-        "deviceLimit": null,
+        "trafficDisplay": "200GB / 30天",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "极连云 · 旗舰套餐",
         "price": 61,
         "currency": "CNY",
-        "billingType": "Quarterly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 500,
-        "trafficDisplay": "500GB",
-        "deviceLimit": null,
+        "trafficDisplay": "500GB / 30天",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "极连云 · 尊享套餐",
         "price": 122,
         "currency": "CNY",
-        "billingType": "Quarterly",
+        "billingType": "Monthly",
         "validity": "Subscription",
-        "traffic": 1024,
-        "trafficDisplay": "1TB",
-        "deviceLimit": null,
+        "traffic": 1000,
+        "trafficDisplay": "1TB / 30天",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "极连云 · 不限时套餐",
@@ -2520,25 +2196,35 @@ export const providers: Provider[] = [
         "billingType": "One-Time",
         "validity": "Permanent",
         "traffic": 600,
-        "trafficDisplay": "600GB",
-        "deviceLimit": null,
+        "trafficDisplay": "600GB（永久有效）",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
+      }
+    ],
+    "sources": [
+      {
+        "type": "official",
+        "urlOrFile": "极连云官网套餐页",
+        "sourceDate": null,
+        "recordedDate": "2026-09-15",
+        "verifiedDate": "2026-10-04",
+        "supportedFacts": [
+          "价格",
+          "流量额度",
+          "计费周期",
+          "线路类型"
+        ]
       }
     ]
   },
   {
     "id": "lingdong",
     "name": "灵动",
-    "canonicalName": "lingdong",
-    "aliases": [],
     "slug": "lingdong",
-    "logo": "/images/providers/lingdong-logo.png",
+    "logo": "/images/providers/lingdong-logo.webp",
+    "promoCode": "880223",
     "editorialRank": null,
     "editorialPick": false,
     "entryPrice": 20,
@@ -2546,7 +2232,7 @@ export const providers: Provider[] = [
     "currency": "CNY",
     "trafficMin": 79,
     "trafficMax": 1500,
-    "trafficDisplay": "Variable",
+    "trafficDisplay": "79GB–1.5TB",
     "lineClaims": [
       "BGP"
     ],
@@ -2554,80 +2240,60 @@ export const providers: Provider[] = [
     "streamingClaim": true,
     "aiClaim": true,
     "affiliateUrl": "https://varnexa.lingdongaff.com/#/?code=HDiWuF7L",
-    "affiliateCode": "abc",
-    "affiliateUrlStatus": "protocol-normalized-verified",
-    "sourceFile": "灵动套餐价格.txt",
-    "affiliateSourceFile": "邀请码邀请链接.md",
-    "lastVerified": "2026-09-15",
+    "lastVerified": "2026-10-04",
     "sourceNotes": "Protocol was not present in source; HTTPS availability verified during data normalization.",
     "plans": [
       {
         "name": "灵动 · 拂风",
         "price": 20,
         "currency": "CNY",
-        "billingType": "Quarterly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 100,
-        "trafficDisplay": "100GB",
-        "deviceLimit": null,
+        "trafficDisplay": "100GB / 30天",
         "speedLimit": "None",
         "lineType": "BGP",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "灵动 · 驭浪",
         "price": 50,
         "currency": "CNY",
-        "billingType": "Quarterly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 300,
-        "trafficDisplay": "300GB",
-        "deviceLimit": null,
+        "trafficDisplay": "300GB / 30天",
         "speedLimit": "None",
         "lineType": "BGP",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "灵动 · 破晓",
         "price": 100,
         "currency": "CNY",
-        "billingType": "Quarterly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 700,
-        "trafficDisplay": "700GB",
-        "deviceLimit": null,
+        "trafficDisplay": "700GB / 30天",
         "speedLimit": "None",
         "lineType": "BGP",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "灵动 · 凌霄",
         "price": 180,
         "currency": "CNY",
-        "billingType": "Quarterly",
+        "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 1500,
-        "trafficDisplay": "1.46484375TB",
-        "deviceLimit": null,
+        "trafficDisplay": "1.5TB / 30天",
         "speedLimit": "None",
         "lineType": "BGP",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "灵动 · 穿云",
@@ -2636,15 +2302,11 @@ export const providers: Provider[] = [
         "billingType": "Yearly",
         "validity": "Subscription",
         "traffic": 79,
-        "trafficDisplay": "79GB",
-        "deviceLimit": null,
+        "trafficDisplay": "79GB / 30天",
         "speedLimit": "None",
         "lineType": null,
-        "nodes": null,
         "streaming": null,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
       },
       {
         "name": "灵动 · 闲云（小流量包）",
@@ -2653,15 +2315,11 @@ export const providers: Provider[] = [
         "billingType": "One-Time",
         "validity": "Permanent",
         "traffic": 150,
-        "trafficDisplay": "150GB",
-        "deviceLimit": null,
+        "trafficDisplay": "150GB（永久有效）",
         "speedLimit": "None",
         "lineType": "BGP",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "灵动 · 惊云（标准流量包）",
@@ -2670,15 +2328,11 @@ export const providers: Provider[] = [
         "billingType": "One-Time",
         "validity": "Permanent",
         "traffic": 400,
-        "trafficDisplay": "400GB",
-        "deviceLimit": null,
+        "trafficDisplay": "400GB（永久有效）",
         "speedLimit": "None",
         "lineType": null,
-        "nodes": null,
         "streaming": true,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
       },
       {
         "name": "灵动 · 飞云（精英流量包）",
@@ -2687,15 +2341,11 @@ export const providers: Provider[] = [
         "billingType": "One-Time",
         "validity": "Permanent",
         "traffic": 800,
-        "trafficDisplay": "800GB",
-        "deviceLimit": null,
+        "trafficDisplay": "800GB（永久有效）",
         "speedLimit": "None",
         "lineType": null,
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "灵动云 · 至尊私人定制",
@@ -2704,43 +2354,35 @@ export const providers: Provider[] = [
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 500,
-        "trafficDisplay": "500GB",
-        "deviceLimit": null,
+        "trafficDisplay": "500GB / 30天",
         "speedLimit": "None",
         "lineType": null,
-        "nodes": null,
         "streaming": null,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
+      }
+    ],
+    "sources": [
+      {
+        "type": "official",
+        "urlOrFile": "灵动官网套餐页",
+        "sourceDate": null,
+        "recordedDate": "2026-09-15",
+        "verifiedDate": "2026-10-04",
+        "supportedFacts": [
+          "价格",
+          "流量额度",
+          "计费周期",
+          "线路类型"
+        ]
       }
     ]
   },
   {
     "id": "lingmao",
-    "sources": [
-      {
-        "type": "official",
-        "urlOrFile": "灵猫套餐价格.txt",
-        "sourceDate": null,
-        "recordedDate": "2026-09-18",
-        "verifiedDate": "2026-09-18",
-        "supportedFacts": ["价格", "流量", "线路宣称", "计费周期"]
-      },
-      {
-        "type": "third_party",
-        "urlOrFile": "待补",
-        "sourceDate": null,
-        "recordedDate": "2026-09-18",
-        "verifiedDate": null,
-        "supportedFacts": []
-      }
-    ],
     "name": "灵猫",
-    "canonicalName": "lingmao",
-    "aliases": [],
     "slug": "lingmao",
-    "logo": "/images/providers/lingmao-logo.png",
+    "logo": "/images/providers/lingmao-logo.webp",
+    "promoCode": "lingmao",
     "editorialRank": 8,
     "editorialPick": true,
     "entryPrice": 25,
@@ -2748,20 +2390,16 @@ export const providers: Provider[] = [
     "currency": "CNY",
     "trafficMin": 45,
     "trafficMax": 300,
-    "trafficDisplay": "Variable",
+    "trafficDisplay": "45GB–300GB",
     "lineClaims": [
       "IPLC"
     ],
     "hasNoExpiry": false,
     "streamingClaim": true,
-    "aiClaim": null,
+    "aiClaim": true,
+    "nodeRegions": "香港、台湾、美国、新加坡、马来西亚、日本等",
     "affiliateUrl": "https://edp01.civetaff.com/#/?code=CYg7QSJo",
-    "affiliateCode": "abc",
-    "affiliateUrlStatus": "ok",
-    "sourceFile": "灵猫套餐价格.txt",
-    "affiliateSourceFile": "邀请码邀请链接.md",
-    "lastVerified": "2026-09-15",
-    "sourceNotes": null,
+    "lastVerified": "2026-10-04",
     "plans": [
       {
         "name": "灵猫·年付小包",
@@ -2770,15 +2408,11 @@ export const providers: Provider[] = [
         "billingType": "Yearly",
         "validity": "Subscription",
         "traffic": 45,
-        "trafficDisplay": "45GB",
-        "deviceLimit": null,
+        "trafficDisplay": "45GB / 30天",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
       },
       {
         "name": "灵猫·年付Small",
@@ -2787,15 +2421,11 @@ export const providers: Provider[] = [
         "billingType": "Yearly",
         "validity": "Subscription",
         "traffic": 150,
-        "trafficDisplay": "150GB",
-        "deviceLimit": null,
+        "trafficDisplay": "150GB / 30天",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
       },
       {
         "name": "灵猫·年付Big",
@@ -2804,15 +2434,11 @@ export const providers: Provider[] = [
         "billingType": "Yearly",
         "validity": "Subscription",
         "traffic": 300,
-        "trafficDisplay": "300GB",
-        "deviceLimit": null,
+        "trafficDisplay": "300GB / 30天",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
       },
       {
         "name": "灵猫·季付Big",
@@ -2821,15 +2447,11 @@ export const providers: Provider[] = [
         "billingType": "Quarterly",
         "validity": "Subscription",
         "traffic": 300,
-        "trafficDisplay": "300GB",
-        "deviceLimit": null,
+        "trafficDisplay": "300GB / 30天",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
       },
       {
         "name": "灵猫·月付Small",
@@ -2838,15 +2460,11 @@ export const providers: Provider[] = [
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 150,
-        "trafficDisplay": "150GB",
-        "deviceLimit": null,
+        "trafficDisplay": "150GB / 30天",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
       },
       {
         "name": "灵猫·月付Big",
@@ -2855,28 +2473,26 @@ export const providers: Provider[] = [
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 300,
-        "trafficDisplay": "300GB",
-        "deviceLimit": null,
+        "trafficDisplay": "300GB / 30天",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
       }
-    ]
-  },
-  {
-    "id": "kuajieyun",
+    ],
     "sources": [
       {
         "type": "official",
-        "urlOrFile": "跨界套餐价格.txt",
+        "urlOrFile": "灵猫套餐价格.txt",
         "sourceDate": null,
         "recordedDate": "2026-09-18",
-        "verifiedDate": "2026-09-18",
-        "supportedFacts": ["价格", "流量", "线路宣称", "计费周期"]
+        "verifiedDate": "2026-10-04",
+        "supportedFacts": [
+          "价格",
+          "流量",
+          "线路宣称",
+          "计费周期"
+        ]
       },
       {
         "type": "third_party",
@@ -2886,12 +2502,14 @@ export const providers: Provider[] = [
         "verifiedDate": null,
         "supportedFacts": []
       }
-    ],
+    ]
+  },
+  {
+    "id": "kuajieyun",
     "name": "跨界",
-    "canonicalName": "kuajieyun",
-    "aliases": [],
     "slug": "kuajieyun",
-    "logo": "/images/providers/kuajieyun-logo.png",
+    "logo": "/images/providers/kuajieyun-logo.webp",
+    "promoCode": "kuajie",
     "editorialRank": 6,
     "editorialPick": true,
     "entryPrice": 20,
@@ -2899,118 +2517,101 @@ export const providers: Provider[] = [
     "currency": "CNY",
     "trafficMin": 60,
     "trafficMax": 1800,
-    "trafficDisplay": "Variable",
+    "trafficDisplay": "60GB–1.8TB",
     "lineClaims": [
       "IPLC"
     ],
     "hasNoExpiry": false,
     "streamingClaim": true,
     "aiClaim": true,
+    "nodeRegions": "香港、台湾、美国、新加坡、马来西亚、日本等",
     "affiliateUrl": "https://vip02.kuajieaff.com/#/?code=hh3QezsW",
-    "affiliateCode": "abc",
-    "affiliateUrlStatus": "ok",
-    "sourceFile": "跨界套餐价格.txt",
-    "affiliateSourceFile": "邀请码邀请链接.md",
-    "lastVerified": "2026-09-15",
-    "sourceNotes": null,
+    "lastVerified": "2026-10-04",
     "plans": [
       {
-        "name": "跨界年付版（¥96/年 · 60GB）",
+        "name": "跨界年付版",
         "price": 96,
         "currency": "CNY",
         "billingType": "Yearly",
         "validity": "Subscription",
         "traffic": 60,
-        "trafficDisplay": "60GB",
-        "deviceLimit": "Unlimited",
+        "trafficDisplay": "60GB / 30天",
+        "deviceLimit": "不限",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
-        "name": "轻云 Lite（¥20/月 · 120GB）",
+        "name": "轻云 Lite",
         "price": 20,
         "currency": "CNY",
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 120,
-        "trafficDisplay": "120GB",
-        "deviceLimit": "Unlimited",
+        "trafficDisplay": "120GB / 30天",
+        "deviceLimit": "不限",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
-        "name": "跃云 Leap（¥40/月 · 330GB",
+        "name": "跃云 Leap",
         "price": 40,
         "currency": "CNY",
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 330,
-        "trafficDisplay": "330GB",
-        "deviceLimit": "Unlimited",
+        "trafficDisplay": "330GB / 30天",
+        "deviceLimit": "不限",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
-        "name": "凌云 Soar（¥90/月 · 830GB）",
+        "name": "凌云 Soar",
         "price": 90,
         "currency": "CNY",
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 830,
-        "trafficDisplay": "830GB",
-        "deviceLimit": "Unlimited",
+        "trafficDisplay": "830GB / 30天",
+        "deviceLimit": "不限",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
-        "name": "无界 Infinity（¥130/月 · 1800GB）",
+        "name": "无界 Infinity",
         "price": 130,
         "currency": "CNY",
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 1800,
-        "trafficDisplay": "1.7578125TB",
-        "deviceLimit": "Unlimited",
+        "trafficDisplay": "1.8TB / 30天",
+        "deviceLimit": "不限",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       }
-    ]
-  },
-  {
-    "id": "shanyue",
+    ],
     "sources": [
       {
         "type": "official",
-        "urlOrFile": "闪跃套餐价格.txt",
+        "urlOrFile": "跨界套餐价格.txt",
         "sourceDate": null,
         "recordedDate": "2026-09-18",
-        "verifiedDate": "2026-09-18",
-        "supportedFacts": ["价格", "流量", "线路宣称", "计费周期"]
+        "verifiedDate": "2026-10-04",
+        "supportedFacts": [
+          "价格",
+          "流量",
+          "线路宣称",
+          "计费周期"
+        ]
       },
       {
         "type": "third_party",
@@ -3020,12 +2621,14 @@ export const providers: Provider[] = [
         "verifiedDate": null,
         "supportedFacts": []
       }
-    ],
+    ]
+  },
+  {
+    "id": "shanyue",
     "name": "闪跃",
-    "canonicalName": "shanyue",
-    "aliases": [],
     "slug": "shanyue",
-    "logo": "/images/providers/shanyue-logo.png",
+    "logo": "/images/providers/shanyue-logo.webp",
+    "promoCode": "shanyue",
     "editorialRank": 7,
     "editorialPick": true,
     "entryPrice": 24,
@@ -3033,20 +2636,16 @@ export const providers: Provider[] = [
     "currency": "CNY",
     "trafficMin": 60,
     "trafficMax": 1000,
-    "trafficDisplay": "Variable",
+    "trafficDisplay": "60GB–1TB",
     "lineClaims": [
       "IPLC"
     ],
     "hasNoExpiry": false,
     "streamingClaim": true,
-    "aiClaim": null,
+    "aiClaim": true,
+    "nodeRegions": "香港、台湾、美国、新加坡、马来西亚、日本等",
     "affiliateUrl": "https://wep01.flashleapaff.com/#/?code=cs0ekCMG",
-    "affiliateCode": "abc",
-    "affiliateUrlStatus": "ok",
-    "sourceFile": "闪跃套餐价格.txt",
-    "affiliateSourceFile": "邀请码邀请链接.md",
-    "lastVerified": "2026-09-15",
-    "sourceNotes": null,
+    "lastVerified": "2026-10-04",
     "plans": [
       {
         "name": "闪跃年付版",
@@ -3055,15 +2654,11 @@ export const providers: Provider[] = [
         "billingType": "Yearly",
         "validity": "Subscription",
         "traffic": 60,
-        "trafficDisplay": "60GB",
-        "deviceLimit": null,
+        "trafficDisplay": "60GB / 30天",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": null,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
       },
       {
         "name": "闪动 (Flicker)",
@@ -3072,15 +2667,11 @@ export const providers: Provider[] = [
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 150,
-        "trafficDisplay": "150GB",
-        "deviceLimit": null,
+        "trafficDisplay": "150GB / 30天",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
       },
       {
         "name": "飞跃 (Leap)",
@@ -3089,15 +2680,11 @@ export const providers: Provider[] = [
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 300,
-        "trafficDisplay": "300GB",
-        "deviceLimit": null,
+        "trafficDisplay": "300GB / 30天",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
       },
       {
         "name": "瞬移 (Teleport)",
@@ -3106,15 +2693,11 @@ export const providers: Provider[] = [
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 600,
-        "trafficDisplay": "600GB",
-        "deviceLimit": null,
+        "trafficDisplay": "600GB / 30天",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
       },
       {
         "name": "跃迁 (Warp)",
@@ -3123,213 +2706,26 @@ export const providers: Provider[] = [
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 1000,
-        "trafficDisplay": "1000GB",
-        "deviceLimit": null,
+        "trafficDisplay": "1TB / 30天",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
       }
-    ]
-  },
-  {
-    "id": "flyv",
-    "name": "飞V",
-    "canonicalName": "flyv",
-    "aliases": [],
-    "slug": "flyv",
-    "logo": "/images/providers/flyv-logo.png",
-    "editorialRank": null,
-    "editorialPick": false,
-    "entryPrice": 25,
-    "monthlyEntryPrice": 25,
-    "currency": "CNY",
-    "trafficMin": 65,
-    "trafficMax": 1843.2,
-    "trafficDisplay": "Variable",
-    "lineClaims": [
-      "IPLC",
-      "BGP"
     ],
-    "hasNoExpiry": true,
-    "streamingClaim": true,
-    "aiClaim": true,
-    "affiliateUrl": "https://varnexa.flyvaff.com/#/?code=XsiIuDgj",
-    "affiliateCode": "abc",
-    "affiliateUrlStatus": "protocol-normalized-verified",
-    "sourceFile": "飞V 套餐价格.txt",
-    "affiliateSourceFile": "邀请码邀请链接.md",
-    "lastVerified": "2026-09-15",
-    "sourceNotes": "Protocol was not present in source; HTTPS availability verified during data normalization.",
-    "plans": [
-      {
-        "name": "👑FlyV 会员 - 年付标准轻量版",
-        "price": 99,
-        "currency": "CNY",
-        "billingType": "Yearly",
-        "validity": "Subscription",
-        "traffic": 65,
-        "trafficDisplay": "65GB",
-        "deviceLimit": null,
-        "speedLimit": "None",
-        "lineType": null,
-        "nodes": null,
-        "streaming": null,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
-      },
-      {
-        "name": "👑FlyV 会员 - 入门方案",
-        "price": 25,
-        "currency": "CNY",
-        "billingType": "Quarterly",
-        "validity": "Subscription",
-        "traffic": 150,
-        "trafficDisplay": "150GB",
-        "deviceLimit": null,
-        "speedLimit": "None",
-        "lineType": null,
-        "nodes": null,
-        "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
-      },
-      {
-        "name": "👑FlyV 会员 - 进阶方案",
-        "price": 50,
-        "currency": "CNY",
-        "billingType": "Quarterly",
-        "validity": "Subscription",
-        "traffic": 380,
-        "trafficDisplay": "380GB",
-        "deviceLimit": null,
-        "speedLimit": "None",
-        "lineType": "IPLC",
-        "nodes": null,
-        "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
-      },
-      {
-        "name": "👑FlyV 会员 - 高端方案",
-        "price": 110,
-        "currency": "CNY",
-        "billingType": "Quarterly",
-        "validity": "Subscription",
-        "traffic": 800,
-        "trafficDisplay": "800GB",
-        "deviceLimit": null,
-        "speedLimit": "None",
-        "lineType": "BGP",
-        "nodes": null,
-        "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
-      },
-      {
-        "name": "👑FlyV 会员 - 商业方案",
-        "price": 190,
-        "currency": "CNY",
-        "billingType": "Quarterly",
-        "validity": "Subscription",
-        "traffic": 1843.2,
-        "trafficDisplay": "1.8TB",
-        "deviceLimit": null,
-        "speedLimit": "None",
-        "lineType": "BGP",
-        "nodes": null,
-        "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
-      },
-      {
-        "name": "👑FlyV 会员 - 单次轻量版 · 小流量包",
-        "price": 189,
-        "currency": "CNY",
-        "billingType": "One-Time",
-        "validity": "Permanent",
-        "traffic": 130,
-        "trafficDisplay": "130GB",
-        "deviceLimit": null,
-        "speedLimit": "None",
-        "lineType": null,
-        "nodes": null,
-        "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
-      },
-      {
-        "name": "👑FlyV 会员 - 单次轻量版 · 标准流量包",
-        "price": 479,
-        "currency": "CNY",
-        "billingType": "One-Time",
-        "validity": "Permanent",
-        "traffic": 380,
-        "trafficDisplay": "380GB",
-        "deviceLimit": null,
-        "speedLimit": "None",
-        "lineType": null,
-        "nodes": null,
-        "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
-      },
-      {
-        "name": "👑FlyV 会员 - 单次轻量版 · 精英流量包",
-        "price": 799,
-        "currency": "CNY",
-        "billingType": "One-Time",
-        "validity": "Permanent",
-        "traffic": 600,
-        "trafficDisplay": "600GB",
-        "deviceLimit": null,
-        "speedLimit": "None",
-        "lineType": null,
-        "nodes": null,
-        "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
-      },
-      {
-        "name": "🧈💎FlyV 会员 - 原生IP·独享黄金专线",
-        "price": 600,
-        "currency": "CNY",
-        "billingType": "Monthly",
-        "validity": "Subscription",
-        "traffic": 500,
-        "trafficDisplay": "500GB",
-        "deviceLimit": null,
-        "speedLimit": "None",
-        "lineType": null,
-        "nodes": null,
-        "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed manually from source during reconciliation"
-      }
-    ]
-  },
-  {
-    "id": "feimaoyun",
     "sources": [
       {
         "type": "official",
-        "urlOrFile": "飞猫云套餐价格.txt",
+        "urlOrFile": "闪跃套餐价格.txt",
         "sourceDate": null,
         "recordedDate": "2026-09-18",
-        "verifiedDate": "2026-09-18",
-        "supportedFacts": ["价格", "流量", "线路宣称", "计费周期"]
+        "verifiedDate": "2026-10-04",
+        "supportedFacts": [
+          "价格",
+          "流量",
+          "线路宣称",
+          "计费周期"
+        ]
       },
       {
         "type": "third_party",
@@ -3339,33 +2735,198 @@ export const providers: Provider[] = [
         "verifiedDate": null,
         "supportedFacts": []
       }
+    ]
+  },
+  {
+    "id": "flyv",
+    "name": "飞V",
+    "slug": "flyv",
+    "logo": "/images/providers/flyv-logo.webp",
+    "editorialRank": null,
+    "editorialPick": false,
+    "entryPrice": 25,
+    "monthlyEntryPrice": 25,
+    "currency": "CNY",
+    "trafficMin": 65,
+    "trafficMax": 1843.2,
+    "trafficDisplay": "65GB–1.84TB",
+    "lineClaims": [
+      "IPLC",
+      "BGP"
     ],
+    "hasNoExpiry": true,
+    "streamingClaim": true,
+    "aiClaim": true,
+    "affiliateUrl": "https://varnexa.flyvaff.com/#/?code=XsiIuDgj",
+    "lastVerified": "2026-09-15",
+    "sourceNotes": "Protocol was not present in source; HTTPS availability verified during data normalization.",
+    "plans": [
+      {
+        "name": "FlyV 年付标准轻量版",
+        "price": 99,
+        "currency": "CNY",
+        "billingType": "Yearly",
+        "validity": "Subscription",
+        "traffic": 65,
+        "trafficDisplay": "65GB / 30天",
+        "speedLimit": "None",
+        "lineType": null,
+        "streaming": null,
+        "ai": null,
+        "sourceNotes": "Parsed"
+      },
+      {
+        "name": "FlyV 入门方案",
+        "price": 25,
+        "currency": "CNY",
+        "billingType": "Monthly",
+        "validity": "Subscription",
+        "traffic": 150,
+        "trafficDisplay": "150GB / 30天",
+        "speedLimit": "None",
+        "lineType": null,
+        "streaming": true,
+        "ai": true,
+        "sourceNotes": "Parsed"
+      },
+      {
+        "name": "FlyV 进阶方案",
+        "price": 50,
+        "currency": "CNY",
+        "billingType": "Monthly",
+        "validity": "Subscription",
+        "traffic": 380,
+        "trafficDisplay": "380GB / 30天",
+        "speedLimit": "None",
+        "lineType": "IPLC",
+        "streaming": true,
+        "ai": true,
+        "sourceNotes": "Parsed"
+      },
+      {
+        "name": "FlyV 高端方案",
+        "price": 110,
+        "currency": "CNY",
+        "billingType": "Monthly",
+        "validity": "Subscription",
+        "traffic": 800,
+        "trafficDisplay": "800GB / 30天",
+        "speedLimit": "None",
+        "lineType": "BGP",
+        "streaming": true,
+        "ai": true,
+        "sourceNotes": "Parsed"
+      },
+      {
+        "name": "FlyV 商业方案",
+        "price": 190,
+        "currency": "CNY",
+        "billingType": "Monthly",
+        "validity": "Subscription",
+        "traffic": 1843.2,
+        "trafficDisplay": "1.84TB / 30天",
+        "speedLimit": "None",
+        "lineType": "BGP",
+        "streaming": true,
+        "ai": true,
+        "sourceNotes": "Parsed"
+      },
+      {
+        "name": "FlyV 单次轻量版 · 小流量包",
+        "price": 189,
+        "currency": "CNY",
+        "billingType": "One-Time",
+        "validity": "Permanent",
+        "traffic": 130,
+        "trafficDisplay": "130GB（永久有效）",
+        "speedLimit": "None",
+        "lineType": null,
+        "streaming": true,
+        "ai": true,
+        "sourceNotes": "Parsed"
+      },
+      {
+        "name": "FlyV 单次轻量版 · 标准流量包",
+        "price": 479,
+        "currency": "CNY",
+        "billingType": "One-Time",
+        "validity": "Permanent",
+        "traffic": 380,
+        "trafficDisplay": "380GB（永久有效）",
+        "speedLimit": "None",
+        "lineType": null,
+        "streaming": true,
+        "ai": true,
+        "sourceNotes": "Parsed"
+      },
+      {
+        "name": "FlyV 单次轻量版 · 精英流量包",
+        "price": 799,
+        "currency": "CNY",
+        "billingType": "One-Time",
+        "validity": "Permanent",
+        "traffic": 600,
+        "trafficDisplay": "600GB（永久有效）",
+        "speedLimit": "None",
+        "lineType": null,
+        "streaming": true,
+        "ai": true,
+        "sourceNotes": "Parsed"
+      },
+      {
+        "name": "FlyV 原生IP·独享黄金专线",
+        "price": 600,
+        "currency": "CNY",
+        "billingType": "Monthly",
+        "validity": "Subscription",
+        "traffic": 500,
+        "trafficDisplay": "500GB / 30天",
+        "speedLimit": "None",
+        "lineType": null,
+        "streaming": true,
+        "ai": true,
+        "sourceNotes": "Parsed manually from source during reconciliation"
+      }
+    ],
+    "sources": [
+      {
+        "type": "official",
+        "urlOrFile": "飞V官网套餐页",
+        "sourceDate": null,
+        "recordedDate": "2026-09-15",
+        "verifiedDate": "2026-09-15",
+        "supportedFacts": [
+          "价格",
+          "流量额度",
+          "计费周期",
+          "线路类型"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "feimaoyun",
     "name": "飞猫云",
-    "canonicalName": "feimaoyun",
-    "aliases": [],
     "slug": "feimaoyun",
-    "logo": "/images/providers/feimaoyun-logo.png",
+    "logo": "/images/providers/feimaoyun-logo.webp",
+    "promoCode": "flycat888",
     "editorialRank": 3,
     "editorialPick": true,
     "entryPrice": 25,
     "monthlyEntryPrice": 25,
     "currency": "CNY",
     "trafficMin": 50,
-    "trafficMax": 1024,
-    "trafficDisplay": "Variable",
+    "trafficMax": 1000,
+    "trafficDisplay": "50GB–1TB",
     "lineClaims": [
       "IPLC"
     ],
     "hasNoExpiry": true,
     "streamingClaim": true,
     "aiClaim": true,
+    "nodeRegions": "香港 x20、台湾 x10、日本 x10、新加坡 x10、美国 x10、韩国 x3、马来西亚、越南、菲律宾、泰国、印度、英国、法国、德国、阿根廷等",
     "affiliateUrl": "https://flycat1.flycatvipaff.cc/#/?code=w5lO9fqB",
-    "affiliateCode": "abc",
-    "affiliateUrlStatus": "ok",
-    "sourceFile": "飞猫云套餐价格.txt",
-    "affiliateSourceFile": "邀请码邀请链接.md",
-    "lastVerified": "2026-09-15",
-    "sourceNotes": null,
+    "lastVerified": "2026-10-04",
     "plans": [
       {
         "name": "飞猫 · 学生版",
@@ -3374,87 +2935,63 @@ export const providers: Provider[] = [
         "billingType": "Yearly",
         "validity": "Subscription",
         "traffic": 50,
-        "trafficDisplay": "50GB",
-        "deviceLimit": "Unlimited",
-        "speedLimit": null,
+        "trafficDisplay": "50GB / 30天",
+        "deviceLimit": "不限",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "飞猫 · 星耀版",
         "price": 25,
         "currency": "CNY",
         "billingType": "Monthly",
-    "paymentCycleConflict": true,
         "validity": "Subscription",
         "traffic": 150,
-        "trafficDisplay": "150GB",
-        "deviceLimit": "Unlimited",
-        "speedLimit": null,
+        "trafficDisplay": "150GB / 30天",
+        "deviceLimit": "不限",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "飞猫 · 星环版",
         "price": 45,
         "currency": "CNY",
         "billingType": "Monthly",
-    "paymentCycleConflict": true,
         "validity": "Subscription",
         "traffic": 300,
-        "trafficDisplay": "300GB",
-        "deviceLimit": "Unlimited",
-        "speedLimit": null,
+        "trafficDisplay": "300GB / 30天",
+        "deviceLimit": "不限",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "飞猫 · 银河版",
         "price": 85,
         "currency": "CNY",
         "billingType": "Monthly",
-    "paymentCycleConflict": true,
         "validity": "Subscription",
         "traffic": 600,
-        "trafficDisplay": "600GB",
-        "deviceLimit": "Unlimited",
-        "speedLimit": null,
+        "trafficDisplay": "600GB / 30天",
+        "deviceLimit": "不限",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "飞猫 · 宇宙版",
         "price": 150,
         "currency": "CNY",
         "billingType": "Monthly",
-    "paymentCycleConflict": true,
         "validity": "Subscription",
-        "traffic": 1024,
-        "trafficDisplay": "1TB",
-        "deviceLimit": "Unlimited",
-        "speedLimit": null,
+        "traffic": 1000,
+        "trafficDisplay": "1TB / 30天",
+        "deviceLimit": "不限",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "飞猫 · 不限时套餐",
@@ -3462,16 +2999,12 @@ export const providers: Provider[] = [
         "currency": "CNY",
         "billingType": "One-Time",
         "validity": "Permanent",
-        "traffic": 1024,
-        "trafficDisplay": "1TB",
-        "deviceLimit": null,
+        "traffic": 1000,
+        "trafficDisplay": "1TB（永久有效）",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": true,
-        "ai": true,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": true
       },
       {
         "name": "飞猫 · 定制套餐",
@@ -3480,15 +3013,321 @@ export const providers: Provider[] = [
         "billingType": "Monthly",
         "validity": "Subscription",
         "traffic": 500,
-        "trafficDisplay": "500GB",
-        "deviceLimit": null,
-        "speedLimit": null,
+        "trafficDisplay": "500GB / 30天",
         "lineType": "IPLC",
-        "nodes": null,
         "streaming": null,
-        "ai": null,
-        "features": [],
-        "sourceNotes": "Parsed"
+        "ai": null
+      }
+    ],
+    "sources": [
+      {
+        "type": "official",
+        "urlOrFile": "飞猫云套餐价格.txt",
+        "sourceDate": null,
+        "recordedDate": "2026-09-18",
+        "verifiedDate": "2026-10-04",
+        "supportedFacts": [
+          "价格",
+          "流量",
+          "线路宣称",
+          "计费周期"
+        ]
+      },
+      {
+        "type": "third_party",
+        "urlOrFile": "待补",
+        "sourceDate": null,
+        "recordedDate": "2026-09-18",
+        "verifiedDate": null,
+        "supportedFacts": []
+      }
+    ]
+  },
+  {
+    "id": "quanqiuyun",
+    "name": "全球云",
+    "slug": "quanqiuyun",
+    "logo": null,
+    "promoCode": "zq85",
+    "editorialRank": null,
+    "editorialPick": false,
+    "entryPrice": 20,
+    "monthlyEntryPrice": 20,
+    "currency": "CNY",
+    "trafficMin": 59,
+    "trafficMax": 1500,
+    "trafficDisplay": "59GB–1.5TB",
+    "lineClaims": [
+      "BGP"
+    ],
+    "hasNoExpiry": true,
+    "streamingClaim": true,
+    "aiClaim": true,
+    "affiliateUrl": "https://sswdh.gcvipaff.com/#/?code=SHjBKSgm",
+    "lastVerified": "2026-10-04",
+    "plans": [
+      {
+        "name": "不限时轻量包",
+        "price": 100,
+        "currency": "CNY",
+        "billingType": "One-Time",
+        "validity": "Permanent",
+        "traffic": 100,
+        "trafficDisplay": "100GB（永久有效）",
+        "deviceLimit": "不限",
+        "lineType": "BGP",
+        "streaming": true,
+        "ai": true
+      },
+      {
+        "name": "不限时标准包",
+        "price": 360,
+        "currency": "CNY",
+        "billingType": "One-Time",
+        "validity": "Permanent",
+        "traffic": 400,
+        "trafficDisplay": "400GB（永久有效）",
+        "deviceLimit": "不限",
+        "lineType": "BGP",
+        "streaming": true,
+        "ai": true
+      },
+      {
+        "name": "不限时大容量包",
+        "price": 700,
+        "currency": "CNY",
+        "billingType": "One-Time",
+        "validity": "Permanent",
+        "traffic": 800,
+        "trafficDisplay": "800GB（永久有效）",
+        "deviceLimit": "不限",
+        "lineType": "BGP",
+        "streaming": true,
+        "ai": true
+      },
+      {
+        "name": "轻量版（年付）",
+        "price": 99,
+        "currency": "CNY",
+        "billingType": "Yearly",
+        "validity": "Subscription",
+        "traffic": 59,
+        "trafficDisplay": "59GB / 30天",
+        "deviceLimit": "不限",
+        "lineType": "BGP",
+        "streaming": true,
+        "ai": true
+      },
+      {
+        "name": "入门方案",
+        "price": 20,
+        "currency": "CNY",
+        "billingType": "Monthly",
+        "validity": "Subscription",
+        "traffic": 120,
+        "trafficDisplay": "120GB / 30天",
+        "deviceLimit": "不限",
+        "lineType": "BGP",
+        "streaming": true,
+        "ai": true
+      },
+      {
+        "name": "进阶方案",
+        "price": 40,
+        "currency": "CNY",
+        "billingType": "Monthly",
+        "validity": "Subscription",
+        "traffic": 300,
+        "trafficDisplay": "300GB / 30天",
+        "deviceLimit": "不限",
+        "lineType": "BGP",
+        "streaming": true,
+        "ai": true
+      },
+      {
+        "name": "高端方案",
+        "price": 100,
+        "currency": "CNY",
+        "billingType": "Monthly",
+        "validity": "Subscription",
+        "traffic": 700,
+        "trafficDisplay": "700GB / 30天",
+        "deviceLimit": "不限",
+        "lineType": "BGP",
+        "streaming": true,
+        "ai": true
+      },
+      {
+        "name": "商业方案",
+        "price": 180,
+        "currency": "CNY",
+        "billingType": "Monthly",
+        "validity": "Subscription",
+        "traffic": 1500,
+        "trafficDisplay": "1.5TB / 30天",
+        "deviceLimit": "不限",
+        "lineType": "BGP",
+        "streaming": true,
+        "ai": true
+      },
+      {
+        "name": "独享私人专线节点",
+        "price": 680,
+        "currency": "CNY",
+        "billingType": "Monthly",
+        "validity": "Subscription",
+        "traffic": 500,
+        "trafficDisplay": "500GB / 30天",
+        "deviceLimit": "不限",
+        "lineType": "BGP",
+        "streaming": true,
+        "ai": true
+      }
+    ],
+    "sources": [
+      {
+        "type": "official",
+        "urlOrFile": "全球云官网套餐页",
+        "sourceDate": null,
+        "recordedDate": "2026-10-04",
+        "verifiedDate": "2026-10-04",
+        "supportedFacts": [
+          "价格",
+          "流量额度",
+          "计费周期"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "yuzhouyun",
+    "name": "宇宙云",
+    "slug": "yuzhouyun",
+    "logo": null,
+    "promoCode": "YUZHOU553",
+    "editorialRank": null,
+    "editorialPick": false,
+    "entryPrice": 25,
+    "monthlyEntryPrice": 25,
+    "currency": "CNY",
+    "trafficMin": 60,
+    "trafficMax": 1500,
+    "trafficDisplay": "60GB–1.5TB",
+    "lineClaims": [
+      "IEPL",
+      "IPLC"
+    ],
+    "hasNoExpiry": true,
+    "streamingClaim": true,
+    "aiClaim": true,
+    "nodeRegions": "港/台/新/日/美/马来/德等（70+ 专线节点）",
+    "affiliateUrl": "https://wzjc.yuzoucloud.cc/#/?code=IWowgER5",
+    "lastVerified": "2026-10-04",
+    "plans": [
+      {
+        "name": "星云年付小包",
+        "price": 96,
+        "currency": "CNY",
+        "billingType": "Yearly",
+        "validity": "Subscription",
+        "traffic": 60,
+        "trafficDisplay": "60GB / 30天",
+        "deviceLimit": "不限",
+        "lineType": "IEPL",
+        "streaming": true,
+        "ai": true
+      },
+      {
+        "name": "行星基础版",
+        "price": 25,
+        "currency": "CNY",
+        "billingType": "Monthly",
+        "validity": "Subscription",
+        "traffic": 160,
+        "trafficDisplay": "160GB / 30天",
+        "deviceLimit": "不限",
+        "lineType": "IEPL",
+        "streaming": true,
+        "ai": true
+      },
+      {
+        "name": "恒星标准版",
+        "price": 50,
+        "currency": "CNY",
+        "billingType": "Monthly",
+        "validity": "Subscription",
+        "traffic": 300,
+        "trafficDisplay": "300GB / 30天",
+        "deviceLimit": "不限",
+        "lineType": "IEPL",
+        "streaming": true,
+        "ai": true
+      },
+      {
+        "name": "星系专业版",
+        "price": 100,
+        "currency": "CNY",
+        "billingType": "Monthly",
+        "validity": "Subscription",
+        "traffic": 700,
+        "trafficDisplay": "700GB / 30天",
+        "deviceLimit": "不限",
+        "lineType": "IEPL",
+        "streaming": true,
+        "ai": true
+      },
+      {
+        "name": "寰宇旗舰版",
+        "price": 200,
+        "currency": "CNY",
+        "billingType": "Monthly",
+        "validity": "Subscription",
+        "traffic": 1500,
+        "trafficDisplay": "1.5TB / 30天",
+        "deviceLimit": "不限",
+        "lineType": "IEPL",
+        "streaming": true,
+        "ai": true
+      },
+      {
+        "name": "行星基础版（不限时）",
+        "price": 110,
+        "currency": "CNY",
+        "billingType": "One-Time",
+        "validity": "Permanent",
+        "traffic": 120,
+        "trafficDisplay": "120GB（永久有效）",
+        "deviceLimit": "不限",
+        "lineType": "IEPL",
+        "streaming": true,
+        "ai": true
+      },
+      {
+        "name": "恒星标准版（不限时）",
+        "price": 220,
+        "currency": "CNY",
+        "billingType": "One-Time",
+        "validity": "Permanent",
+        "traffic": 200,
+        "trafficDisplay": "200GB（永久有效）",
+        "deviceLimit": "不限",
+        "lineType": "IEPL",
+        "streaming": true,
+        "ai": true
+      }
+    ],
+    "sources": [
+      {
+        "type": "official",
+        "urlOrFile": "宇宙云官网套餐页",
+        "sourceDate": null,
+        "recordedDate": "2026-10-04",
+        "verifiedDate": "2026-10-04",
+        "supportedFacts": [
+          "价格",
+          "流量额度",
+          "计费周期"
+        ]
       }
     ]
   }

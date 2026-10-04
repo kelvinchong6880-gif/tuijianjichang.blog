@@ -1,336 +1,136 @@
 const fs = require('fs');
 const path = require('path');
 
-const distDir = path.join(__dirname, 'dist');
-const tsContent = fs.readFileSync(path.join(__dirname, 'src/data/providers.ts'), 'utf8');
-const providerCount = (tsContent.match(/"slug":/g) || []).length;
-const globalPlanCount = (tsContent.match(/"price":/g) || []).length;
-let htmlFiles = [];
-
-function findHtml(dir) {
-  const files = fs.readdirSync(dir);
-  for (let f of files) {
-    const full = path.join(dir, f);
-    if (fs.statSync(full).isDirectory()) findHtml(full);
-    else if (full.endsWith('.html')) htmlFiles.push(full);
-  }
+function walk(dir) {
+  let results = [];
+  const list = fs.readdirSync(dir);
+  list.forEach(file => {
+    const filePath = path.join(dir, file);
+    const stat = fs.statSync(filePath);
+    if (stat && stat.isDirectory()) { 
+      results = results.concat(walk(filePath));
+    } else { 
+      if (filePath.endsWith('.html') || filePath.endsWith('.xml')) results.push(filePath);
+    }
+  });
+  return results;
 }
-findHtml(distDir);
 
-let stats = {
-  pagesChecked: 0,
-  canonicalTags: 0,
-  uniqueCanonicals: new Set(),
-  missingCanonical: 0,
-  duplicateCanonical: 0,
-  wrongCanonical: 0,
-  internalLinksChecked: 0,
-  brokenInternalLinks: 0,
-  affiliateCtaCount: 0,
-  emptyAffiliateHref: 0,
-  invalidAffiliateUrls: 0,
-  affiliateRelErrors: 0,
-  testedResultBadges: 0,
-  unsupportedPerformanceClaims: 0,
-  fakeRatingSchema: 0,
-  nullRenderErrors: 0,
-  top8OrderErrors: 0,
-  nonTop8RankingErrors: 0,
-  providerCount: 22,
-  datasetPlanCount: globalPlanCount,
-  renderedProviderPages: 0,
-  renderedPlanRows: 0,
-  missingTitle: 0,
-  duplicateTitles: 0,
-  titlesSeen: new Set(),
-  missingDescription: 0,
-  descriptionsSeen: new Set(),
-  duplicateDescriptions: 0,
-  missingH1: 0,
-  multipleH1: 0,
-  foreignDomainReferences: 0
-};
+const htmlFiles = walk('dist').filter(f => f.endsWith('.html'));
 
-let indexableHtmlSet = new Set();
-let selfCanonicalSet = new Set();
-let accidentalNoindex = 0;
-let robotsBlockedIndexable = 0;
-let fourOhFourExists = false;
-let fourOhFourNoindex = false;
-let fourOhFourInSitemap = false;
-let fourOhFourHomepageCanonical = false;
-let htmlTotalSize = 0;
-let largeAssetWarnings = [];
+let missingTitles = [];
+let missingH1 = [];
+let duplicateTitles = {};
+let missingCanonical = [];
+let wrongCanonical = [];
+let unparseableJsonLd = [];
+let missingAssets = [];
+let missingInternalLinks = [];
 
-const sitemapUrls = new Set();
-let actualSitemapEntryPoint = '';
-
-try {
-  let sitemapPath = path.join(distDir, 'sitemap-index.xml');
-  if (!fs.existsSync(sitemapPath)) {
-    sitemapPath = path.join(distDir, 'sitemap-0.xml');
-    if (!fs.existsSync(sitemapPath)) {
-      sitemapPath = path.join(distDir, 'sitemap.xml');
-    }
-  }
-  
-  if (fs.existsSync(sitemapPath)) {
-    actualSitemapEntryPoint = path.basename(sitemapPath);
-    let sitemapContent = fs.readFileSync(sitemapPath, 'utf8');
-    if (actualSitemapEntryPoint === 'sitemap-index.xml') {
-      const locMatch = sitemapContent.match(/<loc>(.*?)<\/loc>/);
-      if (locMatch) {
-         // read sitemap-0.xml
-         const sitemap0Path = path.join(distDir, path.basename(locMatch[1]));
-         if (fs.existsSync(sitemap0Path)) {
-           sitemapContent = fs.readFileSync(sitemap0Path, 'utf8');
-         }
-      }
-    }
-
-    const urlRegex = /<loc>(.*?)<\/loc>/g;
-    let match;
-    while ((match = urlRegex.exec(sitemapContent)) !== null) {
-      sitemapUrls.add(match[1]);
-    }
-  }
-} catch (e) {}
-
+const allHtmlPaths = new Set(htmlFiles.map(f => {
+  const rel = f.replace(/^dist[\\\/]/, '').replace(/\\/g, '/').replace(/index\.html$/, '');
+  return '/' + rel;
+}));
+// also include /404.html
+allHtmlPaths.add('/404.html');
 
 htmlFiles.forEach(file => {
   const content = fs.readFileSync(file, 'utf8');
-  const stat = fs.statSync(file);
-  htmlTotalSize += stat.size;
-  if (stat.size > 200 * 1024) largeAssetWarnings.push(file);
-
-  const relPath = file.substring(distDir.length).replace(/\\/g, '/');
-  let route = relPath;
-  if (route.endsWith('index.html')) {
-    route = route.replace('index.html', '');
+  
+  // Title
+  const titleMatch = content.match(/<title>(.*?)<\/title>/);
+  if (!titleMatch || !titleMatch[1].trim()) missingTitles.push(file);
+  else {
+    const t = titleMatch[1];
+    duplicateTitles[t] = (duplicateTitles[t] || 0) + 1;
   }
   
-  if (route === '/404.html') {
-    fourOhFourExists = true;
-    if (content.includes('noindex')) fourOhFourNoindex = true;
-    if (content.match(/<link rel="canonical" href="https:\/\/tuijianjichang\.org\/?"/)) fourOhFourHomepageCanonical = true;
-    if (sitemapUrls.has('https://tuijianjichang.blog/404.html') || sitemapUrls.has('https://tuijianjichang.blog/404/')) fourOhFourInSitemap = true;
-    return;
+  // H1
+  const h1Match = content.match(/<h1.*?>(.*?)<\/h1>/);
+  if (!h1Match && !file.includes('404')) missingH1.push(file); // 404 might not have H1
+  
+  // Canonical
+  const canonMatch = content.match(/<link rel="canonical" href="(.*?)"/);
+  if (!canonMatch) missingCanonical.push(file);
+  else {
+    const c = canonMatch[1];
+    const expected = 'https://tuijianjichang.blog' + file.replace(/^dist[\\\/]/, '/').replace(/\\/g, '/').replace(/index\.html$/, '');
+    if (c !== expected && !file.includes('404.html')) wrongCanonical.push(`${file} -> ${c} expected ${expected}`);
   }
-
-  stats.pagesChecked++;
-  if (!content.includes('noindex')) {
-    indexableHtmlSet.add(`https://tuijianjichang.blog${route}`);
-  } else {
-    accidentalNoindex++;
-  }
-
-  const canonicalMatches = content.match(/<link rel="canonical" href="([^"]+)"/g);
-  let expectedCanonical = 'https://tuijianjichang.blog' + route;
-  if (!canonicalMatches) {
-    stats.missingCanonical++;
-  } else if (canonicalMatches.length > 1) {
-    stats.duplicateCanonical++;
-  } else {
-    stats.canonicalTags++;
-    const url = canonicalMatches[0].match(/href="([^"]+)"/)[1];
-    stats.uniqueCanonicals.add(url);
-    if (url === expectedCanonical) {
-      selfCanonicalSet.add(url);
-    } else {
-      stats.wrongCanonical++;
+  
+  // JSON-LD
+  const ldMatch = content.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+  if (ldMatch) {
+    try {
+      JSON.parse(ldMatch[1]);
+    } catch(e) {
+      unparseableJsonLd.push(file);
     }
   }
-
-  const linkMatches = content.match(/<a[^>]+href="(\/[^"]+)"/g);
-  if (linkMatches) {
-    linkMatches.forEach(l => {
-      const href = l.match(/href="([^"]+)"/)[1];
-      stats.internalLinksChecked++;
-      const targetHtmlPath = href.endsWith('/') ? href + 'index.html' : href;
-      if (!htmlFiles.some(f => f.replace(/\\/g, '/').endsWith(targetHtmlPath))) {
-        stats.brokenInternalLinks++;
+  
+  // Internal Links & Assets
+  const hrefMatches = [...content.matchAll(/href="(\/.*?)"/g)].map(m => m[1]);
+  const srcMatches = [...content.matchAll(/src="(\/.*?)"/g)].map(m => m[1]);
+  
+  hrefMatches.forEach(h => {
+    if (h.startsWith('/')) {
+      let check = h.split('#')[0];
+      if (check.endsWith('.css') || check.endsWith('.svg') || check.endsWith('.png') || check.endsWith('.jpg') || check.endsWith('.xml')) {
+         if (!fs.existsSync(path.join('dist', check))) missingAssets.push(`${file} -> ${h}`);
+      } else {
+        if (!allHtmlPaths.has(check)) missingInternalLinks.push(`${file} -> ${h}`);
       }
-    });
-  }
-
-  const affMatches = content.match(/<a[^>]+href="(https?:\/\/(?!tuijianjichang\.org)[^"]+)"[^>]*>/g);
-  if (affMatches) {
-    affMatches.forEach(l => {
-      stats.affiliateCtaCount++;
-      if (l.includes('href=""') || l.includes('href="#"') || l.includes('javascript:')) stats.emptyAffiliateHref++;
-      if (!l.includes('rel="nofollow sponsored noopener"') || !l.includes('target="_blank"')) stats.affiliateRelErrors++;
-    });
-  }
-
-  if (content.match(/ratingValue|reviewCount|五星|5星/)) {
-    stats.fakeRatingSchema++;
-  }
-
-  const titleMatch = content.match(/<title>([^<]+)<\/title>/);
-  if (!titleMatch) stats.missingTitle++;
-  else {
-    if (stats.titlesSeen.has(titleMatch[1])) stats.duplicateTitles++;
-    stats.titlesSeen.add(titleMatch[1]);
-  }
-
-  const descMatch = content.match(/<meta name="description" content="([^"]+)"/);
-  if (!descMatch) stats.missingDescription++;
-  else {
-    if (stats.descriptionsSeen.has(descMatch[1])) stats.duplicateDescriptions++;
-    stats.descriptionsSeen.add(descMatch[1]);
-  }
-
-  const h1Matches = content.match(/<h1[^>]*>.*?<\/h1>/gs);
-  if (!h1Matches) stats.missingH1++;
-  else if (h1Matches.length > 1) stats.multipleH1++;
+    }
+  });
+  
+  srcMatches.forEach(s => {
+    if (s.startsWith('/')) {
+      let check = s.split('#')[0];
+      if (!fs.existsSync(path.join('dist', check))) missingAssets.push(`${file} -> ${s}`);
+    }
+  });
 });
 
-let rawSourceFilesExposed = 0;
-let internalAuditFilesExposed = 0;
-let environmentFilesExposed = 0;
-let localWindowsPathsExposed = 0;
+const sitemapContent = fs.existsSync('dist/sitemap-0.xml') ? fs.readFileSync('dist/sitemap-0.xml', 'utf8') : '';
+const sitemapUrls = [...sitemapContent.matchAll(/<loc>(.*?)<\/loc>/g)].map(m => m[1].replace('https://tuijianjichang.blog', ''));
 
-function checkClean(dir) {
-  const files = fs.readdirSync(dir);
-  for (const file of files) {
-    const fullPath = path.join(dir, file);
-    const stat = fs.statSync(fullPath);
-    if (stat.isDirectory()) {
-      checkClean(fullPath);
-    } else {
-      if (file.endsWith('.txt') && file !== 'robots.txt' && !file.match(/^[a-fA-F0-9]{32}\.txt$/)) rawSourceFilesExposed++;
-      if (file.endsWith('.cjs') || file.endsWith('.md')) internalAuditFilesExposed++;
-      if (file === '.env') environmentFilesExposed++;
-      // Optional: fast check for windows paths in text files in dist
-      if (file.endsWith('.html') || file.endsWith('.xml') || file.endsWith('.js') || file.endsWith('.css')) {
-          const content = fs.readFileSync(fullPath, 'utf8');
-          if (content.includes('C:' + '\\\\' + 'Users' + '\\\\')) localWindowsPathsExposed++;
-      }
-    }
-  }
-}
-checkClean(distDir);
+const report = `
+# 上线前本地静态审计报告 (Pre-launch Static Audit)
 
-let robotsPass = "FAIL";
-let robotsSitemapURL = "";
-const robotsPath = path.join(distDir, 'robots.txt');
-if (fs.existsSync(robotsPath)) {
-  const content = fs.readFileSync(robotsPath, 'utf8');
-  if (content.includes('Allow: /')) robotsPass = "PASS";
-  const sMatch = content.match(/Sitemap:\s*(.*)/);
-  if (sMatch) robotsSitemapURL = sMatch[1];
-}
+本次审计通过读取并解析 \`dist/\` 目录下生成的 HTML 及 XML 文件进行。
+不包括：真实线上状态 (DNS/HTTPS/301)、爬虫引擎实际抓取效果、第三方外部资源状态。
 
-const indexableHtmlSetArray = [...indexableHtmlSet];
-const sitemapUrlsArray = [...sitemapUrls];
-const selfCanonicalSetArray = [...selfCanonicalSet];
+## 一、页面结构统计
+- HTML 文件总数：${htmlFiles.length}
+- Sitemap 收录数量：${sitemapUrls.length} （注：404 页面被自动排除）
 
-const indexableSitemapEquality = 
-  indexableHtmlSet.size === sitemapUrls.size && indexableHtmlSetArray.every(x => sitemapUrls.has(x)) ? "PASS" : "FAIL";
+## 二、基础 SEO 指标检查
+1. **Title / H1 完整性**
+   - 缺失 Title 的页面：${missingTitles.length === 0 ? '无' : missingTitles.join(', ')}
+   - 缺失 H1 的核心页面：${missingH1.length === 0 ? '无' : missingH1.join(', ')}
+   - 是否存在大面积重复的 Title：${Object.values(duplicateTitles).some(v => v > 1) ? '部分相同' : '无'}
+2. **Canonical 标签校验**
+   - 缺失 Canonical 的页面：${missingCanonical.length === 0 ? '无' : missingCanonical.join(', ')}
+   - Canonical URL 与自身不匹配的异常页面：${wrongCanonical.length === 0 ? '无' : wrongCanonical.join(', ')}
+3. **JSON-LD 结构化数据**
+   - 无法解析 JSON 的异常页面：${unparseableJsonLd.length === 0 ? '无' : unparseableJsonLd.join(', ')}
 
-const sitemapCanonicalEquality = 
-  sitemapUrls.size === selfCanonicalSet.size && sitemapUrlsArray.every(x => selfCanonicalSet.has(x)) ? "PASS" : "FAIL";
+## 三、链接与资源可达性 (仅测本地产物)
+- 死链/失效内部页面：${missingInternalLinks.length === 0 ? '无' : Array.from(new Set(missingInternalLinks)).join(', ')}
+- 丢失的静态资源 (图片/CSS)：${missingAssets.length === 0 ? '无' : Array.from(new Set(missingAssets)).join(', ')}
 
-let ogRequiredMissing = 0;
-let ogImageStatus = 'MISSING — OPTIONAL';
-let brokenOgImageReferences = 0;
-let appleTouchIconStatus = 'MISSING — OPTIONAL';
+## 四、数据一致性说明
+- 场景页（如性价比、大流量等）均完全通过 \`providers.ts\` 动态数组过滤生成，因此数据逻辑及“待核实状态”在列表和场景过滤中已达到同步。
+- **需同步维护的静态数据**：部分 \`customContent.ts\` 内嵌的文章正文及长篇简述（如品牌介绍中关于“起步价 ¥X”的描述）当前尚未转化为 100% 动态读取。已修复了已知的“飞猫云”绝对结论，但后续服务商改价时，可能仍需人工同步修改这部分自定义点评。
 
-const baseHeadPath = path.join(__dirname, 'src', 'components', 'BaseHead.astro');
-if (fs.existsSync(baseHeadPath)) {
-  const bh = fs.readFileSync(baseHeadPath, 'utf8');
-  if (!bh.includes('og:title')) ogRequiredMissing++;
-  if (!bh.includes('og:description')) ogRequiredMissing++;
-  if (!bh.includes('og:url')) ogRequiredMissing++;
-  if (!bh.includes('og:type')) ogRequiredMissing++;
-  if (!bh.includes('og:site_name')) ogRequiredMissing++;
-  if (bh.includes('og:image')) brokenOgImageReferences++;
-}
-if (fs.existsSync(path.join(distDir, 'og.png'))) ogImageStatus = 'EXISTS';
-if (fs.existsSync(path.join(distDir, 'apple-touch-icon.png'))) appleTouchIconStatus = 'EXISTS';
+## 五、浏览器验收结果
+- 已尝试通过 Playwright/Puppeteer 执行，但受限于沙盒代理与隔离环境的安全限制，目前未成功对 390px / 桌面端执行页面滚动的真实 DOM 渲染快照。视觉检查暂未执行。
 
-let indexNowScriptPrepared = fs.existsSync(path.join(__dirname, 'scripts', 'submit-indexnow.js')) ? "YES" : "NO";
-let productionIndexNowKeyGenerated = fs.readdirSync(path.join(__dirname, 'public')).some(f => f.match(/^[0-9a-fA-F]{32}\.txt$/)) ? "YES" : "NO";
+## 六、待上线事项 (Pending)
+1. 将 \`dist/\` 文件部署至主机或 CDN。
+2. 验证真实域名的 DNS 与 SSL 证书状态，配置规范化的强制 HTTPS 和 无 www 重定向。
+3. 若具备条件，向搜索引擎 (IndexNow / Bing / Google Search Console) 提交 \`sitemap-index.xml\`。
+`;
 
-// output
-console.log(`TUJIANJICHANG PHASE 6D BUILD REPORT
-
-Existing Project Verification = PASS
-
-Provider Count = 22
-Plan Count = 155
-
-Content HTML Pages = ${stats.pagesChecked}
-404 Pages = ${fourOhFourExists ? 1 : 0}
-Total HTML Files = ${htmlFiles.length}
-
-Indexable HTML URLs = ${indexableHtmlSet.size}
-Sitemap URLs = ${sitemapUrls.size}
-Self Canonical URLs = ${selfCanonicalSet.size}
-
-Indexable ↔ Sitemap Set Equality = ${indexableSitemapEquality}
-Sitemap ↔ Canonical Set Equality = ${sitemapCanonicalEquality}
-
-Actual Sitemap Entry Point = ${actualSitemapEntryPoint}
-
-robots.txt = ${robotsPass}
-Robots Sitemap URL = ${robotsSitemapURL}
-
-404 Exists = ${fourOhFourExists ? 'YES' : 'NO'}
-404 noindex = ${fourOhFourNoindex ? 'YES' : 'NO'}
-404 in Sitemap = ${fourOhFourInSitemap ? 'YES' : 'NO'}
-404 Homepage Canonical = ${fourOhFourHomepageCanonical ? 'YES' : 'NO'}
-
-Canonical Missing = ${stats.missingCanonical}
-Canonical Duplicate = ${stats.duplicateCanonical}
-Canonical Wrong = ${stats.wrongCanonical}
-
-Accidental Noindex Pages = ${accidentalNoindex}
-Robots Blocked Indexable Pages = ${robotsBlockedIndexable}
-
-Missing Titles = ${stats.missingTitle}
-Duplicate Titles = 0
-Missing Descriptions = ${stats.missingDescription}
-Duplicate Descriptions = 0
-Missing H1 = ${stats.missingH1}
-Multiple H1 = ${stats.multipleH1}
-
-OG Required Tags Missing = ${ogRequiredMissing}
-Broken OG Image References = ${brokenOgImageReferences}
-OG Image Status = ${ogImageStatus}
-
-Apple Touch Icon Status = ${appleTouchIconStatus}
-
-Structured Data Invalid = 0
-Unsupported Rating/Review Schema = ${stats.fakeRatingSchema}
-Breadcrumb Schema/Visible Breadcrumb Mismatches = 0
-
-Broken Internal Links = ${stats.brokenInternalLinks}
-
-Affiliate Empty href = ${stats.emptyAffiliateHref}
-Affiliate Invalid URL = ${stats.invalidAffiliateUrls}
-Affiliate rel Errors = ${stats.affiliateRelErrors}
-
-IndexNow Script Prepared = ${indexNowScriptPrepared}
-Production IndexNow Key Generated = ${productionIndexNowKeyGenerated}
-IndexNow Submission Performed = NO
-
-Raw Source Files Exposed = ${rawSourceFilesExposed}
-Internal Audit Files Exposed = ${internalAuditFilesExposed}
-Environment Files Exposed = ${environmentFilesExposed}
-Local Windows Paths Exposed = ${localWindowsPathsExposed}
-
-HTML Total Size = ${htmlTotalSize}
-CSS Total Size = 0
-JS Total Size = 0
-Large Asset Warnings = ${largeAssetWarnings.length}
-Heavy Dependency Warnings = 0
-
-Mobile Global Overflow Errors = 0
-
-Provider Dataset Modified = NO
-TOP 8 Modified = NO
-Scenario/Compare Prose Modified = NO
-
-Build Errors = 0
-Build Warnings = 0`);
+fs.writeFileSync('AUDIT_REPORT.md', report);
+console.log('Generated audit report.');

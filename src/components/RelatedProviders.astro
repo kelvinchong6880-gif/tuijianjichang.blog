@@ -1,7 +1,6 @@
 ---
-import { providers } from '../data/providers';
+import { competitors } from '../data/analysis';
 import type { Provider } from '../data/schema';
-import ProviderCard from './ProviderCard.astro';
 import ProviderGrid from './ProviderGrid.astro';
 
 export interface Props {
@@ -10,16 +9,12 @@ export interface Props {
 
 const { currentProvider } = Astro.props;
 
-// Basic related logic: same line claims or similar price tier
-const related = providers
-  .filter(p => p.id !== currentProvider.id)
-  .sort(() => 0.5 - Math.random()) // Random shuffle for simple diversity
-  .slice(0, 4);
+const related = competitors(currentProvider, 4);
 ---
 
 <div class="related-providers">
-  <h2>其他机场推荐与比较</h2>
-  <p>您也可以查看数据库中的以下 Provider 进行对比分析：</p>
+  <h2>同价位机场推荐</h2>
+  <p>起步价与 {currentProvider.name} 接近的机场，可以一起对比：</p>
   <ProviderGrid providers={related} />
 </div>
 

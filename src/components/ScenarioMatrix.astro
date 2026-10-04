@@ -32,14 +32,14 @@ function renderClaim(claim: boolean | null) {
   <table class="scenario-matrix">
     <thead>
       <tr>
-        <th>机场名称</th>
-        {showPrice && <th>起步价</th>}
-        {showTraffic && <th>流量区间</th>}
-        {showLine && <th>线路类型</th>}
-        {showNoExpiry && <th>不限时套餐</th>}
-        {showAI && <th>AI解锁声明</th>}
-        {showStreaming && <th>流媒体声明</th>}
-        <th>详情</th>
+        <th scope="col">机场名称</th>
+        {showPrice && <th scope="col">起步价</th>}
+        {showTraffic && <th scope="col">流量区间</th>}
+        {showLine && <th scope="col">线路类型</th>}
+        {showNoExpiry && <th scope="col">不限时套餐</th>}
+        {showAI && <th scope="col">AI解锁声明</th>}
+        {showStreaming && <th scope="col">流媒体声明</th>}
+        <th scope="col">详情</th>
       </tr>
     </thead>
     <tbody>
