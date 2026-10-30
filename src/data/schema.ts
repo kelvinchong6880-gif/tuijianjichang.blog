@@ -42,7 +42,9 @@ export interface Provider {
   slug: string;
   logo: string | null;
   promoCode?: string | null;
-  /** 编辑推荐排名（1–8），不在榜单为 null */
+  /** 优惠码的折扣力度或使用限制，如 “新用户 8 折” */
+  promoNote?: string | null;
+  /** 编辑推荐排名（1–11：前 8 名进 Top 8，9 名以后为备选推荐），不在榜单为 null */
   editorialRank: number | null;
   editorialPick: boolean;
 

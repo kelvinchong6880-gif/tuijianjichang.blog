@@ -55,7 +55,7 @@ const introText = `${p.name}是一家${p.lineClaims.length ? `主打 ${lineLabel
       <div><span class="v-label">线路</span><span class="v-val">{lineLabel(p)}</span></div>
       <div><span class="v-label">流量范围</span><span class="v-val">{fmtGB(p.trafficMin)}–{fmtGB(p.trafficMax)}</span></div>
       <div><span class="v-label">不限时套餐</span><span class="v-val">{ot.length ? `有（${ot.length} 款）` : '无'}</span></div>
-      <div><span class="v-label">优惠码</span><span class="v-val">{p.promoCode ?? '暂无'}</span></div>
+      <div><span class="v-label">优惠码</span><span class="v-val">{p.promoCode ?? '暂无'}{p.promoCode && p.promoNote ? `（${p.promoNote}）` : ''}</span></div>
     </div>
     <p class="v-fit"><strong>最适合：</strong>{fitText.join('；')}。</p>
   </section>
@@ -124,7 +124,7 @@ const introText = `${p.name}是一家${p.lineClaims.length ? `主打 ${lineLabel
     <li>点击本页的“访问官网”按钮，进入 {p.name} 官网，用邮箱注册账号。</li>
     <li>进入“购买订阅/商店”，按上面的用量表选好套餐和付款周期。</li>
     {p.promoCode
-      ? <li>在结算页的优惠码输入框填入 <code>{p.promoCode}</code>，点击验证，确认价格已减少后再付款。</li>
+      ? <li>在结算页的优惠码输入框填入 <code>{p.promoCode}</code>{p.promoNote ? `（${p.promoNote}）` : ''}，点击验证，确认价格已减少后再付款。</li>
       : <li>结算前留意官网公告里的限时折扣，确认金额后再付款。</li>}
     <li>付款完成后，在用户中心复制“订阅链接”，导入 Clash Verge、Shadowrocket、v2rayN 等客户端即可使用。</li>
     <li>首次使用建议在晚上 8–11 点（晚高峰）测一次常用网站，确认速度满足需求。</li>

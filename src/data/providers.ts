@@ -11,6 +11,8 @@ export const providers: Provider[] = [
     ],
     "slug": "edgenova",
     "logo": "/images/providers/edgenova-logo.webp",
+    "promoCode": "xk808",
+    "promoNote": "新客首次 8 折",
     "editorialRank": null,
     "editorialPick": false,
     "entryPrice": 15,
@@ -26,7 +28,7 @@ export const providers: Provider[] = [
     "streamingClaim": true,
     "aiClaim": true,
     "affiliateUrl": "https://work.edgenovaaff.cc/#/?code=k7VCKPvN",
-    "lastVerified": "2026-09-15",
+    "lastVerified": "2026-10-30",
     "plans": [
       {
         "name": "EdgeNova 入门月付",
@@ -115,6 +117,16 @@ export const providers: Provider[] = [
     ],
     "sources": [
       {
+        "type": "user",
+        "urlOrFile": "编辑部整理的机场官网资料汇总",
+        "sourceDate": "2026-10-30",
+        "recordedDate": "2026-10-30",
+        "verifiedDate": "2026-10-30",
+        "supportedFacts": [
+          "优惠码与折扣"
+        ]
+      },
+      {
         "type": "official",
         "urlOrFile": "EdgeNova官网套餐页",
         "sourceDate": null,
@@ -138,7 +150,8 @@ export const providers: Provider[] = [
     "slug": "firefly",
     "logo": "/images/providers/firefly-logo.webp",
     "promoCode": "firefly",
-    "editorialRank": 5,
+    "promoNote": "新用户 8 折",
+    "editorialRank": 7,
     "editorialPick": true,
     "entryPrice": 25,
     "monthlyEntryPrice": 25,
@@ -150,11 +163,11 @@ export const providers: Provider[] = [
       "IPLC"
     ],
     "hasNoExpiry": true,
-    "streamingClaim": null,
-    "aiClaim": null,
-    "nodeRegions": "香港、台湾、美国、新加坡、马来西亚、日本等",
+    "streamingClaim": true,
+    "aiClaim": true,
+    "nodeRegions": "香港、台湾、美国、新加坡、马来西亚、日本等，共 49 个节点（核对时 47 个在线）",
     "affiliateUrl": "https://vip02.fireflyaff.com/#/?code=8nDg6OEY",
-    "lastVerified": "2026-10-04",
+    "lastVerified": "2026-10-30",
     "plans": [
       {
         "name": "Firefly年付版",
@@ -166,8 +179,8 @@ export const providers: Provider[] = [
         "trafficDisplay": "60GB / 30天",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "streaming": null,
-        "ai": null
+        "streaming": true,
+        "ai": true
       },
       {
         "name": "Firefly Lite",
@@ -179,8 +192,8 @@ export const providers: Provider[] = [
         "trafficDisplay": "150GB / 30天",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "streaming": null,
-        "ai": null
+        "streaming": true,
+        "ai": true
       },
       {
         "name": "Firefly Plus",
@@ -192,8 +205,8 @@ export const providers: Provider[] = [
         "trafficDisplay": "300GB / 30天",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "streaming": null,
-        "ai": null
+        "streaming": true,
+        "ai": true
       },
       {
         "name": "Firefly Blaze",
@@ -205,8 +218,8 @@ export const providers: Provider[] = [
         "trafficDisplay": "600GB / 30天",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "streaming": null,
-        "ai": null
+        "streaming": true,
+        "ai": true
       },
       {
         "name": "Firefly Nova",
@@ -218,8 +231,8 @@ export const providers: Provider[] = [
         "trafficDisplay": "1TB / 30天",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "streaming": null,
-        "ai": null
+        "streaming": true,
+        "ai": true
       },
       {
         "name": "Firefly不限时",
@@ -231,11 +244,22 @@ export const providers: Provider[] = [
         "trafficDisplay": "100GB（永久有效）",
         "speedLimit": "None",
         "lineType": "IPLC",
-        "streaming": null,
-        "ai": null
+        "streaming": true,
+        "ai": true
       }
     ],
     "sources": [
+      {
+        "type": "user",
+        "urlOrFile": "编辑部整理的机场官网资料汇总",
+        "sourceDate": "2026-10-30",
+        "recordedDate": "2026-10-30",
+        "verifiedDate": "2026-10-30",
+        "supportedFacts": [
+          "节点数量与地区",
+          "流媒体与 AI 解锁"
+        ]
+      },
       {
         "type": "official",
         "urlOrFile": "萤火虫套餐价格.txt",
@@ -268,24 +292,24 @@ export const providers: Provider[] = [
     "slug": "sogo-yun",
     "logo": "/images/providers/sogo-yun-logo.webp",
     "promoCode": "sogo10000",
+    "promoNote": "新用户 9 折",
     "editorialRank": 1,
     "editorialPick": true,
     "entryPrice": 25,
     "monthlyEntryPrice": 25,
     "currency": "CNY",
     "trafficMin": 60,
-    "trafficMax": 1050,
-    "trafficDisplay": "60GB–1.05TB",
+    "trafficMax": 1100,
+    "trafficDisplay": "60GB–1.1TB",
     "lineClaims": [
-      "IPLC",
-      "IEPL"
+      "IPLC"
     ],
     "hasNoExpiry": true,
     "streamingClaim": true,
     "aiClaim": true,
-    "nodeRegions": "香港×20、台湾×5、日本×10、新加坡×10、美国×10、马来西亚×2、英国、法国、德国、土耳其、泰国、巴西等",
+    "nodeRegions": "香港×20、台湾×10、日本×10、新加坡×10、美国×10，另有马来西亚、英国、法国、德国、土耳其、泰国、巴西等地区",
     "affiliateUrl": "https://wzjc.sogoyunaff.cc/#/?code=BC2BL855",
-    "lastVerified": "2026-10-04",
+    "lastVerified": "2026-10-30",
     "plans": [
       {
         "name": "小包-年付版",
@@ -316,12 +340,12 @@ export const providers: Provider[] = [
         "trafficDisplay": "150GB / 30天",
         "deviceLimit": "不限",
         "speedLimit": "2.5Gbps (峰值)",
-        "lineType": "IEPL",
+        "lineType": "IPLC",
         "streaming": true,
         "ai": true,
         "features": [
           "原生IP",
-          "智能路由"
+          "VLESS 协议"
         ]
       },
       {
@@ -334,12 +358,12 @@ export const providers: Provider[] = [
         "trafficDisplay": "350GB / 30天",
         "deviceLimit": "不限",
         "speedLimit": "2.5Gbps (峰值)",
-        "lineType": "IEPL",
+        "lineType": "IPLC",
         "streaming": true,
         "ai": true,
         "features": [
           "原生IP",
-          "智能路由"
+          "VLESS 协议"
         ]
       },
       {
@@ -352,12 +376,12 @@ export const providers: Provider[] = [
         "trafficDisplay": "550GB / 30天",
         "deviceLimit": "不限",
         "speedLimit": "2.5Gbps (峰值)",
-        "lineType": "IEPL",
+        "lineType": "IPLC",
         "streaming": true,
         "ai": true,
         "features": [
           "原生IP",
-          "智能路由"
+          "VLESS 协议"
         ]
       },
       {
@@ -366,17 +390,16 @@ export const providers: Provider[] = [
         "currency": "CNY",
         "billingType": "Monthly",
         "validity": "Subscription",
-        "traffic": 1050,
-        "trafficDisplay": "1.05TB / 30天",
+        "traffic": 1100,
+        "trafficDisplay": "1.1TB / 30天",
         "deviceLimit": "不限",
         "speedLimit": "2.5Gbps (峰值)",
-        "lineType": "IEPL",
+        "lineType": "IPLC",
         "streaming": true,
         "ai": true,
         "features": [
           "原生IP"
-        ],
-        "sourceNotes": "顶配同时出现1050GB与1.1TB，暂不参与¥/GB排序"
+        ]
       },
       {
         "name": "SOGO基础餐不限时版",
@@ -398,7 +421,7 @@ export const providers: Provider[] = [
       },
       {
         "name": "SOGO优选餐不限时版",
-        "price": 220,
+        "price": 250,
         "currency": "CNY",
         "billingType": "One-Time",
         "validity": "Permanent",
@@ -454,6 +477,32 @@ export const providers: Provider[] = [
     "sources": [
       {
         "type": "official",
+        "urlOrFile": "https://sogocloud.world/",
+        "sourceDate": "2026-10-30",
+        "recordedDate": "2026-10-30",
+        "verifiedDate": "2026-10-30",
+        "supportedFacts": [
+          "IPLC 专线与 VLESS 协议",
+          "套餐价格与流量",
+          "不限速、不限设备",
+          "优惠码 sogo10000 新用户 9 折",
+          "付款方式：USDT(TRC20)、微信支付、支付宝",
+          "无免费试用"
+        ]
+      },
+      {
+        "type": "third_party",
+        "urlOrFile": "FFQ.LA 公开测速截图（辽宁移动 1Gbps、8 线程，60 个节点）",
+        "sourceDate": "2026-04-13",
+        "recordedDate": "2026-10-30",
+        "verifiedDate": null,
+        "supportedFacts": [
+          "60 个节点平均下载速度",
+          "Netflix、YouTube、ChatGPT 解锁检测"
+        ]
+      },
+      {
+        "type": "official",
         "urlOrFile": "SOGO云官网套餐页",
         "sourceDate": null,
         "recordedDate": "2026-10-04",
@@ -494,7 +543,8 @@ export const providers: Provider[] = [
     "name": "u1s1",
     "slug": "u1s1",
     "logo": null,
-    "promoCode": "U1S1-80",
+    "promoCode": "U1S1",
+    "promoNote": "新人 85 折，¥96 年包不适用",
     "editorialRank": null,
     "editorialPick": false,
     "entryPrice": 20,
@@ -509,8 +559,9 @@ export const providers: Provider[] = [
     "hasNoExpiry": false,
     "streamingClaim": true,
     "aiClaim": true,
+    "nodeRegions": "香港、台湾、日本、新加坡、美国等，共 67 个节点（核对时 63 个在线）",
     "affiliateUrl": "https://pkdj7.vipaff.cc/#/?code=YUCKdFlR",
-    "lastVerified": "2026-10-04",
+    "lastVerified": "2026-10-30",
     "plans": [
       {
         "name": "u1s1 · 就是好用包",
@@ -592,6 +643,17 @@ export const providers: Provider[] = [
     ],
     "sources": [
       {
+        "type": "user",
+        "urlOrFile": "编辑部整理的机场官网资料汇总",
+        "sourceDate": "2026-10-30",
+        "recordedDate": "2026-10-30",
+        "verifiedDate": "2026-10-30",
+        "supportedFacts": [
+          "优惠码与折扣",
+          "节点数量与地区"
+        ]
+      },
+      {
         "type": "official",
         "urlOrFile": "u1s1官网套餐页",
         "sourceDate": null,
@@ -612,8 +674,8 @@ export const providers: Provider[] = [
     "slug": "yifanyun",
     "logo": "/images/providers/yifanyun-logo.webp",
     "promoCode": "1FLYYUN",
-    "editorialRank": null,
-    "editorialPick": false,
+    "editorialRank": 10,
+    "editorialPick": true,
     "entryPrice": 20,
     "monthlyEntryPrice": 20,
     "currency": "CNY",
@@ -626,12 +688,13 @@ export const providers: Provider[] = [
     "hasNoExpiry": true,
     "streamingClaim": true,
     "aiClaim": true,
-    "nodeRegions": "港/台/新/日/美等（60+ 专线节点）",
+    "nodeRegions": "香港、台湾、新加坡、日本、美国等，共 72 个 IEPL 专线节点（核对时全部在线）",
     "affiliateUrl": "https://wzjc.1flyunaff.cc/#/?code=0tH3Mmch",
-    "lastVerified": "2026-10-04",
+    "lastVerified": "2026-10-30",
     "plans": [
       {
         "name": "轻享版",
+        "sourceNotes": "长期付费价：季付 ¥55、半年付 ¥98、年付 ¥168",
         "price": 20,
         "currency": "CNY",
         "billingType": "Monthly",
@@ -739,6 +802,17 @@ export const providers: Provider[] = [
     ],
     "sources": [
       {
+        "type": "user",
+        "urlOrFile": "编辑部整理的机场官网资料汇总",
+        "sourceDate": "2026-10-30",
+        "recordedDate": "2026-10-30",
+        "verifiedDate": "2026-10-30",
+        "supportedFacts": [
+          "节点数量与地区",
+          "长期付费价格"
+        ]
+      },
+      {
         "type": "official",
         "urlOrFile": "一翻云官网套餐页",
         "sourceDate": null,
@@ -759,8 +833,8 @@ export const providers: Provider[] = [
     "slug": "ermaoyun",
     "logo": "/images/providers/ermaoyun-logo.webp",
     "promoCode": "ermao888",
-    "editorialRank": null,
-    "editorialPick": false,
+    "editorialRank": 5,
+    "editorialPick": true,
     "entryPrice": 20,
     "monthlyEntryPrice": 20,
     "currency": "CNY",
@@ -773,9 +847,9 @@ export const providers: Provider[] = [
     "hasNoExpiry": true,
     "streamingClaim": true,
     "aiClaim": true,
-    "nodeRegions": "港/台/新/日/美/德等地区（60+ 节点）",
+    "nodeRegions": "香港×20、台湾×5、日本×10、新加坡×10，另有美国、德国等地区，共 60 个节点（核对时全部在线）",
     "affiliateUrl": "https://wzjc.2maoyunaff.cc/#/?code=bvsFDmSt",
-    "lastVerified": "2026-10-04",
+    "lastVerified": "2026-10-30",
     "plans": [
       {
         "name": "二猫云 · 100G不限时",
@@ -858,6 +932,16 @@ export const providers: Provider[] = [
     ],
     "sources": [
       {
+        "type": "user",
+        "urlOrFile": "编辑部整理的机场官网资料汇总",
+        "sourceDate": "2026-10-30",
+        "recordedDate": "2026-10-30",
+        "verifiedDate": "2026-10-30",
+        "supportedFacts": [
+          "节点数量与地区"
+        ]
+      },
+      {
         "type": "official",
         "urlOrFile": "二猫云官网套餐页",
         "sourceDate": null,
@@ -892,8 +976,8 @@ export const providers: Provider[] = [
     "hasNoExpiry": false,
     "streamingClaim": true,
     "aiClaim": true,
-    "affiliateUrl": "https://vv3dbvb.guangnianertt1.homes/#/?code=mv41lVsv",
-    "lastVerified": "2026-09-15",
+    "affiliateUrl": "https://ggmq.gntaff.com/#/?code=EVc1gLc9",
+    "lastVerified": "2026-10-30",
     "plans": [
       {
         "name": "年付限时套餐",
@@ -981,6 +1065,16 @@ export const providers: Provider[] = [
     ],
     "sources": [
       {
+        "type": "user",
+        "urlOrFile": "编辑部整理的机场官网资料汇总",
+        "sourceDate": "2026-10-30",
+        "recordedDate": "2026-10-30",
+        "verifiedDate": "2026-10-30",
+        "supportedFacts": [
+          "官网推广链接"
+        ]
+      },
+      {
         "type": "official",
         "urlOrFile": "光年梯官网套餐页",
         "sourceDate": null,
@@ -1001,8 +1095,9 @@ export const providers: Provider[] = [
     "slug": "guangsuyun",
     "logo": "/images/providers/guangsuyun-logo.webp",
     "promoCode": "AMM",
-    "editorialRank": null,
-    "editorialPick": false,
+    "promoNote": "8 折",
+    "editorialRank": 8,
+    "editorialPick": true,
     "entryPrice": 23,
     "monthlyEntryPrice": 23,
     "currency": "CNY",
@@ -1015,9 +1110,9 @@ export const providers: Provider[] = [
     "hasNoExpiry": true,
     "streamingClaim": true,
     "aiClaim": true,
-    "nodeRegions": "港、台、日、新、马、美、德、法、英、土、越等",
+    "nodeRegions": "香港×20、台湾×5、日本×10、新加坡×10、美国×10、马来西亚×2、英国、法国、德国、土耳其、泰国、巴西等，共 69 个节点（核对时 67 个在线）",
     "affiliateUrl": "https://mdlky.gsyaff.com/#/?code=5PLKd4WN",
-    "lastVerified": "2026-10-04",
+    "lastVerified": "2026-10-30",
     "plans": [
       {
         "name": "光速云 · 轻量版",
@@ -1040,6 +1135,9 @@ export const providers: Provider[] = [
         "traffic": 138,
         "trafficDisplay": "138GB / 30天",
         "lineType": "IPLC",
+        "features": [
+          "半年付 9 折、年付 8 折、两年付 75 折"
+        ],
         "streaming": true,
         "ai": true
       },
@@ -1052,6 +1150,9 @@ export const providers: Provider[] = [
         "traffic": 238,
         "trafficDisplay": "238GB / 30天",
         "lineType": "IPLC",
+        "features": [
+          "半年付 9 折、年付 8 折、两年付 75 折"
+        ],
         "streaming": true,
         "ai": true
       },
@@ -1064,6 +1165,9 @@ export const providers: Provider[] = [
         "traffic": 450,
         "trafficDisplay": "450GB / 30天",
         "lineType": "IPLC",
+        "features": [
+          "半年付 9 折、年付 8 折、两年付 75 折"
+        ],
         "streaming": true,
         "ai": true
       },
@@ -1076,6 +1180,9 @@ export const providers: Provider[] = [
         "traffic": 900,
         "trafficDisplay": "900GB / 30天",
         "lineType": "IPLC",
+        "features": [
+          "半年付 9 折、年付 8 折、两年付 75 折"
+        ],
         "streaming": true,
         "ai": true
       },
@@ -1100,11 +1207,25 @@ export const providers: Provider[] = [
         "traffic": 500,
         "trafficDisplay": "500GB / 30天",
         "lineType": "IPLC",
+        "features": [
+          "半年付 9 折、年付 8 折、两年付 75 折"
+        ],
         "streaming": null,
         "ai": null
       }
     ],
     "sources": [
+      {
+        "type": "user",
+        "urlOrFile": "编辑部整理的机场官网资料汇总",
+        "sourceDate": "2026-10-30",
+        "recordedDate": "2026-10-30",
+        "verifiedDate": "2026-10-30",
+        "supportedFacts": [
+          "节点数量与地区",
+          "长期付费折扣"
+        ]
+      },
       {
         "type": "official",
         "urlOrFile": "光速云官网套餐页",
@@ -1273,8 +1394,9 @@ export const providers: Provider[] = [
     "hasNoExpiry": true,
     "streamingClaim": true,
     "aiClaim": true,
+    "nodeRegions": "香港、台湾、日本、新加坡、美国等，共 71 个节点（核对时 67 个在线）",
     "affiliateUrl": "https://fast.v2yunvipaff.com/#/?code=nbBJVFQP",
-    "lastVerified": "2026-10-04",
+    "lastVerified": "2026-10-30",
     "plans": [
       {
         "name": "唯兔云 · 年付加强专线",
@@ -1396,6 +1518,16 @@ export const providers: Provider[] = [
     ],
     "sources": [
       {
+        "type": "user",
+        "urlOrFile": "编辑部整理的机场官网资料汇总",
+        "sourceDate": "2026-10-30",
+        "recordedDate": "2026-10-30",
+        "verifiedDate": "2026-10-30",
+        "supportedFacts": [
+          "节点数量与地区"
+        ]
+      },
+      {
         "type": "official",
         "urlOrFile": "唯兔云官网套餐页",
         "sourceDate": null,
@@ -1416,7 +1548,8 @@ export const providers: Provider[] = [
     "slug": "weifeng",
     "logo": "/images/providers/weifeng-logo.webp",
     "promoCode": "weifeng90",
-    "editorialRank": 2,
+    "promoNote": "全场 7 折",
+    "editorialRank": 4,
     "editorialPick": true,
     "entryPrice": 27,
     "monthlyEntryPrice": 27,
@@ -1430,9 +1563,9 @@ export const providers: Provider[] = [
     "hasNoExpiry": true,
     "streamingClaim": null,
     "aiClaim": null,
-    "nodeRegions": "香港、台湾、美国、新加坡、马来西亚、日本等",
+    "nodeRegions": "香港、台湾、美国、新加坡、马来西亚、日本等，共 60+ 个节点",
     "affiliateUrl": "https://edp01.breezenetaff.com/#/?code=hM8APccJ",
-    "lastVerified": "2026-10-04",
+    "lastVerified": "2026-10-30",
     "plans": [
       {
         "name": "清风",
@@ -1521,6 +1654,16 @@ export const providers: Provider[] = [
     ],
     "sources": [
       {
+        "type": "user",
+        "urlOrFile": "编辑部整理的机场官网资料汇总",
+        "sourceDate": "2026-10-30",
+        "recordedDate": "2026-10-30",
+        "verifiedDate": "2026-10-30",
+        "supportedFacts": [
+          "节点数量与地区"
+        ]
+      },
+      {
         "type": "official",
         "urlOrFile": "微风套餐价格.txt",
         "sourceDate": null,
@@ -1548,13 +1691,15 @@ export const providers: Provider[] = [
     "name": "快狸",
     "slug": "kuaili",
     "logo": "/images/providers/kuaili-logo.webp",
+    "promoCode": "kuaili996",
+    "promoNote": "9 折",
     "editorialRank": null,
     "editorialPick": false,
     "entryPrice": 15,
     "monthlyEntryPrice": 15,
     "currency": "CNY",
     "trafficMin": 30,
-    "trafficMax": 1024,
+    "trafficMax": 1000,
     "trafficDisplay": "30GB–1TB",
     "lineClaims": [
       "IEPL"
@@ -1563,7 +1708,7 @@ export const providers: Provider[] = [
     "streamingClaim": true,
     "aiClaim": true,
     "affiliateUrl": "https://work.kuailicloud.cc/#/?code=azB6yNBW",
-    "lastVerified": "2026-09-15",
+    "lastVerified": "2026-10-30",
     "plans": [
       {
         "name": "主推套餐",
@@ -1636,8 +1781,8 @@ export const providers: Provider[] = [
         "currency": "CNY",
         "billingType": "Monthly",
         "validity": "Subscription",
-        "traffic": 1024,
-        "trafficDisplay": "1TB / 30天",
+        "traffic": 1000,
+        "trafficDisplay": "1000GB / 30天",
         "lineType": "IEPL",
         "streaming": true,
         "ai": true,
@@ -1645,6 +1790,17 @@ export const providers: Provider[] = [
       }
     ],
     "sources": [
+      {
+        "type": "user",
+        "urlOrFile": "编辑部整理的机场官网资料汇总",
+        "sourceDate": "2026-10-30",
+        "recordedDate": "2026-10-30",
+        "verifiedDate": "2026-10-30",
+        "supportedFacts": [
+          "优惠码与折扣",
+          "套餐流量"
+        ]
+      },
       {
         "type": "official",
         "urlOrFile": "快狸官网套餐页",
@@ -1666,7 +1822,7 @@ export const providers: Provider[] = [
     "slug": "wuyou",
     "logo": "/images/providers/wuyou-logo.webp",
     "promoCode": "wuyou",
-    "editorialRank": 4,
+    "editorialRank": 11,
     "editorialPick": true,
     "entryPrice": 19,
     "monthlyEntryPrice": 19,
@@ -1680,9 +1836,9 @@ export const providers: Provider[] = [
     "hasNoExpiry": true,
     "streamingClaim": true,
     "aiClaim": true,
-    "nodeRegions": "香港、台湾、美国、新加坡、马来西亚、日本等",
+    "nodeRegions": "香港、台湾、美国、新加坡、马来西亚、日本等，共 49 个节点（核对时 36 个在线、13 个离线）",
     "affiliateUrl": "https://wep01.worryfreeaff.com/#/?code=s1kH64A8",
-    "lastVerified": "2026-10-04",
+    "lastVerified": "2026-10-30",
     "plans": [
       {
         "name": "MINI链接",
@@ -1771,6 +1927,16 @@ export const providers: Provider[] = [
     ],
     "sources": [
       {
+        "type": "user",
+        "urlOrFile": "编辑部整理的机场官网资料汇总",
+        "sourceDate": "2026-10-30",
+        "recordedDate": "2026-10-30",
+        "verifiedDate": "2026-10-30",
+        "supportedFacts": [
+          "节点数量与地区"
+        ]
+      },
+      {
         "type": "official",
         "urlOrFile": "无忧套餐价格.txt",
         "sourceDate": null,
@@ -1799,8 +1965,8 @@ export const providers: Provider[] = [
     "slug": "xingdaomeng",
     "logo": "/images/providers/xingdaomeng-logo.webp",
     "promoCode": "nmw888",
-    "editorialRank": null,
-    "editorialPick": false,
+    "editorialRank": 9,
+    "editorialPick": true,
     "entryPrice": 25,
     "monthlyEntryPrice": 25,
     "currency": "CNY",
@@ -1814,9 +1980,9 @@ export const providers: Provider[] = [
     "hasNoExpiry": true,
     "streamingClaim": true,
     "aiClaim": true,
-    "nodeRegions": "香港×20、台湾×10、日本×10、新加坡×10、美国×10、韩国×2、阿根廷×2、马来西亚、越南、菲律宾、泰国、印度、德国、法国、英国等",
+    "nodeRegions": "香港×20、台湾×10、日本×10、新加坡×10、美国×10、韩国×2、阿根廷×2、马来西亚、越南、菲律宾、泰国、印度、德国、法国、英国等，共 69 个节点（核对时 63 个在线）",
     "affiliateUrl": "https://kfccbb.xingdaomeng.com/#/?code=0YcwWgSw",
-    "lastVerified": "2026-10-04",
+    "lastVerified": "2026-10-30",
     "plans": [
       {
         "name": "星岛梦 · 贴心小包",
@@ -1933,6 +2099,16 @@ export const providers: Provider[] = [
     ],
     "sources": [
       {
+        "type": "user",
+        "urlOrFile": "编辑部整理的机场官网资料汇总",
+        "sourceDate": "2026-10-30",
+        "recordedDate": "2026-10-30",
+        "verifiedDate": "2026-10-30",
+        "supportedFacts": [
+          "节点数量与地区"
+        ]
+      },
+      {
         "type": "official",
         "urlOrFile": "星岛梦官网套餐页",
         "sourceDate": null,
@@ -1953,8 +2129,8 @@ export const providers: Provider[] = [
     "slug": "muguang",
     "logo": "/images/providers/muguang-logo.webp",
     "promoCode": "mm88",
-    "editorialRank": null,
-    "editorialPick": false,
+    "editorialRank": 3,
+    "editorialPick": true,
     "entryPrice": 20,
     "monthlyEntryPrice": 20,
     "currency": "CNY",
@@ -1967,8 +2143,9 @@ export const providers: Provider[] = [
     "hasNoExpiry": true,
     "streamingClaim": true,
     "aiClaim": true,
+    "nodeRegions": "香港、台湾、日本、新加坡、美国等主流地区，共 60+ 个节点",
     "affiliateUrl": "https://varnexa.twilightaff.com/#/?code=2ILQOoYB",
-    "lastVerified": "2026-10-04",
+    "lastVerified": "2026-10-30",
     "sourceNotes": "Protocol was not present in source; HTTPS availability verified during data normalization.",
     "plans": [
       {
@@ -2086,6 +2263,16 @@ export const providers: Provider[] = [
     ],
     "sources": [
       {
+        "type": "user",
+        "urlOrFile": "编辑部整理的机场官网资料汇总",
+        "sourceDate": "2026-10-30",
+        "recordedDate": "2026-10-30",
+        "verifiedDate": "2026-10-30",
+        "supportedFacts": [
+          "节点数量与地区"
+        ]
+      },
+      {
         "type": "official",
         "urlOrFile": "暮光官网套餐页",
         "sourceDate": null,
@@ -2105,7 +2292,8 @@ export const providers: Provider[] = [
     "name": "极连云",
     "slug": "jilianyun",
     "logo": "/images/providers/jilianyun-logo.webp",
-    "promoCode": "ji8888",
+    "promoCode": "JLY888",
+    "promoNote": "全场 8 折",
     "editorialRank": null,
     "editorialPick": false,
     "entryPrice": 18,
@@ -2120,9 +2308,9 @@ export const providers: Provider[] = [
     "hasNoExpiry": true,
     "streamingClaim": true,
     "aiClaim": true,
-    "nodeRegions": "香港 x20、台湾 x10、日本 x10、新加坡 x10、马来西亚、美国 x10、泰国 x1、德国 x1、法国 x1、英国 x1、土耳其x1、韩国",
-    "affiliateUrl": "https://reuire23oure.jilianat.homes/#/?code=N0n7rZyp",
-    "lastVerified": "2026-10-04",
+    "nodeRegions": "香港×20、台湾×10、日本×10、新加坡×10、美国×10、马来西亚、泰国、德国、法国、英国、土耳其、韩国等，共 66 个节点（核对时 60 个在线）",
+    "affiliateUrl": "https://kdjhao.jlyvipaff.com/#/?code=N0n7rZyp",
+    "lastVerified": "2026-10-30",
     "plans": [
       {
         "name": "限时年付套餐体验",
@@ -2205,6 +2393,18 @@ export const providers: Provider[] = [
     ],
     "sources": [
       {
+        "type": "user",
+        "urlOrFile": "编辑部整理的机场官网资料汇总",
+        "sourceDate": "2026-10-30",
+        "recordedDate": "2026-10-30",
+        "verifiedDate": "2026-10-30",
+        "supportedFacts": [
+          "优惠码与折扣",
+          "官网推广链接",
+          "节点数量与地区"
+        ]
+      },
+      {
         "type": "official",
         "urlOrFile": "极连云官网套餐页",
         "sourceDate": null,
@@ -2224,7 +2424,8 @@ export const providers: Provider[] = [
     "name": "灵动",
     "slug": "lingdong",
     "logo": "/images/providers/lingdong-logo.webp",
-    "promoCode": "880223",
+    "promoCode": "zq88",
+    "promoNote": "年付及以上周期 8 折；年付以下周期请用 zq85，享 85 折",
     "editorialRank": null,
     "editorialPick": false,
     "entryPrice": 20,
@@ -2239,8 +2440,9 @@ export const providers: Provider[] = [
     "hasNoExpiry": true,
     "streamingClaim": true,
     "aiClaim": true,
+    "nodeRegions": "香港、台湾、日本、新加坡、美国等，共 60 个节点（核对时全部在线）",
     "affiliateUrl": "https://varnexa.lingdongaff.com/#/?code=HDiWuF7L",
-    "lastVerified": "2026-10-04",
+    "lastVerified": "2026-10-30",
     "sourceNotes": "Protocol was not present in source; HTTPS availability verified during data normalization.",
     "plans": [
       {
@@ -2363,6 +2565,17 @@ export const providers: Provider[] = [
     ],
     "sources": [
       {
+        "type": "user",
+        "urlOrFile": "编辑部整理的机场官网资料汇总",
+        "sourceDate": "2026-10-30",
+        "recordedDate": "2026-10-30",
+        "verifiedDate": "2026-10-30",
+        "supportedFacts": [
+          "优惠码与折扣",
+          "节点数量与地区"
+        ]
+      },
+      {
         "type": "official",
         "urlOrFile": "灵动官网套餐页",
         "sourceDate": null,
@@ -2382,9 +2595,10 @@ export const providers: Provider[] = [
     "name": "灵猫",
     "slug": "lingmao",
     "logo": "/images/providers/lingmao-logo.webp",
-    "promoCode": "lingmao",
-    "editorialRank": 8,
-    "editorialPick": true,
+    "promoCode": "LM80",
+    "promoNote": "8 折",
+    "editorialRank": null,
+    "editorialPick": false,
     "entryPrice": 25,
     "monthlyEntryPrice": 25,
     "currency": "CNY",
@@ -2397,9 +2611,9 @@ export const providers: Provider[] = [
     "hasNoExpiry": false,
     "streamingClaim": true,
     "aiClaim": true,
-    "nodeRegions": "香港、台湾、美国、新加坡、马来西亚、日本等",
+    "nodeRegions": "香港、台湾、美国、新加坡、马来西亚、日本等，共 50 个节点（核对时 49 个在线）",
     "affiliateUrl": "https://edp01.civetaff.com/#/?code=CYg7QSJo",
-    "lastVerified": "2026-10-04",
+    "lastVerified": "2026-10-30",
     "plans": [
       {
         "name": "灵猫·年付小包",
@@ -2482,6 +2696,17 @@ export const providers: Provider[] = [
     ],
     "sources": [
       {
+        "type": "user",
+        "urlOrFile": "编辑部整理的机场官网资料汇总",
+        "sourceDate": "2026-10-30",
+        "recordedDate": "2026-10-30",
+        "verifiedDate": "2026-10-30",
+        "supportedFacts": [
+          "优惠码与折扣",
+          "节点数量与地区"
+        ]
+      },
+      {
         "type": "official",
         "urlOrFile": "灵猫套餐价格.txt",
         "sourceDate": null,
@@ -2510,8 +2735,8 @@ export const providers: Provider[] = [
     "slug": "kuajieyun",
     "logo": "/images/providers/kuajieyun-logo.webp",
     "promoCode": "kuajie",
-    "editorialRank": 6,
-    "editorialPick": true,
+    "editorialRank": null,
+    "editorialPick": false,
     "entryPrice": 20,
     "monthlyEntryPrice": 20,
     "currency": "CNY",
@@ -2524,9 +2749,9 @@ export const providers: Provider[] = [
     "hasNoExpiry": false,
     "streamingClaim": true,
     "aiClaim": true,
-    "nodeRegions": "香港、台湾、美国、新加坡、马来西亚、日本等",
+    "nodeRegions": "香港、台湾、美国、新加坡、马来西亚、日本等，共 49 个节点（核对时 43 个在线）",
     "affiliateUrl": "https://vip02.kuajieaff.com/#/?code=hh3QezsW",
-    "lastVerified": "2026-10-04",
+    "lastVerified": "2026-10-30",
     "plans": [
       {
         "name": "跨界年付版",
@@ -2601,6 +2826,16 @@ export const providers: Provider[] = [
     ],
     "sources": [
       {
+        "type": "user",
+        "urlOrFile": "编辑部整理的机场官网资料汇总",
+        "sourceDate": "2026-10-30",
+        "recordedDate": "2026-10-30",
+        "verifiedDate": "2026-10-30",
+        "supportedFacts": [
+          "节点数量与地区"
+        ]
+      },
+      {
         "type": "official",
         "urlOrFile": "跨界套餐价格.txt",
         "sourceDate": null,
@@ -2629,8 +2864,8 @@ export const providers: Provider[] = [
     "slug": "shanyue",
     "logo": "/images/providers/shanyue-logo.webp",
     "promoCode": "shanyue",
-    "editorialRank": 7,
-    "editorialPick": true,
+    "editorialRank": null,
+    "editorialPick": false,
     "entryPrice": 24,
     "monthlyEntryPrice": 24,
     "currency": "CNY",
@@ -2643,9 +2878,9 @@ export const providers: Provider[] = [
     "hasNoExpiry": false,
     "streamingClaim": true,
     "aiClaim": true,
-    "nodeRegions": "香港、台湾、美国、新加坡、马来西亚、日本等",
+    "nodeRegions": "香港、台湾、美国、新加坡、马来西亚、日本等，共 48 个节点（核对时 46 个在线）",
     "affiliateUrl": "https://wep01.flashleapaff.com/#/?code=cs0ekCMG",
-    "lastVerified": "2026-10-04",
+    "lastVerified": "2026-10-30",
     "plans": [
       {
         "name": "闪跃年付版",
@@ -2715,6 +2950,16 @@ export const providers: Provider[] = [
     ],
     "sources": [
       {
+        "type": "user",
+        "urlOrFile": "编辑部整理的机场官网资料汇总",
+        "sourceDate": "2026-10-30",
+        "recordedDate": "2026-10-30",
+        "verifiedDate": "2026-10-30",
+        "supportedFacts": [
+          "节点数量与地区"
+        ]
+      },
+      {
         "type": "official",
         "urlOrFile": "闪跃套餐价格.txt",
         "sourceDate": null,
@@ -2742,14 +2987,16 @@ export const providers: Provider[] = [
     "name": "飞V",
     "slug": "flyv",
     "logo": "/images/providers/flyv-logo.webp",
+    "promoCode": "fly20",
+    "promoNote": "新手 8 折",
     "editorialRank": null,
     "editorialPick": false,
     "entryPrice": 25,
     "monthlyEntryPrice": 25,
     "currency": "CNY",
     "trafficMin": 65,
-    "trafficMax": 1843.2,
-    "trafficDisplay": "65GB–1.84TB",
+    "trafficMax": 1800,
+    "trafficDisplay": "65GB–1.8TB",
     "lineClaims": [
       "IPLC",
       "BGP"
@@ -2758,7 +3005,7 @@ export const providers: Provider[] = [
     "streamingClaim": true,
     "aiClaim": true,
     "affiliateUrl": "https://varnexa.flyvaff.com/#/?code=XsiIuDgj",
-    "lastVerified": "2026-09-15",
+    "lastVerified": "2026-10-30",
     "sourceNotes": "Protocol was not present in source; HTTPS availability verified during data normalization.",
     "plans": [
       {
@@ -2823,8 +3070,8 @@ export const providers: Provider[] = [
         "currency": "CNY",
         "billingType": "Monthly",
         "validity": "Subscription",
-        "traffic": 1843.2,
-        "trafficDisplay": "1.84TB / 30天",
+        "traffic": 1800,
+        "trafficDisplay": "1.8TB / 30天",
         "speedLimit": "None",
         "lineType": "BGP",
         "streaming": true,
@@ -2890,6 +3137,17 @@ export const providers: Provider[] = [
     ],
     "sources": [
       {
+        "type": "user",
+        "urlOrFile": "编辑部整理的机场官网资料汇总",
+        "sourceDate": "2026-10-30",
+        "recordedDate": "2026-10-30",
+        "verifiedDate": "2026-10-30",
+        "supportedFacts": [
+          "优惠码与折扣",
+          "套餐流量"
+        ]
+      },
+      {
         "type": "official",
         "urlOrFile": "飞V官网套餐页",
         "sourceDate": null,
@@ -2910,7 +3168,7 @@ export const providers: Provider[] = [
     "slug": "feimaoyun",
     "logo": "/images/providers/feimaoyun-logo.webp",
     "promoCode": "flycat888",
-    "editorialRank": 3,
+    "editorialRank": 2,
     "editorialPick": true,
     "entryPrice": 25,
     "monthlyEntryPrice": 25,
@@ -2924,9 +3182,9 @@ export const providers: Provider[] = [
     "hasNoExpiry": true,
     "streamingClaim": true,
     "aiClaim": true,
-    "nodeRegions": "香港 x20、台湾 x10、日本 x10、新加坡 x10、美国 x10、韩国 x3、马来西亚、越南、菲律宾、泰国、印度、英国、法国、德国、阿根廷等",
+    "nodeRegions": "香港×20、台湾×10、日本×10、新加坡×10、美国×10、韩国×3、马来西亚、越南、菲律宾、泰国、印度、英国、法国、德国、阿根廷等，共 63 个节点（核对时 60 个在线）",
     "affiliateUrl": "https://flycat1.flycatvipaff.cc/#/?code=w5lO9fqB",
-    "lastVerified": "2026-10-04",
+    "lastVerified": "2026-10-30",
     "plans": [
       {
         "name": "飞猫 · 学生版",
@@ -3021,6 +3279,16 @@ export const providers: Provider[] = [
     ],
     "sources": [
       {
+        "type": "user",
+        "urlOrFile": "编辑部整理的机场官网资料汇总",
+        "sourceDate": "2026-10-30",
+        "recordedDate": "2026-10-30",
+        "verifiedDate": "2026-10-30",
+        "supportedFacts": [
+          "节点数量与地区"
+        ]
+      },
+      {
         "type": "official",
         "urlOrFile": "飞猫云套餐价格.txt",
         "sourceDate": null,
@@ -3048,7 +3316,8 @@ export const providers: Provider[] = [
     "name": "全球云",
     "slug": "quanqiuyun",
     "logo": null,
-    "promoCode": "zq85",
+    "promoCode": "qq88",
+    "promoNote": "新人 8 折",
     "editorialRank": null,
     "editorialPick": false,
     "entryPrice": 20,
@@ -3063,8 +3332,9 @@ export const providers: Provider[] = [
     "hasNoExpiry": true,
     "streamingClaim": true,
     "aiClaim": true,
+    "nodeRegions": "香港、台湾、日本、新加坡、美国等，共 68 个节点（核对时 62 个在线）",
     "affiliateUrl": "https://sswdh.gcvipaff.com/#/?code=SHjBKSgm",
-    "lastVerified": "2026-10-04",
+    "lastVerified": "2026-10-30",
     "plans": [
       {
         "name": "不限时轻量包",
@@ -3186,6 +3456,17 @@ export const providers: Provider[] = [
     ],
     "sources": [
       {
+        "type": "user",
+        "urlOrFile": "编辑部整理的机场官网资料汇总",
+        "sourceDate": "2026-10-30",
+        "recordedDate": "2026-10-30",
+        "verifiedDate": "2026-10-30",
+        "supportedFacts": [
+          "优惠码与折扣",
+          "节点数量与地区"
+        ]
+      },
+      {
         "type": "official",
         "urlOrFile": "全球云官网套餐页",
         "sourceDate": null,
@@ -3205,8 +3486,9 @@ export const providers: Provider[] = [
     "slug": "yuzhouyun",
     "logo": null,
     "promoCode": "YUZHOU553",
-    "editorialRank": null,
-    "editorialPick": false,
+    "promoNote": "新用户 8 折",
+    "editorialRank": 6,
+    "editorialPick": true,
     "entryPrice": 25,
     "monthlyEntryPrice": 25,
     "currency": "CNY",
@@ -3220,9 +3502,9 @@ export const providers: Provider[] = [
     "hasNoExpiry": true,
     "streamingClaim": true,
     "aiClaim": true,
-    "nodeRegions": "港/台/新/日/美/马来/德等（70+ 专线节点）",
+    "nodeRegions": "香港×20、台湾×5、日本×10、新加坡×10、美国×10，另有马来西亚、德国等，共 70+ 个专线节点",
     "affiliateUrl": "https://wzjc.yuzoucloud.cc/#/?code=IWowgER5",
-    "lastVerified": "2026-10-04",
+    "lastVerified": "2026-10-30",
     "plans": [
       {
         "name": "星云年付小包",
@@ -3317,6 +3599,16 @@ export const providers: Provider[] = [
       }
     ],
     "sources": [
+      {
+        "type": "user",
+        "urlOrFile": "编辑部整理的机场官网资料汇总",
+        "sourceDate": "2026-10-30",
+        "recordedDate": "2026-10-30",
+        "verifiedDate": "2026-10-30",
+        "supportedFacts": [
+          "节点数量与地区"
+        ]
+      },
       {
         "type": "official",
         "urlOrFile": "宇宙云官网套餐页",

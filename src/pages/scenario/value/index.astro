@@ -105,7 +105,7 @@ const trafficBands = [
         <h2>编辑首推：SOGO云</h2>
         <div class="editorial-feature">
           <h3>综合性价比首推：{sogo?.name || 'SOGO云'}</h3>
-          <p>单看 ¥/GB 只能比价格，不能比线路。SOGO云 月付 ¥{sogo?.entryPrice} 起，{sogo?.plans.length ?? 0} 个套餐（每月 {sogoTrafficRange}），月付全部走 IEPL 专线、晚高峰不降速，年付 8 折、三年付 6 折，是“价格 + 线路”综合下来最均衡的选择。</p>
+          <p>单看 ¥/GB 只能比价格，不能比线路。SOGO云 月付 ¥{sogo?.entryPrice} 起，{sogo?.plans.length ?? 0} 个套餐（每月 {sogoTrafficRange}），全部套餐走 IPLC 专线、晚高峰不降速，年付 8 折、三年付 6 折，是“价格 + 线路”综合下来最均衡的选择。</p>
           <ul>
             <li><strong>线路资料：</strong> {sogo?.lineClaims?.join(' / ') || '资料未说明'}</li>
             <li><strong>不限时套餐：</strong> {sogo?.hasNoExpiry ? '有（4 款，流量永久有效）' : '无'}</li>

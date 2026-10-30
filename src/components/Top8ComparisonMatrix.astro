@@ -4,7 +4,7 @@ import ProviderLogo from './ProviderLogo.astro';
 import type { Provider, Plan } from '../data/schema';
 import { trafficRange } from '../data/analysis';
 
-const top8 = providers.filter(p => p.editorialPick).sort((a, b) => a.editorialRank! - b.editorialRank!);
+const top8 = providers.filter(p => p.editorialPick).sort((a, b) => a.editorialRank! - b.editorialRank!).slice(0, 8);
 
 function renderClaimStatus(claim: boolean | null) {
   if (claim === true) return '<span class="status-yes">支持</span>';
@@ -55,7 +55,7 @@ function getYearlyInfo(p: Provider) {
       {top8.map(p => (
         <tr class={p.editorialRank && p.editorialRank <= 3 ? 'top-tier' : ''}>
           <td class="rank-col">
-            <div class={`rank-badge ${p.editorialRank && p.editorialRank <= 3 ? 'rank-highlight' : ''}`}>#0{p.editorialRank}</div>
+            <div class={`rank-badge ${p.editorialRank && p.editorialRank <= 3 ? 'rank-highlight' : ''}`}>#{String(p.editorialRank).padStart(2, '0')}</div>
           </td>
           <td class="brand-col">
             <div class="brand-identity">

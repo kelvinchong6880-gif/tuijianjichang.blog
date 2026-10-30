@@ -15,22 +15,18 @@ import { UPDATED_ISO, UPDATED_LABEL, UPDATED_MONTH, UPDATED_MONTH_SHORT, EDITOR,
 
 const totalCount = providers.length;
 const title = `2026机场排行榜：Top 8 机场评测与对比（${UPDATED_MONTH_SHORT}更新）`;
-const description = `${UPDATED_MONTH}机场排行榜：从${totalCount}家机场中选出 Top 8，逐一对比月付价格、年付折扣、IPLC/IEPL 线路、流量与不限时套餐，附优惠码与选购 FAQ。第一名 SOGO云 月付¥25起150GB全IEPL专线。`;
+const description = `${UPDATED_MONTH}机场排行榜：从${totalCount}家机场中选出 Top 8，逐一对比月付价格、年付折扣、IPLC/IEPL 线路、流量与不限时套餐，附优惠码与选购 FAQ。第一名 SOGO云 月付¥25起150GB全IPLC专线。`;
 
-const top8 = providers.filter(p => p.editorialPick).sort((a, b) => a.editorialRank! - b.editorialRank!);
+const ranked = providers.filter(p => p.editorialPick).sort((a, b) => a.editorialRank! - b.editorialRank!);
+const top8 = ranked.slice(0, 8);
+const nonDedicated = top8.filter(p => !p.lineClaims.some(l => l === 'IPLC' || l === 'IEPL'));
 
 const editorialReviews: Record<string, { strength: string, limitation: string, fit: string, unfit: string }> = {
   'sogo-yun': {
-    strength: '月付套餐全部走 IEPL 专线，¥25/月 150GB 起；官方标称单节点峰值 2.5Gbps、所有节点 1 倍率、晚高峰不降速，原生 IP 解锁 Netflix、Disney+、ChatGPT。节点覆盖香港×20、日本×10、新加坡×10、美国×10 等 10 多个地区。月付支持年付 8 折、两年 7 折、三年 6 折，另有 4 款不限时流量包。',
-    limitation: '¥25 的月付起步价不是全站最低（无忧 ¥19、极连云 ¥18 更便宜）；不限时流量包不参与长期付费折扣。',
-    fit: '想“一次选对、不再折腾”的用户：日常 150GB 选基础版 ¥25/月，追剧选优选版 ¥45/月 350GB，全家共用选顶配版 ¥150/月 1050GB；轻度用户可选 ¥98/年 的 60GB 小包。',
-    unfit: '只追求最低价、每月预算 ¥20 以下的用户，可以看无忧或跨界。'
-  },
-  'weifeng': {
-    strength: '全 IPLC 专线、不限速、不限设备。乘风 ¥27/月 就有 200GB，破风 ¥57/月 500GB，在同价位里流量给得比较足；另有清风 ¥137/年（每月 100GB）和两款不限时包（270GB ¥200、570GB ¥370）。',
-    limitation: '官网没有单独写明流媒体与 AI 解锁情况；月付起步价 ¥27 在 Top 8 里偏高。',
-    fit: '每月用 150–500GB、看重专线稳定性的用户；优惠码 weifeng90。',
-    unfit: '每月只用几十 GB 的轻度用户，选年付小包更划算的机场会更省。'
+    strength: '全部套餐走 IPLC 专线、VLESS 协议，¥25/月 150GB 起；全节点不限速、不限设备，官方标称单节点峰值 2.5Gbps，原生 IP 解锁 Netflix、Disney+、ChatGPT、Claude。主力节点香港×20、台湾×10、日本×10、新加坡×10、美国×10，另有马来西亚、欧洲等地区。月付支持年付 8 折、两年 7 折、三年 6 折，另有 4 款不限时流量包，新用户优惠码 sogo10000 享 9 折。',
+    limitation: '¥25 的月付起步价不是全站最低（无忧 ¥19、二猫云 ¥20 更便宜）；没有免费试用；不限时流量包不参与长期付费折扣。',
+    fit: '想“一次选对、不再折腾”的用户：日常 150GB 选基础版 ¥25/月，追剧选优选版 ¥45/月 350GB，全家共用选顶配版 ¥150/月 1.1TB；轻度用户可选 ¥98/年 的 60GB 小包。',
+    unfit: '只追求最低价、每月预算 ¥20 以下的用户，可以看无忧或二猫云。'
   },
   'feimaoyun': {
     strength: '全 IPLC 专线、单节点最高 2.5Gbps、原生 IP 解锁 Netflix 与 ChatGPT。学生版 ¥84/年（每月 50GB，折合约 ¥7/月）是 Top 8 里最便宜的年付入门款；星耀版 ¥25/月 150GB。节点覆盖香港×20、台湾×10、日本×10、新加坡×10、美国×10、韩国×3 等。',
@@ -38,44 +34,68 @@ const editorialReviews: Record<string, { strength: string, limitation: string, f
     fit: '学生党和轻度用户（¥84/年），或每月 150–600GB 的常规用户；优惠码 flycat888。',
     unfit: '想买小额不限时备用流量的用户。'
   },
-  'wuyou': {
-    strength: '舒心链接 ¥19/月 100GB，是 Top 8 里月付门槛最低的；全 IPLC 专线、1 倍率，官网写明支持 ChatGPT、Gemini 与 4K Netflix/Disney+。另有 MINI 年付 ¥79/年 和 100GB ¥108、300GB ¥298 两款不限时包。',
-    limitation: '年付 MINI 每月只有 40GB；最高档 1TB 需 ¥117/月。',
-    fit: '预算每月 ¥20 左右、主要用 AI 和看视频的学生与上班族；优惠码 wuyou。',
+  'muguang': {
+    strength: '基础版 ¥20/月 120GB，是 Top 8 里月付门槛最低的之一；标准版 ¥40/月 240GB，至尊版 ¥180/月 1.5TB。年付轻量版 ¥109/年（每月 70GB），另有 150GB ¥219、400GB ¥529、800GB ¥959 三款不限时包，官网写明支持流媒体与 AI 服务。',
+    limitation: '线路为 BGP 中转，不是 IPLC/IEPL 专线，晚高峰稳定性要自己先测；官网没有公布详细节点分布。',
+    fit: '预算每月 ¥20 左右、想要套餐档位齐全（月付、年付、不限时都有）的用户；优惠码 mm88。',
+    unfit: '对晚高峰稳定性要求很高、只认专线的用户，可以选 SOGO云或飞猫云。'
+  },
+  'weifeng': {
+    strength: '全 IPLC 专线、不限速、不限设备。乘风 ¥27/月 就有 200GB，破风 ¥57/月 500GB，御风 ¥127/月 1.2TB 是 Top 8 里 1TB 以上套餐单价最低的；另有清风 ¥137/年（每月 100GB）和两款不限时包（270GB ¥200、570GB ¥370）。',
+    limitation: '官网没有单独写明流媒体与 AI 解锁情况；月付起步价 ¥27 在 Top 8 里偏高。',
+    fit: '每月用 200GB 以上、看重专线稳定性的用户；优惠码 weifeng90 全场 7 折，乘风折后约 ¥19/月。',
+    unfit: '每月只用几十 GB 的轻度用户，选年付小包更划算的机场会更省。'
+  },
+  'ermaoyun': {
+    strength: '全 IEPL 专线，白猫套餐 ¥20/月 130GB，是 Top 8 里月付最便宜的专线套餐；橘猫 ¥40/月 230GB、牛奶猫 ¥80/月 430GB、黑猫 ¥160/月 850GB。年付小包 ¥89/年（每月 60GB），另有 100GB ¥99 的不限时包。节点覆盖港、台、新、日、美、德等地区，共 60 个，核对时全部在线。',
+    limitation: '最高档只有 850GB/月；不限时包只有 100GB 一款。',
+    fit: '预算有限但想要专线的学生和上班族；优惠码 ermao888。',
     unfit: '每月需要 1TB 以上流量的重度用户。'
   },
+  'yuzhouyun': {
+    strength: 'IEPL 专线，行星基础版 ¥25/月 160GB，同价位流量比多数机场多 10GB；恒星 ¥50/月 300GB、星系 ¥100/月 700GB、寰宇旗舰 ¥200/月 1.5TB。年付小包 ¥96/年（每月 60GB），另有 120GB ¥110、200GB ¥220 两款不限时包。节点覆盖港、台、新、日、美、马来、德等 70+ 个专线节点。',
+    limitation: '中高档套餐单价不算低（300GB 要 ¥50）；不限时包容量偏小。',
+    fit: '每月 150GB 左右、想要节点多的常规用户；优惠码 YUZHOU553（新用户 8 折）。',
+    unfit: '追求大流量低单价的用户，可以看微风或光速云。'
+  },
   'firefly': {
-    strength: '全 IPLC 专线、不限速、不限设备。Firefly Lite ¥25/月 150GB，Plus ¥45/月 300GB，Nova ¥150/月 1TB，套餐梯度清晰；年付版 ¥96/年（每月 60GB），还有 100GB ¥100 的不限时包。',
-    limitation: '官网没有写明流媒体与 AI 解锁情况，如果这是主要需求，建议先问客服。',
-    fit: '想要专线、套餐简单好选的常规用户；优惠码 firefly。',
-    unfit: '对 Netflix、ChatGPT 解锁有硬性要求、又不想自己测试的用户。'
+    strength: '全 IPLC 专线、不限速、不限设备。官网写明解锁 Netflix、Disney+、ChatGPT、Claude。Firefly Lite ¥25/月 150GB，Plus ¥45/月 300GB，Blaze ¥85/月 600GB，Nova ¥150/月 1TB，套餐梯度清晰；年付版 ¥96/年（每月 60GB），还有 100GB ¥100 的不限时包。新用户用优惠码 firefly 享 8 折。',
+    limitation: '节点 49 个，比头部几家少；不限时只有 100GB 一款。',
+    fit: '想要专线、套餐简单好选的常规用户；优惠码 firefly（新用户 8 折）。',
+    unfit: '需要冷门地区节点或大容量不限时包的用户。'
   },
-  'kuajieyun': {
-    strength: '轻云 Lite ¥20/月 120GB 起，全 IPLC、1 倍率、不限速；无界 1.8TB 只要 ¥130/月（约 ¥0.07/GB），是 Top 8 里大流量单价最低的。年付 8 折、两年 7 折、三年 6 折，且优惠码可以叠加。官网写明支持 ChatGPT、Gemini、Claude 和主流流媒体。',
-    limitation: '没有不限时流量包。',
-    fit: '流量大、想压低每 GB 成本的重度用户和家庭；优惠码 kuajie。',
-    unfit: '只想买一次性备用流量的用户。'
+  'guangsuyun': {
+    strength: '全 IPLC 专线，极速版 ¥23/月 138GB、流光版 ¥34/月 238GB、量子版 ¥68/月 450GB、无界版 ¥130/月 900GB，中档套餐流量给得足。节点覆盖港、台、日、新、马、美、德、法、英、土、越等地区，官网写明支持流媒体与 AI。共 69 个节点，长期付费有半年 9 折、年付 8 折、两年 75 折。',
+    limitation: '年付轻量版 ¥99/年 每月 59GB，不算便宜；不限时只有 1TB ¥680 一款大包。',
+    fit: '每月 200–500GB、想要专线又在意价格的用户；优惠码 AMM（8 折）。',
+    unfit: '只想买小额不限时备用流量的用户。'
   },
-  'shanyue': {
-    strength: '闪动 ¥24/月 150GB，全 IPLC 专线、所有节点 1 倍率、晚高峰不限速，原生 IP 解锁流媒体、ChatGPT 与 TikTok。年付版 ¥96/年（每月 60GB），最高跃迁 1TB ¥134/月。',
-    limitation: '没有不限时流量包；套餐只有 5 档，选择相对少。',
-    fit: '每月 150–300GB、需要 TikTok 或 ChatGPT 的用户；优惠码 shanyue。',
-    unfit: '每月流量超过 1TB 的用户。'
+  'xingdaomeng': {
+    strength: '月付套餐走 IEPL 专线，超量 ¥25/月 150GB、闪光 ¥70/月 500GB、旗舰 ¥130/月 1TB；贴心小包 ¥96/年（每月 60GB）和 100GB ¥100、300GB ¥300、1TB ¥600 三款不限时包走 IPLC。节点很全：香港×20、台湾×10、日本×10、新加坡×10、美国×10，另有韩国、阿根廷、东南亚和欧洲等地区。',
+    limitation: '起步价和同档机场差不多，没有特别突出的低价套餐。',
+    fit: '需要冷门地区节点（韩国、阿根廷、印度等）的用户；优惠码 nmw888。',
+    unfit: '只看最低价的用户。'
   },
-  'lingmao': {
-    strength: '月付 Small ¥25/月 150GB，全 IPLC 专线、最高 1000Mbps 带宽、不限客户端，原生 IP 解锁 Netflix、ChatGPT、Gemini、TikTok，客服全天在线。年付 Small ¥195/年（每月 150GB，折合约 ¥16/月）性价比不错。',
-    limitation: '最高档只有 300GB/月，没有不限时套餐。',
-    fit: '每月 150–300GB、愿意年付换更低单价的用户；优惠码 lingmao。',
-    unfit: '每月需要 500GB 以上流量的重度用户。'
+  'yifanyun': {
+    strength: 'IEPL 专线，轻享版 ¥20/月 150GB（季付 ¥55、半年 ¥98、年付 ¥168）、舒享版 ¥35/月 350GB、极致版 ¥95/月 1.2TB，同价位流量非常足；年付小包 ¥98/年（每月 60GB），另有 100GB ¥100、250GB ¥200、500GB ¥400 三款不限时包。共 72 个节点，核对时全部在线。',
+    limitation: '本站资料只确认了轻享版、舒享版为 IEPL 专线，尊享版、极致版的线路本站暂未核实，建议向客服确认。',
+    fit: '每月流量大、想压低每 GB 成本的用户；优惠码 1FLYYUN。',
+    unfit: '要求每一档都写明专线的用户。'
+  },
+  'wuyou': {
+    strength: '舒心链接 ¥19/月 100GB，是榜单里月付门槛最低的；全 IPLC 专线、1 倍率，官网写明支持 ChatGPT、Gemini 与 4K Netflix/Disney+。另有 MINI 年付 ¥79/年 和 100GB ¥108、300GB ¥298 两款不限时包。',
+    limitation: '年付 MINI 每月只有 40GB；本次核对时 49 个节点中有 13 个离线，在线率偏低。',
+    fit: '预算每月 ¥20 以内、主要用 AI 和看视频的学生与上班族；优惠码 wuyou。',
+    unfit: '每月需要 1TB 以上流量的重度用户。'
   }
 };
 
 const faqItems = [
-  { q: '2026 年机场推荐哪家？', a: `综合线路、价格和流量，${UPDATED_MONTH}本站排名第一的是 SOGO云：月付 ¥25 起 150GB，全 IEPL 专线、晚高峰不降速。预算更低可以选无忧（¥19/月 100GB）或跨界（¥20/月 120GB）；只想年付的轻度用户可以选飞猫云学生版（¥84/年）。` },
+  { q: '2026 年机场推荐哪家？', a: `综合线路、价格和流量，${UPDATED_MONTH}本站排名第一的是 SOGO云：月付 ¥25 起 150GB，全 IPLC 专线、晚高峰不降速。预算更低可以选二猫云（¥20/月 130GB，IEPL 专线）或无忧（¥19/月 100GB）；只想年付的轻度用户可以选飞猫云学生版（¥84/年）。` },
   { q: '我应该怎么选出适合自己的套餐？', a: '第一看预算，确定每月愿意花多少钱；第二看流量，偶尔查资料、用 AI 每月 50GB 以内就够，天天看视频需要 150GB 以上，追 4K 剧或全家共用要 300–600GB；第三看付款周期，第一次用某家机场建议先买月付，满意后再年付。' },
   { q: '月付和年付有什么区别？“¥8 起”是月付价吗？', a: '不是。很多机场首页写的“¥8 起”是年付总价平摊到每月的价格，需要一次付清一年费用，而且年付小包的流量通常只有 40–60GB/月。真正按月付款的套餐一般在 ¥18–¥27 之间。选购时请分清“月付实际价格”和“年付折合月价”。' },
-  { q: 'IPLC 和 IEPL 专线机场有什么好处？', a: 'IPLC/IEPL 是跨境专线，不经过公网拥堵的国际出口，晚高峰掉速、断流的概率比普通中转线路小，延迟也更稳定。本榜 Top 8 全部是 IPLC 或 IEPL 专线机场。' },
-  { q: '为什么 SOGO云 排第一？', a: 'SOGO云 的月付套餐全部是 IEPL 专线，¥25 就有 150GB，节点覆盖 10 多个地区，并且有年付 8 折到三年 6 折的长期折扣和 4 款不限时流量包，能覆盖从轻度到重度的大部分需求。SOGO云 也是本站的合作品牌，我们会通过推广链接获得佣金，但你支付的价格不变。' },
+  { q: 'IPLC 和 IEPL 专线机场有什么好处？', a: 'IPLC/IEPL 是跨境专线，不经过公网拥堵的国际出口，晚高峰掉速、断流的概率比普通中转线路小，延迟也更稳定。本榜 Top 8 中' + (nonDedicated.length ? `除 ${nonDedicated.map(p => p.name).join('、')}（BGP 中转）外，其余都是` : '全部是') + ' IPLC 或 IEPL 专线机场。' },
+  { q: '为什么 SOGO云 排第一？', a: 'SOGO云 全部套餐都是 IPLC 专线，¥25 就有 150GB，60 个主力节点覆盖港台日新美，另有马来西亚、欧洲等地区，并且有年付 8 折到三年 6 折的长期折扣和 4 款不限时流量包，能覆盖从轻度到重度的大部分需求；新用户用优惠码 sogo10000 还能打 9 折。SOGO云 也是本站的合作品牌，我们会通过推广链接获得佣金，但你支付的价格不变。' },
 ];
 
 const jsonLd = [
@@ -121,10 +141,10 @@ const jsonLd = [
       <header class="page-header">
         <div class="eyebrow">机场排行榜 · 更新于 <time datetime={UPDATED_ISO}>{UPDATED_LABEL}</time></div>
         <h1>{title}</h1>
-        <p class="lead">这份排行榜是 <a href="/">机场推荐</a> 的详细版：我们从 {totalCount} 家机场里挑出 8 家 IPLC/IEPL 专线机场，按线路质量、月付价格、流量性价比、年付折扣和不限时套餐综合排序。每家都写清楚了适合谁、不适合谁，直接对照自己的预算和用量选就行。</p>
+        <p class="lead">这份排行榜是 <a href="/">机场推荐</a> 的详细版：我们从 {totalCount} 家机场里挑出 8 家进入 Top 8（另附第 9–{ranked.length} 名备选），按线路质量、月付价格、流量性价比、年付折扣和不限时套餐综合排序。每家都写清楚了适合谁、不适合谁，直接对照自己的预算和用量选就行。</p>
         <ol class="top-list">
-          {top8.map((p) => (
-            <li><a href={`/airport/${p.slug}/`}><strong>{p.name}</strong></a> — 月付 ¥{p.entryPrice} 起，{p.lineClaims.join('/')} 专线{p.promoCode ? `，优惠码 ${p.promoCode}` : ''}</li>
+          {ranked.map((p) => (
+            <li><a href={`/airport/${p.slug}/`}><strong>{p.name}</strong></a> — 月付 ¥{p.entryPrice} 起，{p.lineClaims.join('/')} {nonDedicated.includes(p) ? '中转' : '专线'}{p.promoCode ? `，优惠码 ${p.promoCode}` : ''}</li>
           ))}
         </ol>
       </header>
@@ -145,9 +165,9 @@ const jsonLd = [
       </section>
 
       <section id="editorial-picks" class="ranking-rail">
-        <h2>Top 8 机场逐家评测</h2>
+        <h2>Top 8 机场逐家评测（附第 9–{ranked.length} 名）</h2>
         <div class="rail-container">
-          {top8.map(p => {
+          {ranked.map((p, i) => {
             const review = editorialReviews[p.id] || {
               strength: '提供了相对平衡的套餐选择。',
               limitation: '暂无明显的特定短板或长板数据记录。',
@@ -155,10 +175,12 @@ const jsonLd = [
               unfit: '追求极致定制化体验的用户。'
             };
             return (
+            <Fragment>
+            {i === 8 && <h3 class="rail-subhead">第 9–{ranked.length} 名：备选推荐</h3>}
             <div class={`rail-card ${p.editorialRank && p.editorialRank <= 3 ? 'is-top3' : ''}`}>
               <div class="rail-header">
                 <div class="identity">
-                  <span class={`rank-number ${p.editorialRank && p.editorialRank <= 3 ? 'rank-number-top' : ''}`}>#0{p.editorialRank}</span>
+                  <span class={`rank-number ${p.editorialRank && p.editorialRank <= 3 ? 'rank-number-top' : ''}`}>#{String(p.editorialRank).padStart(2, '0')}</span>
                   <ProviderLogo name={p.name} logo={p.logo} size="md" />
                   <h3 class="brand-name"><a href={`/airport/${p.slug}/`}>{p.name}</a></h3>
                 </div>
@@ -218,6 +240,7 @@ const jsonLd = [
                 </div>
               </div>
             </div>
+            </Fragment>
           )})}
         </div>
       </section>
@@ -322,6 +345,13 @@ const jsonLd = [
     font-size: var(--text-xl);
     margin-bottom: var(--spacing-6);
     color: var(--color-text-main);
+  }
+  .rail-subhead {
+    font-size: var(--text-lg);
+    color: var(--color-text-main);
+    margin-top: var(--spacing-4);
+    padding-top: var(--spacing-6);
+    border-top: 1px solid var(--color-border);
   }
   .rail-container {
     display: flex;

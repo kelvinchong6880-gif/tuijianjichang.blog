@@ -39,7 +39,7 @@ const finalHighlights = highlights.slice(0, 3);
             <a href={`/airport/${provider.slug}/`} class="card-link">{provider.name}</a>
           </h3>
           {provider.editorialPick ? (
-            <span class="rank-marker">#0{provider.editorialRank} 编辑推荐</span>
+            <span class="rank-marker">#{String(provider.editorialRank).padStart(2, '0')} 编辑推荐</span>
           ) : (
             <span class="rank-marker text-muted">数据库收录</span>
           )}
