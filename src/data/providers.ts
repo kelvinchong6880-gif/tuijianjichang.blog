@@ -302,6 +302,7 @@ export const providers: Provider[] = [
     "trafficMax": 1100,
     "trafficDisplay": "60GB–1.1TB",
     "lineClaims": [
+      "IEPL",
       "IPLC"
     ],
     "hasNoExpiry": true,
@@ -340,7 +341,7 @@ export const providers: Provider[] = [
         "trafficDisplay": "150GB / 30天",
         "deviceLimit": "不限",
         "speedLimit": "2.5Gbps (峰值)",
-        "lineType": "IPLC",
+        "lineType": "IEPL",
         "streaming": true,
         "ai": true,
         "features": [
@@ -358,7 +359,7 @@ export const providers: Provider[] = [
         "trafficDisplay": "350GB / 30天",
         "deviceLimit": "不限",
         "speedLimit": "2.5Gbps (峰值)",
-        "lineType": "IPLC",
+        "lineType": "IEPL",
         "streaming": true,
         "ai": true,
         "features": [
@@ -376,7 +377,7 @@ export const providers: Provider[] = [
         "trafficDisplay": "550GB / 30天",
         "deviceLimit": "不限",
         "speedLimit": "2.5Gbps (峰值)",
-        "lineType": "IPLC",
+        "lineType": "IEPL",
         "streaming": true,
         "ai": true,
         "features": [
@@ -394,7 +395,7 @@ export const providers: Provider[] = [
         "trafficDisplay": "1.1TB / 30天",
         "deviceLimit": "不限",
         "speedLimit": "2.5Gbps (峰值)",
-        "lineType": "IPLC",
+        "lineType": "IEPL",
         "streaming": true,
         "ai": true,
         "features": [
@@ -421,7 +422,7 @@ export const providers: Provider[] = [
       },
       {
         "name": "SOGO优选餐不限时版",
-        "price": 250,
+        "price": 220,
         "currency": "CNY",
         "billingType": "One-Time",
         "validity": "Permanent",
@@ -482,7 +483,7 @@ export const providers: Provider[] = [
         "recordedDate": "2026-10-30",
         "verifiedDate": "2026-10-30",
         "supportedFacts": [
-          "IPLC 专线与 VLESS 协议",
+          "IEPL/IPLC 专线与 VLESS 协议",
           "套餐价格与流量",
           "不限速、不限设备",
           "优惠码 sogo10000 新用户 9 折",

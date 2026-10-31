@@ -14,13 +14,13 @@ export interface CustomContent {
 
 export const customContent: Record<string, CustomContent> = {
   'sogo-yun': {
-    title: 'SOGO云怎么样？2026 SOGO云机场评测：套餐价格、IPLC线路与优惠码',
-    desc: 'SOGO云机场评测（2026年10月更新）：月付¥25起150GB，全IPLC专线、VLESS协议、不限速不限设备，原生IP解锁Netflix与ChatGPT。9个套餐对比、60节点测速截图与新用户9折优惠码sogo10000。',
+    title: 'SOGO云怎么样？2026 SOGO云机场评测：套餐价格、IEPL/IPLC专线与优惠码',
+    desc: 'SOGO云机场评测（2026年10月更新）：月付¥25起150GB，全IEPL/IPLC专线、VLESS协议、不限速不限设备，原生IP解锁Netflix与ChatGPT。9个套餐对比、60节点测速截图与新用户9折优惠码sogo10000。',
     h1: 'SOGO云怎么样？2026 SOGO云机场评测与套餐选购指南',
     intro: `
       <div class="custom-editorial">
         <h2>SOGO云怎么样？一句话结论</h2>
-        <p><strong>SOGO云是本站 2026 年 10 月的首推机场。</strong>全部套餐走 <a href="/compare/iplc-vs-iepl/">IPLC 专线</a>，使用 VLESS 协议，全节点不限速、不限制客户端和设备数量，节点提供原生 IP，支持 Netflix、YouTube、Disney+、HBO 等流媒体和 ChatGPT、Gemini、Claude 等 AI 服务。价格方面，<strong>¥25/月就有 150GB</strong>，同时提供 ¥98/年 的 60GB 小包和 4 款流量永不过期的不限时包，从轻度用户到家庭共用都能找到合适档位。</p>
+        <p><strong>SOGO云是本站 2026 年 10 月的首推机场。</strong>全部套餐走 <a href="/compare/iplc-vs-iepl/">IEPL/IPLC 专线</a>（月付套餐为 IEPL，不限时包为 IPLC），使用 VLESS 协议，全节点不限速、不限制客户端和设备数量，节点提供原生 IP，支持 Netflix、YouTube、Disney+、HBO 等流媒体和 ChatGPT、Gemini、Claude 等 AI 服务。价格方面，<strong>¥25/月就有 150GB</strong>，同时提供 ¥98/年 的 60GB 小包和 4 款流量永不过期的不限时包，从轻度用户到家庭共用都能找到合适档位。</p>
         <p>如果你不想花时间比较几十家机场，直接从 SOGO云 的 ¥25 基础版月付开始用，是目前最省心的选择。新用户下单时填写优惠码 <code>sogo10000</code> 可享 9 折，具体以结算页显示为准。</p>
       </div>
     `,
@@ -31,7 +31,7 @@ export const customContent: Record<string, CustomContent> = {
           <li><strong>官网</strong>：sogocloud.world（支持免翻墙访问，方便获取订阅和售后）</li>
           <li><strong>官方频道</strong>：Telegram @sogocloudzxjc</li>
           <li><strong>成立时间</strong>：2026 年，技术和运营团队有 8 年行业经验，并有海外技术团队维护线路</li>
-          <li><strong>线路与协议</strong>：IPLC 专线 · VLESS 协议</li>
+          <li><strong>线路与协议</strong>：IEPL/IPLC 专线 · VLESS 协议</li>
           <li><strong>限制</strong>：全节点不限速，不限制客户端和设备数量</li>
           <li><strong>付款方式</strong>：支付宝、微信支付、USDT（TRC20）</li>
           <li><strong>免费试用</strong>：无，建议先买一个月基础版试用</li>
@@ -39,8 +39,8 @@ export const customContent: Record<string, CustomContent> = {
         </ul>
 
         <h2>为什么 SOGO云 排在机场推荐第一？</h2>
-        <h3>1. 全部套餐都是 IPLC 专线</h3>
-        <p>很多低价机场只有贵的档位才给专线，SOGO云 从 ¥25 的基础版到 ¥98 的年付小包、再到不限时流量包，全部走 IPLC 专线。IPLC 是跨境私有专线，不经过拥堵的公网国际出口，晚高峰（晚上 8–11 点）掉速、断流的概率比普通中转线路小得多。</p>
+        <h3>1. 全部套餐都是专线</h3>
+        <p>很多低价机场只有贵的档位才给专线，SOGO云 从 ¥25 的基础版到 ¥98 的年付小包、再到不限时流量包，全部走专线：月付套餐是 IEPL，不限时包是 IPLC。两者都是跨境专线，不经过拥堵的公网国际出口，晚高峰（晚上 8–11 点）掉速、断流的概率比普通中转线路小得多。</p>
 
         <h3>2. 节点多、地区全</h3>
         <p>主力节点为香港×20、台湾×10、日本×10、新加坡×10、美国×10，另有马来西亚、英国、法国、德国、土耳其、泰国、巴西等地区。日常看 YouTube 选香港/日本，用 ChatGPT 选美国/新加坡/日本，追日剧选日本，都有充足的节点可以切换。</p>
@@ -55,7 +55,7 @@ export const customContent: Record<string, CustomContent> = {
         <p>建议先买一个月试用，确认稳定后再改成年付，能省下 20% 以上。</p>
 
         <h3>4. 不限时流量包适合备用</h3>
-        <p>SOGO云 有 120GB（¥120）、250GB（¥250）、500GB（¥450）、1TB（¥850）四款不限时流量包，一次购买、流量永久有效，用完为止。适合一个月只用几次的人，或者给主力机场配一个备用。注意不限时包不参与年付/多年付折扣。</p>
+        <p>SOGO云 有 120GB（¥120）、250GB（¥220）、500GB（¥450）、1TB（¥850）四款不限时流量包，一次购买、流量永久有效，用完为止。适合一个月只用几次的人，或者给主力机场配一个备用。注意不限时包不参与年付/多年付折扣。</p>
 
         <h3>5. 测速参考：60 个节点实测截图</h3>
         <p>下面两张是 FFQ.LA 公开测速平台在 2026 年 4 月 13 日对 SOGO云 60 个节点（香港 20、台湾 10、日本 10、新加坡 10、美国 10）的两轮测试，测试环境为辽宁移动 1Gbps 宽带、8 线程：</p>
@@ -82,9 +82,9 @@ export const customContent: Record<string, CustomContent> = {
           <li><strong>优选版</strong>：¥45/月，350GB——经常追剧、偶尔下载</li>
           <li><strong>强化版</strong>：¥80/月，550GB——4K 观影、多设备</li>
           <li><strong>顶配版</strong>：¥150/月，1.1TB——全家共用、小团队</li>
-          <li><strong>不限时版</strong>：120GB ¥120 / 250GB ¥250 / 500GB ¥450 / 1TB ¥850，流量永久有效</li>
+          <li><strong>不限时版</strong>：120GB ¥120 / 250GB ¥220 / 500GB ¥450 / 1TB ¥850，流量永久有效</li>
         </ul>
-        <p>以上套餐全部是 IPLC 专线，都不限制同时在线设备数，电脑、手机、路由器可以一起用。新用户使用优惠码 <code>sogo10000</code> 享 9 折。</p>
+        <p>以上套餐全部是 IEPL/IPLC 专线，都不限制同时在线设备数，电脑、手机、路由器可以一起用。新用户使用优惠码 <code>sogo10000</code> 享 9 折。</p>
       </div>
     `,
   },

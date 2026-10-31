@@ -15,7 +15,7 @@ import { UPDATED_ISO, UPDATED_LABEL, UPDATED_MONTH, UPDATED_MONTH_SHORT, EDITOR,
 
 const totalCount = providers.length;
 const title = `2026机场排行榜：Top 8 机场评测与对比（${UPDATED_MONTH_SHORT}更新）`;
-const description = `${UPDATED_MONTH}机场排行榜：从${totalCount}家机场中选出 Top 8，逐一对比月付价格、年付折扣、IPLC/IEPL 线路、流量与不限时套餐，附优惠码与选购 FAQ。第一名 SOGO云 月付¥25起150GB全IPLC专线。`;
+const description = `${UPDATED_MONTH}机场排行榜：从${totalCount}家机场中选出 Top 8，逐一对比月付价格、年付折扣、IPLC/IEPL 线路、流量与不限时套餐，附优惠码与选购 FAQ。第一名 SOGO云 月付¥25起150GB全IEPL/IPLC专线。`;
 
 const ranked = providers.filter(p => p.editorialPick).sort((a, b) => a.editorialRank! - b.editorialRank!);
 const top8 = ranked.slice(0, 8);
@@ -23,7 +23,7 @@ const nonDedicated = top8.filter(p => !p.lineClaims.some(l => l === 'IPLC' || l 
 
 const editorialReviews: Record<string, { strength: string, limitation: string, fit: string, unfit: string }> = {
   'sogo-yun': {
-    strength: '全部套餐走 IPLC 专线、VLESS 协议，¥25/月 150GB 起；全节点不限速、不限设备，官方标称单节点峰值 2.5Gbps，原生 IP 解锁 Netflix、Disney+、ChatGPT、Claude。主力节点香港×20、台湾×10、日本×10、新加坡×10、美国×10，另有马来西亚、欧洲等地区。月付支持年付 8 折、两年 7 折、三年 6 折，另有 4 款不限时流量包，新用户优惠码 sogo10000 享 9 折。',
+    strength: '全部套餐走 IEPL/IPLC 专线、VLESS 协议，¥25/月 150GB 起；全节点不限速、不限设备，官方标称单节点峰值 2.5Gbps，原生 IP 解锁 Netflix、Disney+、ChatGPT、Claude。主力节点香港×20、台湾×10、日本×10、新加坡×10、美国×10，另有马来西亚、欧洲等地区。月付支持年付 8 折、两年 7 折、三年 6 折，另有 4 款不限时流量包，新用户优惠码 sogo10000 享 9 折。',
     limitation: '¥25 的月付起步价不是全站最低（无忧 ¥19、二猫云 ¥20 更便宜）；没有免费试用；不限时流量包不参与长期付费折扣。',
     fit: '想“一次选对、不再折腾”的用户：日常 150GB 选基础版 ¥25/月，追剧选优选版 ¥45/月 350GB，全家共用选顶配版 ¥150/月 1.1TB；轻度用户可选 ¥98/年 的 60GB 小包。',
     unfit: '只追求最低价、每月预算 ¥20 以下的用户，可以看无忧或二猫云。'
@@ -91,11 +91,11 @@ const editorialReviews: Record<string, { strength: string, limitation: string, f
 };
 
 const faqItems = [
-  { q: '2026 年机场推荐哪家？', a: `综合线路、价格和流量，${UPDATED_MONTH}本站排名第一的是 SOGO云：月付 ¥25 起 150GB，全 IPLC 专线、晚高峰不降速。预算更低可以选二猫云（¥20/月 130GB，IEPL 专线）或无忧（¥19/月 100GB）；只想年付的轻度用户可以选飞猫云学生版（¥84/年）。` },
+  { q: '2026 年机场推荐哪家？', a: `综合线路、价格和流量，${UPDATED_MONTH}本站排名第一的是 SOGO云：月付 ¥25 起 150GB，全 IEPL/IPLC 专线、晚高峰不降速。预算更低可以选二猫云（¥20/月 130GB，IEPL 专线）或无忧（¥19/月 100GB）；只想年付的轻度用户可以选飞猫云学生版（¥84/年）。` },
   { q: '我应该怎么选出适合自己的套餐？', a: '第一看预算，确定每月愿意花多少钱；第二看流量，偶尔查资料、用 AI 每月 50GB 以内就够，天天看视频需要 150GB 以上，追 4K 剧或全家共用要 300–600GB；第三看付款周期，第一次用某家机场建议先买月付，满意后再年付。' },
   { q: '月付和年付有什么区别？“¥8 起”是月付价吗？', a: '不是。很多机场首页写的“¥8 起”是年付总价平摊到每月的价格，需要一次付清一年费用，而且年付小包的流量通常只有 40–60GB/月。真正按月付款的套餐一般在 ¥18–¥27 之间。选购时请分清“月付实际价格”和“年付折合月价”。' },
   { q: 'IPLC 和 IEPL 专线机场有什么好处？', a: 'IPLC/IEPL 是跨境专线，不经过公网拥堵的国际出口，晚高峰掉速、断流的概率比普通中转线路小，延迟也更稳定。本榜 Top 8 中' + (nonDedicated.length ? `除 ${nonDedicated.map(p => p.name).join('、')}（BGP 中转）外，其余都是` : '全部是') + ' IPLC 或 IEPL 专线机场。' },
-  { q: '为什么 SOGO云 排第一？', a: 'SOGO云 全部套餐都是 IPLC 专线，¥25 就有 150GB，60 个主力节点覆盖港台日新美，另有马来西亚、欧洲等地区，并且有年付 8 折到三年 6 折的长期折扣和 4 款不限时流量包，能覆盖从轻度到重度的大部分需求；新用户用优惠码 sogo10000 还能打 9 折。SOGO云 也是本站的合作品牌，我们会通过推广链接获得佣金，但你支付的价格不变。' },
+  { q: '为什么 SOGO云 排第一？', a: 'SOGO云 全部套餐都是 IEPL/IPLC 专线，¥25 就有 150GB，60 个主力节点覆盖港台日新美，另有马来西亚、欧洲等地区，并且有年付 8 折到三年 6 折的长期折扣和 4 款不限时流量包，能覆盖从轻度到重度的大部分需求；新用户用优惠码 sogo10000 还能打 9 折。SOGO云 也是本站的合作品牌，我们会通过推广链接获得佣金，但你支付的价格不变。' },
 ];
 
 const jsonLd = [

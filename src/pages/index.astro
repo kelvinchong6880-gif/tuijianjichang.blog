@@ -16,7 +16,7 @@ verifyProviders(providers);
 const planCount = providers.reduce((acc, p) => acc + p.plans.length, 0);
 const n = providers.length;
 const title = `机场推荐2026：${n}家机场对比与Top 8排行（${UPDATED_MONTH_SHORT}更新）`;
-const description = `2026机场推荐（${UPDATED_MONTH}更新）：整理${n}家机场${planCount}个套餐的月付价格、流量、IPLC/IEPL专线与优惠码，按预算和用量帮你挑选。本月首推SOGO云：¥25/月150GB全IPLC专线，晚高峰不降速。`;
+const description = `2026机场推荐（${UPDATED_MONTH}更新）：整理${n}家机场${planCount}个套餐的月付价格、流量、IPLC/IEPL专线与优惠码，按预算和用量帮你挑选。本月首推SOGO云：¥25/月150GB全IEPL/IPLC专线，晚高峰不降速。`;
 const allRanked = ranked();
 const top8 = allRanked.slice(0, 8);
 const backups = allRanked.slice(8);
@@ -44,7 +44,7 @@ const quickPicks = [
 
 const faqItems = [
   { q: '机场是什么？为什么叫“机场”？', a: '“机场”是国内用户对代理订阅服务的俗称：服务商把很多海外服务器（节点）打包成一个订阅链接，你导入 Clash、Shadowrocket 等客户端后就能一键连接，就像从“机场”选航班一样选节点。机场按套餐收费，每月给你一定流量。' },
-  { q: '2026 年机场推荐哪家？', a: `${UPDATED_MONTH}本站首推 ${first.name}：月付 ¥${first.entryPrice} 起 150GB，全 IPLC 专线、晚高峰不降速。追求最低价可以看 ${cheapestMonthly.p.name}（¥${cheapestMonthly.pl.price}/月起），轻度用户可以看 ${cheapestYearly.p.name} 的年付小包（¥${cheapestYearly.pl.price}/年）。完整排名见 Top 8 机场排行榜。` },
+  { q: '2026 年机场推荐哪家？', a: `${UPDATED_MONTH}本站首推 ${first.name}：月付 ¥${first.entryPrice} 起 150GB，全 IEPL/IPLC 专线、晚高峰不降速。追求最低价可以看 ${cheapestMonthly.p.name}（¥${cheapestMonthly.pl.price}/月起），轻度用户可以看 ${cheapestYearly.p.name} 的年付小包（¥${cheapestYearly.pl.price}/年）。完整排名见 Top 8 机场排行榜。` },
   { q: '怎么选机场？最重要看什么？', a: '看四点：① 线路——优先选 IPLC/IEPL 专线机场，晚高峰更稳；② 价格——分清“月付价”和“年付折合月价”；③ 流量——轻度 50GB、日常 150GB、追剧 300GB、全家 600GB 以上；④ 解锁——用 ChatGPT 或 Netflix 的话，确认官网写明支持。' },
   { q: '便宜机场能用吗？', a: '能用，但要看线路。本站收录的机场里，¥15–¥20/月 就能买到 100–150GB 的专线套餐。真正需要警惕的是没有写明线路、倍率很高（如 2 倍、3 倍扣流量）或只有年付的超低价机场。第一次购买一律建议先月付试用。' },
   { q: '机场和 VPN 有什么区别？', a: '机场通常基于 Shadowsocks、Trojan、VLESS 等协议，节点多、价格低、可按地区切换；传统商业 VPN 在国内连接成功率较低、价格也更高。对国内用户来说，机场 + Clash 类客户端是目前更主流的方案。' },
@@ -84,7 +84,7 @@ const jsonLd = [
           <div class="hero-text">
             <div class="product-label">更新于 <time datetime={UPDATED_ISO}>{UPDATED_LABEL}</time></div>
             <h1>机场推荐 2026：{n} 家机场价格、线路与流量对比</h1>
-            <p class="supporting-text">不知道选哪家机场？我们整理了 {n} 家机场的 {planCount} 个套餐，按月付价格、IPLC/IEPL 专线、每月流量和不限时套餐做成对比表。本月首推 <a href={`/airport/${first.slug}/`}>{first.name}</a>：¥{first.entryPrice}/月 150GB，全 IPLC 专线。</p>
+            <p class="supporting-text">不知道选哪家机场？我们整理了 {n} 家机场的 {planCount} 个套餐，按月付价格、IPLC/IEPL 专线、每月流量和不限时套餐做成对比表。本月首推 <a href={`/airport/${first.slug}/`}>{first.name}</a>：¥{first.entryPrice}/月 150GB，全 IEPL/IPLC 专线。</p>
             <div class="hero-cta">
               <a class="cta-primary" href="#top8">看本月 Top 8 机场推荐</a>
               <a class="cta-ghost" href="#filter">按需求筛选机场</a>
