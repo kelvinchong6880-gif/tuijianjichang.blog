@@ -81,7 +81,7 @@ export const customContent: Record<string, CustomContent> = {
           <li><strong>基础版</strong>：¥25/月，150GB——每天 1–2 小时视频的普通用户</li>
           <li><strong>优选版</strong>：¥45/月，350GB——经常追剧、偶尔下载</li>
           <li><strong>强化版</strong>：¥80/月，550GB——4K 观影、多设备</li>
-          <li><strong>顶配版</strong>：¥150/月，1.1TB——全家共用、小团队</li>
+          <li><strong>顶配版</strong>：¥150/月，1.05TB——全家共用、小团队</li>
           <li><strong>不限时版</strong>：120GB ¥120 / 250GB ¥220 / 500GB ¥450 / 1TB ¥850，流量永久有效</li>
         </ul>
         <p>以上套餐全部是 IEPL/IPLC 专线，都不限制同时在线设备数，电脑、手机、路由器可以一起用。新用户使用优惠码 <code>sogo10000</code> 享 9 折。</p>

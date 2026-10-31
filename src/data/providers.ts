@@ -299,8 +299,8 @@ export const providers: Provider[] = [
     "monthlyEntryPrice": 25,
     "currency": "CNY",
     "trafficMin": 60,
-    "trafficMax": 1100,
-    "trafficDisplay": "60GB–1.1TB",
+    "trafficMax": 1050,
+    "trafficDisplay": "60GB–1.05TB",
     "lineClaims": [
       "IEPL",
       "IPLC"
@@ -391,8 +391,8 @@ export const providers: Provider[] = [
         "currency": "CNY",
         "billingType": "Monthly",
         "validity": "Subscription",
-        "traffic": 1100,
-        "trafficDisplay": "1.1TB / 30天",
+        "traffic": 1050,
+        "trafficDisplay": "1.05TB / 30天",
         "deviceLimit": "不限",
         "speedLimit": "2.5Gbps (峰值)",
         "lineType": "IEPL",
