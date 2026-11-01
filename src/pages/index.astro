@@ -21,6 +21,7 @@ const allRanked = ranked();
 const top8 = allRanked.slice(0, 8);
 const backups = allRanked.slice(8);
 const nonDedicated = top8.filter((p) => !p.lineClaims.some((l) => l === 'IPLC' || l === 'IEPL'));
+const mixedLine = top8.filter((p) => p.lineClaims.includes('BGP') && !nonDedicated.includes(p));
 const first = top8[0];
 
 // 按需求的快速推荐（全部由数据自动计算）
@@ -235,7 +236,7 @@ const jsonLd = [
         <h2>机场推荐：新手怎么挑选机场？</h2>
         <p>“机场”是国内用户对代理订阅服务的俗称。挑机场不用看花哨的宣传，抓住下面四个标准，基本不会踩坑：</p>
         <h3>1. 线路：优先选 IPLC / IEPL 专线</h3>
-        <p>普通中转线路走公网国际出口，晚上 8–11 点容易拥堵掉速。<a href="/compare/iplc-vs-iepl/">IPLC 和 IEPL</a> 是跨境专线，延迟低、晚高峰稳定。{nonDedicated.length ? `本站 Top 8 推荐中，除 ${nonDedicated.map((p) => p.name).join('、')} 为 BGP 中转外，其余都是专线机场。` : '本站 Top 8 推荐全部是专线机场。'}</p>
+        <p>普通中转线路走公网国际出口，晚上 8–11 点容易拥堵掉速。<a href="/compare/iplc-vs-iepl/">IPLC 和 IEPL</a> 是跨境专线，延迟低、晚高峰稳定。{nonDedicated.length ? `本站 Top 8 推荐中，除 ${nonDedicated.map((p) => p.name).join('、')} 为 BGP 中转外，其余都是专线机场。` : '本站 Top 8 推荐全部是专线机场。'}{mixedLine.length ? `其中 ${mixedLine.map((p) => p.name).join('、')} 的高档套餐走 BGP，不是专线。` : ''}</p>
         <h3>2. 价格：分清“月付价”和“年付折合价”</h3>
         <p>首页写“¥8 起”的，通常是年付总价除以 12，而且流量只有 40–60GB/月。真正的月付价格多在 ¥15–¥27 之间。第一次用某家机场，建议先买一个月试用，稳定了再年付，很多机场年付能打 8 折、三年付能打 6 折。详见 <a href="/compare/monthly-vs-no-expiry/">月付、年付和不限时怎么选</a>。</p>
         <h3>3. 流量：按实际用量买，不要一步到位</h3>

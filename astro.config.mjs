@@ -3,7 +3,7 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 // 与 src/data/site.ts 中的 UPDATED 保持一致：更新数据后两处一起改
-const LASTMOD = new Date('2026-10-04T00:00:00+08:00');
+const LASTMOD = new Date('2026-11-01T00:00:00+08:00');
 
 // https://astro.build/config
 export default defineConfig({

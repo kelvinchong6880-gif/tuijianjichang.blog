@@ -261,6 +261,17 @@ export const providers: Provider[] = [
         ]
       },
       {
+        "type": "third_party",
+        "urlOrFile": "MiaoKo 测速截图（珠海联通 9Gbps、32 线程，50 个节点）",
+        "sourceDate": "2026-07-18",
+        "recordedDate": "2026-11-01",
+        "verifiedDate": null,
+        "supportedFacts": [
+          "50 个节点平均与最高下载速度",
+          "YouTube、Netflix、Disney+ 解锁检测"
+        ]
+      },
+      {
         "type": "official",
         "urlOrFile": "萤火虫套餐价格.txt",
         "sourceDate": null,
@@ -492,6 +503,17 @@ export const providers: Provider[] = [
         ]
       },
       {
+        "type": "user",
+        "urlOrFile": "Cloudflare 网速测试截图",
+        "sourceDate": "2026-11-01",
+        "recordedDate": "2026-11-01",
+        "verifiedDate": null,
+        "supportedFacts": [
+          "下载与上传速度",
+          "延迟、抖动与丢包率"
+        ]
+      },
+      {
         "type": "third_party",
         "urlOrFile": "FFQ.LA 公开测速截图（辽宁移动 1Gbps、8 线程，60 个节点）",
         "sourceDate": "2026-04-13",
@@ -675,7 +697,7 @@ export const providers: Provider[] = [
     "slug": "yifanyun",
     "logo": "/images/providers/yifanyun-logo.webp",
     "promoCode": "1FLYYUN",
-    "editorialRank": 10,
+    "editorialRank": 11,
     "editorialPick": true,
     "entryPrice": 20,
     "monthlyEntryPrice": 20,
@@ -1097,7 +1119,7 @@ export const providers: Provider[] = [
     "logo": "/images/providers/guangsuyun-logo.webp",
     "promoCode": "AMM",
     "promoNote": "8 折",
-    "editorialRank": 8,
+    "editorialRank": 9,
     "editorialPick": true,
     "entryPrice": 23,
     "monthlyEntryPrice": 23,
@@ -1823,7 +1845,7 @@ export const providers: Provider[] = [
     "slug": "wuyou",
     "logo": "/images/providers/wuyou-logo.webp",
     "promoCode": "wuyou",
-    "editorialRank": 11,
+    "editorialRank": 12,
     "editorialPick": true,
     "entryPrice": 19,
     "monthlyEntryPrice": 19,
@@ -1966,7 +1988,7 @@ export const providers: Provider[] = [
     "slug": "xingdaomeng",
     "logo": "/images/providers/xingdaomeng-logo.webp",
     "promoCode": "nmw888",
-    "editorialRank": 9,
+    "editorialRank": 10,
     "editorialPick": true,
     "entryPrice": 25,
     "monthlyEntryPrice": 25,
@@ -1982,7 +2004,7 @@ export const providers: Provider[] = [
     "streamingClaim": true,
     "aiClaim": true,
     "nodeRegions": "香港×20、台湾×10、日本×10、新加坡×10、美国×10、韩国×2、阿根廷×2、马来西亚、越南、菲律宾、泰国、印度、德国、法国、英国等，共 69 个节点（核对时 63 个在线）",
-    "affiliateUrl": "https://kfccbb.xingdaomeng.com/#/?code=0YcwWgSw",
+    "affiliateUrl": "https://vip06.xdmaffvip.com/#/?code=0YcwWgSw",
     "lastVerified": "2026-10-30",
     "plans": [
       {
@@ -2990,8 +3012,8 @@ export const providers: Provider[] = [
     "logo": "/images/providers/flyv-logo.webp",
     "promoCode": "fly20",
     "promoNote": "新手 8 折",
-    "editorialRank": null,
-    "editorialPick": false,
+    "editorialRank": 8,
+    "editorialPick": true,
     "entryPrice": 25,
     "monthlyEntryPrice": 25,
     "currency": "CNY",
@@ -3146,6 +3168,18 @@ export const providers: Provider[] = [
         "supportedFacts": [
           "优惠码与折扣",
           "套餐流量"
+        ]
+      },
+      {
+        "type": "user",
+        "urlOrFile": "Cloudflare 网速测试与 YouTube 播放统计截图",
+        "sourceDate": "2026-10-31",
+        "recordedDate": "2026-11-01",
+        "verifiedDate": null,
+        "supportedFacts": [
+          "下载与上传速度",
+          "延迟、抖动与丢包率",
+          "YouTube 1080P 播放数据"
         ]
       },
       {

@@ -20,6 +20,7 @@ const description = `${UPDATED_MONTH}机场排行榜：从${totalCount}家机场
 const ranked = providers.filter(p => p.editorialPick).sort((a, b) => a.editorialRank! - b.editorialRank!);
 const top8 = ranked.slice(0, 8);
 const nonDedicated = top8.filter(p => !p.lineClaims.some(l => l === 'IPLC' || l === 'IEPL'));
+const mixedLine = top8.filter(p => p.lineClaims.includes('BGP') && !nonDedicated.includes(p));
 
 const editorialReviews: Record<string, { strength: string, limitation: string, fit: string, unfit: string }> = {
   'sogo-yun': {
@@ -41,7 +42,7 @@ const editorialReviews: Record<string, { strength: string, limitation: string, f
     unfit: '对晚高峰稳定性要求很高、只认专线的用户，可以选 SOGO云或飞猫云。'
   },
   'weifeng': {
-    strength: '全 IPLC 专线、不限速、不限设备。乘风 ¥27/月 就有 200GB，破风 ¥57/月 500GB，御风 ¥127/月 1.2TB 是 Top 8 里 1TB 以上套餐单价最低的；另有清风 ¥137/年（每月 100GB）和两款不限时包（270GB ¥200、570GB ¥370）。',
+    strength: '全 IPLC 专线、不限速、不限设备。乘风 ¥27/月 就有 200GB，破风 ¥57/月 500GB，御风 ¥127/月 1.2TB 是 Top 8 里 1TB 以上专线套餐单价最低的；另有清风 ¥137/年（每月 100GB）和两款不限时包（270GB ¥200、570GB ¥370）。',
     limitation: '官网没有单独写明流媒体与 AI 解锁情况；月付起步价 ¥27 在 Top 8 里偏高。',
     fit: '每月用 200GB 以上、看重专线稳定性的用户；优惠码 weifeng90 全场 7 折，乘风折后约 ¥19/月。',
     unfit: '每月只用几十 GB 的轻度用户，选年付小包更划算的机场会更省。'
@@ -63,6 +64,12 @@ const editorialReviews: Record<string, { strength: string, limitation: string, f
     limitation: '节点 49 个，比头部几家少；不限时只有 100GB 一款。',
     fit: '想要专线、套餐简单好选的常规用户；优惠码 firefly（新用户 8 折）。',
     unfit: '需要冷门地区节点或大容量不限时包的用户。'
+  },
+  'flyv': {
+    strength: '入门方案 ¥25/月 150GB，进阶方案 ¥50/月 380GB（IPLC 专线），中档流量给得足；高端方案 ¥110/月 800GB、商业方案 ¥190/月 1.8TB 走 BGP，适合大流量用户。年付轻量版 ¥99/年（每月 65GB），另有 130GB ¥189、380GB ¥479、600GB ¥799 三款不限时包，官网写明支持流媒体与 AI 服务。',
+    limitation: '各档线路不统一：进阶方案是 IPLC，高端和商业方案是 BGP，入门方案和年付版本站资料未标注线路；不限时包单价偏高（130GB 要 ¥189）。',
+    fit: '每月 150–400GB 的常规用户，尤其是想花 ¥50 买 380GB IPLC 流量的追剧用户；优惠码 fly20（新手 8 折）。',
+    unfit: '要求每一档都走专线的用户，可以选 SOGO云或飞猫云；只想买小额不限时备用流量的用户。'
   },
   'guangsuyun': {
     strength: '全 IPLC 专线，极速版 ¥23/月 138GB、流光版 ¥34/月 238GB、量子版 ¥68/月 450GB、无界版 ¥130/月 900GB，中档套餐流量给得足。节点覆盖港、台、日、新、马、美、德、法、英、土、越等地区，官网写明支持流媒体与 AI。共 69 个节点，长期付费有半年 9 折、年付 8 折、两年 75 折。',
@@ -94,7 +101,7 @@ const faqItems = [
   { q: '2026 年机场推荐哪家？', a: `综合线路、价格和流量，${UPDATED_MONTH}本站排名第一的是 SOGO云：月付 ¥25 起 150GB，全 IEPL/IPLC 专线、晚高峰不降速。预算更低可以选二猫云（¥20/月 130GB，IEPL 专线）或无忧（¥19/月 100GB）；只想年付的轻度用户可以选飞猫云学生版（¥84/年）。` },
   { q: '我应该怎么选出适合自己的套餐？', a: '第一看预算，确定每月愿意花多少钱；第二看流量，偶尔查资料、用 AI 每月 50GB 以内就够，天天看视频需要 150GB 以上，追 4K 剧或全家共用要 300–600GB；第三看付款周期，第一次用某家机场建议先买月付，满意后再年付。' },
   { q: '月付和年付有什么区别？“¥8 起”是月付价吗？', a: '不是。很多机场首页写的“¥8 起”是年付总价平摊到每月的价格，需要一次付清一年费用，而且年付小包的流量通常只有 40–60GB/月。真正按月付款的套餐一般在 ¥18–¥27 之间。选购时请分清“月付实际价格”和“年付折合月价”。' },
-  { q: 'IPLC 和 IEPL 专线机场有什么好处？', a: 'IPLC/IEPL 是跨境专线，不经过公网拥堵的国际出口，晚高峰掉速、断流的概率比普通中转线路小，延迟也更稳定。本榜 Top 8 中' + (nonDedicated.length ? `除 ${nonDedicated.map(p => p.name).join('、')}（BGP 中转）外，其余都是` : '全部是') + ' IPLC 或 IEPL 专线机场。' },
+  { q: 'IPLC 和 IEPL 专线机场有什么好处？', a: 'IPLC/IEPL 是跨境专线，不经过公网拥堵的国际出口，晚高峰掉速、断流的概率比普通中转线路小，延迟也更稳定。本榜 Top 8 中' + (nonDedicated.length ? `除 ${nonDedicated.map(p => p.name).join('、')}（BGP 中转）外，其余都是` : '全部是') + ' IPLC 或 IEPL 专线机场。' + (mixedLine.length ? `其中 ${mixedLine.map(p => p.name).join('、')} 的高档套餐走 BGP，不是专线。` : '') },
   { q: '为什么 SOGO云 排第一？', a: 'SOGO云 全部套餐都是 IEPL/IPLC 专线，¥25 就有 150GB，60 个主力节点覆盖港台日新美，另有马来西亚、欧洲等地区，并且有年付 8 折到三年 6 折的长期折扣和 4 款不限时流量包，能覆盖从轻度到重度的大部分需求；新用户用优惠码 sogo10000 还能打 9 折。SOGO云 也是本站的合作品牌，我们会通过推广链接获得佣金，但你支付的价格不变。' },
 ];
 
@@ -144,7 +151,7 @@ const jsonLd = [
         <p class="lead">这份排行榜是 <a href="/">机场推荐</a> 的详细版：我们从 {totalCount} 家机场里挑出 8 家进入 Top 8（另附第 9–{ranked.length} 名备选），按线路质量、月付价格、流量性价比、年付折扣和不限时套餐综合排序。每家都写清楚了适合谁、不适合谁，直接对照自己的预算和用量选就行。</p>
         <ol class="top-list">
           {ranked.map((p) => (
-            <li><a href={`/airport/${p.slug}/`}><strong>{p.name}</strong></a> — 月付 ¥{p.entryPrice} 起，{p.lineClaims.join('/')} {nonDedicated.includes(p) ? '中转' : '专线'}{p.promoCode ? `，优惠码 ${p.promoCode}` : ''}</li>
+            <li><a href={`/airport/${p.slug}/`}><strong>{p.name}</strong></a> — 月付 ¥{p.entryPrice} 起，{p.lineClaims.join('/')} {nonDedicated.includes(p) ? '中转' : mixedLine.includes(p) ? '混合线路' : '专线'}{p.promoCode ? `，优惠码 ${p.promoCode}` : ''}</li>
           ))}
         </ol>
       </header>

@@ -190,6 +190,9 @@ const jsonLd = [
   :global(.btn-large) {
     padding: var(--spacing-4) var(--spacing-8) !important;
     font-size: var(--text-lg) !important;
+    max-width: 100%;
+    white-space: normal !important;
+    text-align: center;
   }
   :global(.custom-editorial) {
     margin: var(--spacing-8) 0;
@@ -232,6 +235,14 @@ const jsonLd = [
     padding: 2px 6px;
     border-radius: 4px;
     color: var(--color-primary);
+  }
+  :global(.custom-editorial figure) {
+    margin: var(--spacing-6) 0;
+  }
+  :global(.custom-editorial img) {
+    display: block;
+    max-width: 100%;
+    height: auto;
   }
   :global(.custom-editorial a) {
     color: var(--color-primary);

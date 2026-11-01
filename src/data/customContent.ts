@@ -15,12 +15,12 @@ export interface CustomContent {
 export const customContent: Record<string, CustomContent> = {
   'sogo-yun': {
     title: 'SOGO云怎么样？2026 SOGO云机场评测：套餐价格、IEPL/IPLC专线与优惠码',
-    desc: 'SOGO云机场评测（2026年10月更新）：月付¥25起150GB，全IEPL/IPLC专线、VLESS协议、不限速不限设备，原生IP解锁Netflix与ChatGPT。9个套餐对比、60节点测速截图与新用户9折优惠码sogo10000。',
+    desc: 'SOGO云机场评测（2026年11月更新）：月付¥25起150GB，全IEPL/IPLC专线、VLESS协议、不限速不限设备，原生IP解锁Netflix与ChatGPT。9个套餐对比、60节点测速截图与新用户9折优惠码sogo10000。',
     h1: 'SOGO云怎么样？2026 SOGO云机场评测与套餐选购指南',
     intro: `
       <div class="custom-editorial">
         <h2>SOGO云怎么样？一句话结论</h2>
-        <p><strong>SOGO云是本站 2026 年 10 月的首推机场。</strong>全部套餐走 <a href="/compare/iplc-vs-iepl/">IEPL/IPLC 专线</a>（月付套餐为 IEPL，不限时包为 IPLC），使用 VLESS 协议，全节点不限速、不限制客户端和设备数量，节点提供原生 IP，支持 Netflix、YouTube、Disney+、HBO 等流媒体和 ChatGPT、Gemini、Claude 等 AI 服务。价格方面，<strong>¥25/月就有 150GB</strong>，同时提供 ¥98/年 的 60GB 小包和 4 款流量永不过期的不限时包，从轻度用户到家庭共用都能找到合适档位。</p>
+        <p><strong>SOGO云是本站 2026 年 11 月的首推机场。</strong>全部套餐走 <a href="/compare/iplc-vs-iepl/">IEPL/IPLC 专线</a>（月付套餐为 IEPL，不限时包为 IPLC），使用 VLESS 协议，全节点不限速、不限制客户端和设备数量，节点提供原生 IP，支持 Netflix、YouTube、Disney+、HBO 等流媒体和 ChatGPT、Gemini、Claude 等 AI 服务。价格方面，<strong>¥25/月就有 150GB</strong>，同时提供 ¥98/年 的 60GB 小包和 4 款流量永不过期的不限时包，从轻度用户到家庭共用都能找到合适档位。</p>
         <p>如果你不想花时间比较几十家机场，直接从 SOGO云 的 ¥25 基础版月付开始用，是目前最省心的选择。新用户下单时填写优惠码 <code>sogo10000</code> 可享 9 折，具体以结算页显示为准。</p>
       </div>
     `,
@@ -74,6 +74,21 @@ export const customContent: Record<string, CustomContent> = {
           <figcaption>第二轮测速（2026-04-13 17:33，辽宁移动 1Gbps）</figcaption>
         </figure>
         <p>另外，<a href="https://www.haiwailab.com/reviews/sogoyun/" target="_blank" rel="nofollow noopener">HaiwaiLab</a> 在 2026 年 8 月发布的测试中（珠海联通 5Gbps 宽带、32 线程）记录到：SOGO云 日本 10 个节点平均速度 71–106MB/s，美国 10 个节点 50–86MB/s。测速结果会随你的本地运营商和时段变化，仅供参考。</p>
+        <p>下面再补充一次 2026 年 11 月 1 日中午的 Cloudflare 网速测试（12:32）。它的单位是 Mb/秒，和上面的 MB/s 不同，1MB/s 约等于 8Mb/s：</p>
+        <ul>
+          <li><strong>速度</strong>：下载 75.6Mbps（约 9.5MB/s），上传 143Mbps（约 17.9MB/s），低于上面的节点测速。这次测试没有记录本地宽带环境，结果会受宽带、节点和时段影响。</li>
+          <li><strong>延迟</strong>：空载延迟中位数 55.9ms，抖动 16.4ms；下载和上传期间的延迟中位数约 55ms，大部分采样点没有明显升高，但下载期间有少数采样点出现很高的尖峰。</li>
+          <li><strong>丢包</strong>：1000 个数据包全部收到，丢包率 0%。</li>
+          <li><strong>网络质量</strong>：Cloudflare 给出的游戏评分为 5 星，流媒体和视频通话均为 4 星。</li>
+        </ul>
+        <figure>
+          <img src="/images/speedtest/sogo-yun-cloudflare-1.webp" alt="SOGO云 Cloudflare 网速测试截图：下载 75.6Mbps、上传 143Mbps、延迟 55.9ms、丢包率 0%" width="1469" height="613" loading="lazy" decoding="async" />
+          <figcaption>Cloudflare 网速测试总览（2026-11-01 12:32，IP 和地区信息已打码）</figcaption>
+        </figure>
+        <figure>
+          <img src="/images/speedtest/sogo-yun-cloudflare-2.webp" alt="SOGO云 Cloudflare 网速测试明细：下载、上传、延迟与丢包率分项结果" width="1494" height="596" loading="lazy" decoding="async" />
+          <figcaption>Cloudflare 网速测试分项结果（2026-11-01 12:32）</figcaption>
+        </figure>
 
         <h2>SOGO云 9 个套餐一览</h2>
         <ul>
@@ -85,6 +100,52 @@ export const customContent: Record<string, CustomContent> = {
           <li><strong>不限时版</strong>：120GB ¥120 / 250GB ¥220 / 500GB ¥450 / 1TB ¥850，流量永久有效</li>
         </ul>
         <p>以上套餐全部是 IEPL/IPLC 专线，都不限制同时在线设备数，电脑、手机、路由器可以一起用。新用户使用优惠码 <code>sogo10000</code> 享 9 折。</p>
+      </div>
+    `,
+  },
+  firefly: {
+    extra: `
+      <div class="custom-editorial">
+        <h2>Firefly 测速参考：50 个节点实测截图</h2>
+        <p>下面两张是 MiaoKo 在 2026 年 7 月 18 日晚上 8 点半左右对 Firefly 50 个节点（香港 15、台湾 5、新加坡 10、日本 10、美国 10）的测试，测试环境为珠海联通 9Gbps 宽带、32 线程：</p>
+        <ul>
+          <li><strong>流媒体</strong>：50 个节点全部解锁 YouTube、Netflix 和 Disney+，解锁地区与节点所在地一致。</li>
+          <li><strong>延迟</strong>：香港、新加坡节点 TLS RTT 约 85–96ms，日本约 133–138ms，台湾约 138–151ms，美国约 242–249ms。</li>
+          <li><strong>香港速度</strong>：14 个节点平均 470–550MB/s，最高约 635MB/s；香港 01 测速为 0。</li>
+          <li><strong>新加坡速度</strong>：9 个节点平均 331–523MB/s；新加坡 07 只有 9.6KB/s，基本不可用。</li>
+          <li><strong>台湾、日本、美国速度</strong>：台湾平均 29–77MB/s，日本 22–170MB/s，美国 8–12MB/s，明显低于香港和新加坡。下载大文件优先选香港或新加坡节点。</li>
+        </ul>
+        <figure>
+          <img src="/images/speedtest/firefly-speedtest-1.webp" alt="Firefly 50 个节点流媒体测速截图：延迟与 YouTube、Netflix、Disney+ 解锁结果" width="763" height="1280" loading="lazy" decoding="async" />
+          <figcaption>流媒体解锁测试（2026-07-18 20:36，珠海联通 9Gbps）</figcaption>
+        </figure>
+        <figure>
+          <img src="/images/speedtest/firefly-speedtest-2.webp" alt="Firefly 50 个节点速度测试截图：平均速度、最高速度与 UDP 类型" width="837" height="1280" loading="lazy" decoding="async" />
+          <figcaption>订阅速度测试（2026-07-18 20:35，珠海联通 9Gbps）</figcaption>
+        </figure>
+        <p>测速结果会随你的本地运营商和时段变化，仅供参考。</p>
+      </div>
+    `,
+  },
+  flyv: {
+    extra: `
+      <div class="custom-editorial">
+        <h2>飞V 测速参考：Cloudflare 与 YouTube 实测截图</h2>
+        <p>下面是飞V 的两项测试：一次 Cloudflare 网速测试（截图显示 18:43），以及 2026 年 10 月 31 日 18:41 的 YouTube 播放数据。这组数据只是单次结果，没有记录本地宽带环境：</p>
+        <ul>
+          <li><strong>速度</strong>：Cloudflare 下载 12.2Mbps（约 1.5MB/s），上传 18.1Mbps（约 2.3MB/s），下载速度偏低。</li>
+          <li><strong>延迟与丢包</strong>：延迟 140ms，抖动 62.3ms，丢包率 1.8%，三项都不算理想，Cloudflare 给出的流媒体、游戏、视频通话评分均为 3 星。</li>
+          <li><strong>YouTube</strong>：1080P 30 帧直播可以流畅播放，连接速度 31784Kbps（约 31.8Mbps），1587 帧里掉了 3 帧，缓冲约 12 秒。</li>
+        </ul>
+        <p>从这组结果看，飞V 看 1080P 视频没有问题，但对延迟敏感的游戏和视频通话，建议先买月付测试自己的网络环境。</p>
+        <figure>
+          <img src="/images/speedtest/flyv-cloudflare.webp" alt="飞V Cloudflare 网速测试截图：下载 12.2Mbps、上传 18.1Mbps、延迟 140ms、丢包率 1.8%" width="992" height="789" loading="lazy" decoding="async" />
+          <figcaption>Cloudflare 网速测试（IP 和地区信息已打码）</figcaption>
+        </figure>
+        <figure>
+          <img src="/images/speedtest/flyv-youtube-stats.webp" alt="飞V 观看 YouTube 1080P 直播的统计数据：连接速度 31784Kbps、缓冲 12.37 秒" width="972" height="396" loading="lazy" decoding="async" />
+          <figcaption>YouTube 播放统计（2026-10-31 18:41）</figcaption>
+        </figure>
       </div>
     `,
   },

@@ -1,7 +1,7 @@
 // 全站共用的站点信息。每次更新套餐数据后，修改 UPDATED 即可同步全站“最后更新”日期与结构化数据。
 export const SITE_NAME = '机场推荐数据库';
 export const SITE_URL = 'https://tuijianjichang.blog';
-export const UPDATED = '2026-10-30';
+export const UPDATED = '2026-11-01';
 export const UPDATED_ISO = `${UPDATED}T00:00:00+08:00`;
 export const UPDATED_LABEL = (() => {
   const [y, m, d] = UPDATED.split('-').map(Number);
